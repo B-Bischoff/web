@@ -49,7 +49,7 @@
 					<div id="main">
 						<div class="inner">
 							<h1>Ecosystème</h1>
-							<span class="image main"><img src="images/ecosysteme/background-1.png" alt="" /></span>
+							<span class="image main"><img src="images/Ecosysteme/background-1.png" alt="" /></span>
 
 							<h2>Contexte</h2>
 							<p>
@@ -73,7 +73,7 @@
 							<li>Visualisation de données sur un graphique</li>
 						</ul>
 
-						<span class="image right"><img src="images/ecosysteme/terrain-flipped.png" alt="" /><center><sup><i>rendu final</i><sup></center></span>
+						<span class="image right"><img src="images/Ecosysteme/terrain-flipped.png" alt="" /><center><sup><i>rendu final</i><sup></center></span>
 						<h3>Terrain</h3>
 						<p>
 							Il y plusieurs points importants à respecter pour que le terrain soit le plus réaliste possible. <br><br>
@@ -82,19 +82,19 @@
 							Et enfin la flore, constituée d'arbres et de carottes. <br>
 						</p>
 
-						<span class="image right"><img src="images/ecosysteme/WireframePlane.png" alt="" /><center><sup><i>maillage terrain (8x8)</i></sup></center></span>
+						<span class="image right"><img src="images/Ecosysteme/WireframePlane.png" alt="" /><center><sup><i>maillage terrain (8x8)</i></sup></center></span>
 						<p>
 							Initialement nous partons d'une surface plane, définie par une longueur et une largeur (cf. photo "maillage terrain").
 							Le maillage est donc composé de plusieurs sommets, reliés entres eux par des triangles.
 						</p>
-						<span class="image left"><img src="images/ecosysteme/PerlinNoiseExample.png" alt="" /><center><sup><i>exemple de bruit Perlin</i></center></sup></span>
+						<span class="image left"><img src="images/Ecosysteme/PerlinNoiseExample.png" alt="" /><center><sup><i>exemple de bruit Perlin</i></center></sup></span>
 
 						<p>
 							C'est en faisant varier la hauteur de chaque sommets que le terrain aura du relief. Pour se faire nous utilisons un type de bruit spécifique, le bruit perlin.
 							En superposant notre maillage avec l'image de bruit Perlin, chaque sommet sera sur une nuance entre le noir et le blanc. C'est en fonction de cette nuance que la hauteur sera définie. Dans mon cas, les zones claires représentent les zones à forte altitude.
 						</p>
 
-						<span class="image right"><img src="images/ecosysteme/Height02.png" alt="" /><center><sup><i>bruit Perlin avec couches et couleurs</i></center></sup></span>
+						<span class="image right"><img src="images/Ecosysteme/Height02.png" alt="" /><center><sup><i>bruit Perlin avec couches et couleurs</i></center></sup></span>
 						<p>
 							Les couches sont définies en faisant des fourchettes sur l'image du bruit Perlin. Ici, quatre couches ont été défini :
 							<ul>
@@ -111,7 +111,7 @@
 						<p>Dans mon cas voici les probabilités d'apparition des arbres ainsi que des carottes :</p>
 						<div class="row">
 							<div class="col-6">
-								<span class="image left"><img src="images/ecosysteme/tree.png" alt="" /><center><sup><i>modèle arbre</i></center></sup></span>
+								<span class="image left"><img src="images/Ecosysteme/tree.png" alt="" /><center><sup><i>modèle arbre</i></center></sup></span>
 								<ul>
 									<li>eau : 0%</li>
 									<li>sable : 0.5%</li>
@@ -120,7 +120,7 @@
 								</ul>
 							</div>
 							<div class="col-6">
-								<span class="image left"><img src="images/ecosysteme/carrot.png" alt="" /><center><sup><i>modèle carotte</i></center></sup></span>
+								<span class="image left"><img src="images/Ecosysteme/carrot.png" alt="" /><center><sup><i>modèle carotte</i></center></sup></span>
 								<ul>
 									<li>eau : 0%</li>
 									<li>sable : 1%</li>
@@ -141,8 +141,8 @@
 							2 types d'animaux sont présents dans cet ecosystème, les lapins, et les renards.<br>
 							Chacun possède des caractéristiques qui lui sont propres.
 						</p>
-						<span class="image right"><img src="images/ecosysteme/red.png" alt="" /><center><sup><i>modèle carotte</i></center></sup></span>
-						<span class="image left"><img src="images/ecosysteme/fox-mirrored.png" alt="" /><center><sup><i>modèle carotte</i></center></sup></span>
+						<span class="image right"><img src="images/Ecosysteme/red.png" alt="" /><center><sup><i>modèle carotte</i></center></sup></span>
+						<span class="image left"><img src="images/Ecosysteme/fox-mirrored.png" alt="" /><center><sup><i>modèle carotte</i></center></sup></span>
 
 
 						<h3>Graphique</h3>
