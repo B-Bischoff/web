@@ -107,7 +107,7 @@
 
 						<p>Il ne reste plus qu'à indiquer à Unity que nous voulons un dégradé entre les couleurs des couches et notre terrain sera enfin coloré !</p>
 
-						<p>Il manque seulement la flore. Pour cela, rien de compliqué. Une fois que notre terrain est généré nous passons au crible <u>un sommet sur deux</u>* et suivant le résultat aléatoire d'un tirage, on génère ou non l'élément souhaité.</p>
+						<p>Il manque seulement la flore. Pour cela, rien de compliqué. Une fois que notre terrain est généré nous passons au crible <i>un sommet sur deux</i>* et suivant le résultat aléatoire d'un tirage, on génère ou non l'élément souhaité.</p>
 						<p>Dans mon cas voici les probabilités d'apparition des arbres ainsi que des carottes :</p>
 						<div class="row">
 							<div class="col-6">
@@ -130,21 +130,65 @@
 							</div>
 						</div>
 
+						<br>
+						<p>L'apparition de la flore (arbres et carottes) s'effectue juste avant que la simulation ne commence. Par la suite des vagues de carottes (avec les mêmes probabilités d'apparition) auront lieux toutes les 60 secondes (considérées dans la simulation comme "un cycle").</p>
 
-						<p>un sommet sur deux* : Il est possible d'analyser chaque sommets, cependant cette opération est relativement couteuse, de plus sauter un sommet permet aux éléments de ne pas entrer en collision.</p>
+						<p><i>un sommet sur deux*</i>	 : Il est possible d'analyser chaque sommets, cependant cette opération est relativement couteuse, de plus sauter un sommet permet aux éléments de ne pas entrer en collision.</p>
 
 						<h3>Espèces animales</h3>
 
 						<h4>Lapin</h4>
 
+						<div class="row">
+							<div class="col-6">
+
+								<p>Le premier animal a avoir été introduit sur le terrain fut le lapin. L'objectif est d'avoir une espèce capable d'interagir avec la flore, les carottes et les étendues d'eau dans notre cas.</p>
+								<p>Les lapins possèdent trois caractéristiques principales</p>
+								<ul>
+									<li>une vitesse de déplacement</li>
+									<li>un champs de vision</li>
+									<li>un temps de consommation (manger et boire)</li>
+								</ul>
+							</div>
+							<div class="col-6">
+								<span class="image fit"><img src="images/Ecosysteme/red.png" alt="" /><center><sup><i>modèle lapin</i></center></sup></span>
+							</div>
+						</div>
+
+						<p>Mais surtout, ce qui determine si un individu est vivant ou non est son état d'eau et de nourriture. C'est données sont chacune simulées par une valeur comprise entre 0 et 100 et diminues progressivement en fonction du temps. Si le niveau d'eau OU de faim atteint 0, alors l'individu mourra.</p>
 						<p>
-							2 types d'animaux sont présents dans cet ecosystème, les lapins, et les renards.<br>
-							Chacun possède des caractéristiques qui lui sont propres.
+							Afin de survivre, l'animal doit décider quand chercher à boire et à manger. Pour se faire, un seuil (défini par l'utilisateur) indiquera si oui ou non, le lapin devra chercher de l'eau ou de la nourriture.<br>
+							Si le niveau d'eau ou de nourriture de l'animal est inférieur au seuil défini, alors celui-ci ira checher l'élément adéquat.
 						</p>
-						<span class="image right"><img src="images/Ecosysteme/red.png" alt="" /><center><sup><i>modèle lapin</i></center></sup></span>
-						<span class="image left"><img src="images/Ecosysteme/fox-mirrored.png" alt="" /><center><sup><i>modèle renard</i></center></sup></span>
 
 
+
+						<div class="row">
+							<div class="col-6">
+								<p>La vidéo qui suit montre un lapin se balader, puis chercher de l'eau et de la nourriture quand il en a le besoin.<br>Dans cet exemple, les deux seuils sont définis à soixante-dix, et les carottes ainsi que l'eau redonne vingt à la jauge de l'animal.</p>
+								<p>Les jauges orange et bleue indiquent le niveau d'eau et de nourriture de chaque animal.</p>
+							</div>
+
+							<div class="col-6">
+								<span class="image fit">
+									<video controls width="100%">
+										<source src="images/Ecosysteme/Water-Food.mp4" type="video/webm">
+									</video>
+									<center><sup><i>Démonstration interaction avec nourriture et eau</i></sup></center>
+								</span>
+							</div>
+						</div>
+
+						<p>Maintenant que chaque animal est capable de survivre, nous pouvons définir les conditions de reproduction pour chaque individu.</p>
+						<p>Le principe sera similaire à celui de la nourriture et de l'eau. La possibilité de se reproduire sera définie par deux seuils. A nouveau, un pour la nourriture et un pour le niveau d'eau.</p>
+						<p>
+							Si le niveau d'eau ET celui de nourriture sont supérieurs alors, l'animal va chercher si dans son champs de vision, se trouve un lapin du sexe opposé, lui aussi apte à se reproduire.<br>
+							Une fois que deux lapins se sont reproduis, la femelle sera alors <i>porteuse*</i>
+						</p>
+
+						<p><i>porteuse</i> : Le nombre d'animaux par portée aléatoire entre le minimum et le maximum (tous deux inclus) définis par l'utilisateur.</p>
+
+						<br><br><br><br><br><br><br><br><br><br><br><br>
 						<h3>Graphique</h3>
 
 						<hr>
