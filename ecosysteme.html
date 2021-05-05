@@ -1,255 +1,291 @@
-	<!DOCTYPE HTML>
+<!DOCTYPE HTML>
 <!--
-	Phantom by HTML5 UP
-	html5up.net | @ajlkn
-	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+Phantom by HTML5 UP
+html5up.net | @ajlkn
+Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
 -->
 <html>
-	<head>
-		<title>Generic - Phantom by HTML5 UP</title>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-		<link rel="stylesheet" href="assets/css/main.css" />
-		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
-	</head>
-	<body class="is-preload">
-		<!-- Wrapper -->
-			<div id="wrapper">
+<head>
+	<title>Ecosysteme</title>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+	<link rel="stylesheet" href="assets/css/main.css" />
+	<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+</head>
+<body class="is-preload">
+	<!-- Wrapper -->
+		<div id="wrapper">
 
-				<!-- Header -->
-					<header id="header">
-						<div class="inner">
+			<!-- Header -->
+				<header id="header">
+					<div class="inner">
 
-							<!-- Logo -->
-								<a href="index.html" class="logo">
-									<span class="symbol"><img src="images/Square-grey.png" alt="" /></span><span class="title">Phantom</span>
-								</a>
+						<!-- Logo -->
+							<a href="index.html" class="logo">
+								<span class="symbol"><img src="images/Square-grey.png" alt="" /></span><span class="title">Phantom</span>
+							</a>
 
-							<!-- Nav -->
-								<nav>
-									<ul>
-										<li><a href="#menu">Menu</a></li>
-									</ul>
-								</nav>
-
-						</div>
-					</header>
-
-				<!-- Menu -->
-					<nav id="menu">
-						<h2>Menu</h2>
-						<ul>
-							<li><a href="index.html">Projets</a></li>
-							<li><a href="generic.html">A propos</a></li>
-							<li><a href="elements.html">Contact</a></li>
-						</ul>
-					</nav>
-
-				<!-- Main -->
-					<div id="main">
-						<div class="inner">
-							<h1>Ecosystème</h1>
-							<span class="image main"><img src="images/Ecosysteme/background-1.png" alt="" /></span>
-
-							<h2>Contexte</h2>
-							<p>
-							Le premier but de ce projet était de m’améliorer dans le domaine du développement informatique. C’est alors que m’est venue l’idée de simuler un écosystème.
-							<br>
-							Mon objectif était donc de créer deux espèces animales capables chacune de reproduire un comportement simplifié, mais réaliste. J'ai ainsi opté pour les lapins et les renards,
-							un cas typique que l'on retrouve régulièrement lors de simulation de ce genre.
-							<br><br>
-							La finalité de ce projet est d'obtenir une application, où chacun peut lancer sa simulation avec ses propres conditions initiales et observer ses résultats
-							<br>
-							C'est donc début novembre 2020 qu'ont débuté mes recherches afin d'amorcer au mieux la réalisation de ce projet à l'aide du moteur de jeu Unity.
-						</p>
-
-						<hr>
-
-						<h2>Réalisation</h2>
-						<p>Ce projet est composé de trois parties</p>
-						<ul>
-							<li>Génération d'un terrain</li>
-							<li>Création des espèces animales</li>
-							<li>Visualisation de données sur un graphique</li>
-						</ul>
-
-						<span class="image right"><img src="images/Ecosysteme/terrain-flipped.png" alt="" /><center><sup><i>rendu final</i><sup></center></span>
-						<h3>Terrain</h3>
-						<p>
-							Il y plusieurs points importants à respecter pour que le terrain soit le plus réaliste possible. <br><br>
-							Premièrement, le relief, qui ajoutera des variations de hauteur et donnera au terrain un aspect naturel.<br>
-							Ensuite les couches, elles permettent de définir les zones d'eau, de sable et de forêt. <br>
-							Et enfin la flore, constituée d'arbres et de carottes. <br>
-						</p>
-
-						<span class="image right"><img src="images/Ecosysteme/WireframePlane.png" alt="" /><center><sup><i>maillage terrain (8x8)</i></sup></center></span>
-						<p>
-							Initialement nous partons d'une surface plane, définie par une longueur et une largeur (cf. photo "maillage terrain").
-							Le maillage est donc composé de plusieurs sommets, reliés entres eux par des triangles.
-						</p>
-						<span class="image left"><img src="images/Ecosysteme/PerlinNoiseExample.png" alt="" /><center><sup><i>exemple de bruit Perlin</i></center></sup></span>
-
-						<p>
-							C'est en faisant varier la hauteur de chaque sommets que le terrain aura du relief. Pour se faire nous utilisons un type de bruit spécifique, le bruit perlin.
-							En superposant notre maillage avec l'image de bruit Perlin, chaque sommet sera sur une nuance entre le noir et le blanc. C'est en fonction de cette nuance que la hauteur sera définie. Dans mon cas, les zones claires représentent les zones à forte altitude.
-						</p>
-
-						<span class="image right"><img src="images/Ecosysteme/Height02.png" alt="" /><center><sup><i>bruit Perlin avec couches et couleurs</i></center></sup></span>
-						<p>
-							Les couches sont définies en faisant des fourchettes sur l'image du bruit Perlin. Ici, quatre couches ont été défini :
-							<ul>
-								<li>0 - 0.15 : eau </li>
-								<li>0.16 - 0.49 : sable </li>
-								<li>0.5 - 0.84 : plaine </li>
-								<li>0.85 - 1 : forêt </li>
-							</ul>
-						</p>
-
-						<p>Il ne reste plus qu'à indiquer à Unity que nous voulons un dégradé entre les couleurs des couches et notre terrain sera enfin coloré !</p>
-
-						<p>Il manque seulement la flore. Pour cela, rien de compliqué. Une fois que notre terrain est généré nous passons au crible <i>un sommet sur deux</i>* et suivant le résultat aléatoire d'un tirage, on génère ou non l'élément souhaité.</p>
-						<p>Dans mon cas voici les probabilités d'apparition des arbres ainsi que des carottes :</p>
-						<div class="row">
-							<div class="col-6">
-								<span class="image left"><img src="images/Ecosysteme/tree.png" alt="" /><center><sup><i>modèle arbre</i></center></sup></span>
+						<!-- Nav -->
+							<nav>
 								<ul>
-									<li>eau : 0%</li>
-									<li>sable : 0.5%</li>
-									<li>plaine : 4%</li>
-									<li>forêt : 8%</li>
+									<li><a href="#menu">Menu</a></li>
 								</ul>
-							</div>
-							<div class="col-6">
-								<span class="image left"><img src="images/Ecosysteme/carrot.png" alt="" /><center><sup><i>modèle carotte</i></center></sup></span>
-								<ul>
-									<li>eau : 0%</li>
-									<li>sable : 1%</li>
-									<li>plaine : 3%</li>
-									<li>forêt : 30%</li>
-								</ul>
-							</div>
-						</div>
+							</nav>
 
+					</div>
+				</header>
+
+			<!-- Menu -->
+				<nav id="menu">
+					<h2>Menu</h2>
+					<ul>
+						<li><a href="index.html">Projets</a></li>
+						<li><a href="generic.html">A propos</a></li>
+						<li><a href="elements.html">Contact</a></li>
+					</ul>
+				</nav>
+
+			<!-- Main -->
+				<div id="main">
+					<div class="inner">
+						<h1>Ecosystème</h1>
+						<span class="image main"><img src="images/Ecosysteme/background-1.png" alt="" /></span>
+
+						<h2>Contexte</h2>
+						<p>
+						Le premier but de ce projet était de m’améliorer dans le domaine du développement informatique. C’est alors que m’est venue l’idée de simuler un écosystème.
 						<br>
-						<p>L'apparition de la flore (arbres et carottes) s'effectue juste avant que la simulation ne commence. Par la suite des vagues de carottes (avec les mêmes probabilités d'apparition) auront lieux toutes les 60 secondes (considérées dans la simulation comme "un cycle").</p>
+						Mon objectif était donc de créer deux espèces animales capables chacune de reproduire un comportement simplifié, mais réaliste. J'ai ainsi opté pour les lapins et les renards,
+						un cas typique que l'on retrouve régulièrement lors de simulation de ce genre.
+						<br><br>
+						La finalité de ce projet est d'obtenir une application, où chacun peut lancer sa simulation avec ses propres conditions initiales et observer ses résultats
+						<br>
+						C'est donc début novembre 2020 qu'ont débuté mes recherches afin d'amorcer au mieux la réalisation de ce projet à l'aide du moteur de jeu Unity.
+					</p>
 
-						<p><i>un sommet sur deux*</i>	 : Il est possible d'analyser chaque sommets, cependant cette opération est relativement couteuse, de plus sauter un sommet permet aux éléments de ne pas entrer en collision.</p>
+					<hr>
 
-						<h3>Espèces animales</h3>
+					<h2>Réalisation</h2>
+					<p>Ce projet est composé de trois parties</p>
+					<ul>
+						<li>Génération d'un terrain</li>
+						<li>Création des espèces animales</li>
+						<li>Visualisation de données sur un graphique</li>
+					</ul>
 
-						<h4>Lapin</h4>
+					<span class="image right"><img src="images/Ecosysteme/terrain-flipped.png" alt="" /><center><sup><i>rendu final</i><sup></center></span>
+					<h3>Terrain</h3>
+					<p>
+						Il y plusieurs points importants à respecter pour que le terrain soit le plus réaliste possible. <br><br>
+						Premièrement, le relief, qui ajoutera des variations de hauteur et donnera au terrain un aspect naturel.<br>
+						Ensuite les couches, elles permettent de définir les zones d'eau, de sable et de forêt. <br>
+						Et enfin la flore, constituée d'arbres et de carottes. <br>
+					</p>
 
-						<div class="row">
-							<div class="col-6">
+					<span class="image right"><img src="images/Ecosysteme/WireframePlane.png" alt="" /><center><sup><i>maillage terrain (8x8)</i></sup></center></span>
+					<p>
+						Initialement nous partons d'une surface plane, définie par une longueur et une largeur (cf. photo "maillage terrain").
+						Le maillage est donc composé de plusieurs sommets, reliés entres eux par des triangles.
+					</p>
+					<span class="image left"><img src="images/Ecosysteme/PerlinNoiseExample.png" alt="" /><center><sup><i>exemple de bruit Perlin</i></center></sup></span>
 
-								<p>Le premier animal a avoir été introduit sur le terrain fut le lapin. L'objectif est d'avoir une espèce capable d'interagir avec la flore, les carottes et les étendues d'eau dans notre cas.</p>
-								<p>Les lapins possèdent trois caractéristiques principales</p>
-								<ul>
-									<li>une vitesse de déplacement</li>
-									<li>un champs de vision</li>
-									<li>un temps de consommation (manger et boire)</li>
-								</ul>
-							</div>
-							<div class="col-6">
-								<span class="image fit"><img src="images/Ecosysteme/red.png" alt="" /><center><sup><i>modèle lapin</i></center></sup></span>
-							</div>
+					<p>
+						C'est en faisant varier la hauteur de chaque sommets que le terrain aura du relief. Pour se faire nous utilisons un type de bruit spécifique, le bruit perlin.
+						En superposant notre maillage avec l'image de bruit Perlin, chaque sommet sera sur une nuance entre le noir et le blanc. C'est en fonction de cette nuance que la hauteur sera définie. Dans mon cas, les zones claires représentent les zones à forte altitude.
+					</p>
+
+					<span class="image right"><img src="images/Ecosysteme/Height02.png" alt="" /><center><sup><i>bruit Perlin avec couches et couleurs</i></center></sup></span>
+					<p>
+						Les couches sont définies en faisant des fourchettes sur l'image du bruit Perlin. Ici, quatre couches ont été défini :
+						<ul>
+							<li>0 - 0.15 : eau </li>
+							<li>0.16 - 0.49 : sable </li>
+							<li>0.5 - 0.84 : plaine </li>
+							<li>0.85 - 1 : forêt </li>
+						</ul>
+					</p>
+
+					<p>Il ne reste plus qu'à indiquer à Unity que nous voulons un dégradé entre les couleurs des couches et notre terrain sera enfin coloré !</p>
+
+					<p>Il manque seulement la flore. Pour cela, rien de compliqué. Une fois que notre terrain est généré nous passons au crible <i>un sommet sur deux</i>* et suivant le résultat aléatoire d'un tirage, on génère ou non l'élément souhaité.</p>
+					<p>Dans mon cas voici les probabilités d'apparition des arbres ainsi que des carottes :</p>
+					<div class="row">
+						<div class="col-6">
+							<span class="image left"><img src="images/Ecosysteme/tree.png" alt="" /><center><sup><i>modèle arbre</i></center></sup></span>
+							<ul>
+								<li>eau : 0%</li>
+								<li>sable : 0.5%</li>
+								<li>plaine : 4%</li>
+								<li>forêt : 8%</li>
+							</ul>
 						</div>
-
-						<p>Mais surtout, ce qui determine si un individu est vivant ou non est son état d'eau et de nourriture. C'est données sont chacune simulées par une valeur comprise entre 0 et 100 et diminues progressivement en fonction du temps. Si le niveau d'eau OU de faim atteint 0, alors l'individu mourra.</p>
-						<p>
-							Afin de survivre, l'animal doit décider quand chercher à boire et à manger. Pour se faire, un seuil (défini par l'utilisateur) indiquera si oui ou non, le lapin devra chercher de l'eau ou de la nourriture.<br>
-							Si le niveau d'eau ou de nourriture de l'animal est inférieur au seuil défini, alors celui-ci ira checher l'élément adéquat.
-						</p>
-
-
-
-						<div class="row">
-							<div class="col-6">
-								<p>La vidéo qui suit montre un lapin se balader, puis chercher de l'eau et de la nourriture quand il en a le besoin.<br>Dans cet exemple, les deux seuils sont définis à soixante-dix, et les carottes ainsi que l'eau redonne vingt à la jauge de l'animal.</p>
-								<p>Les jauges orange et bleue indiquent le niveau d'eau et de nourriture de chaque animal.</p>
-							</div>
-
-							<div class="col-6">
-								<span class="image fit">
-									<video controls width="100%">
-										<source src="images/Ecosysteme/Water-Food.mp4" type="video/webm">
-									</video>
-									<center><sup><i>Démonstration interaction avec nourriture et eau</i></sup></center>
-								</span>
-							</div>
-						</div>
-
-						<p>Maintenant que chaque animal est capable de survivre, nous pouvons définir les conditions de reproduction pour chaque individu.</p>
-						<p>Le principe sera similaire à celui de la nourriture et de l'eau. La possibilité de se reproduire sera définie par deux seuils. A nouveau, un pour la nourriture et un pour le niveau d'eau.</p>
-						<p>
-							Si le niveau d'eau ET celui de nourriture sont supérieurs alors, l'animal va chercher si dans son champs de vision, se trouve un lapin du sexe opposé, lui aussi apte à se reproduire.<br>
-							Une fois que deux lapins se sont reproduis, la femelle sera alors <i>porteuse*</i>
-						</p>
-
-						<p><i>porteuse</i> : Le nombre d'animaux par portée aléatoire entre le minimum et le maximum (tous deux inclus) définis par l'utilisateur.</p>
-
-						<br><br><br><br><br><br><br><br><br><br><br><br>
-						<h3>Graphique</h3>
-
-						<hr>
-
-						<h2>Conclusion</h2>
-						<p>Donec eget ex magna. Interdum et malesuada fames ac ante ipsum primis in faucibus. Pellentesque venenatis dolor imperdiet dolor mattis sagittis. Praesent rutrum sem diam, vitae egestas enim auctor sit amet. Pellentesque leo mauris, consectetur id ipsum sit amet, fergiat. Pellentesque in mi eu massa lacinia malesuada et a elit. Donec urna ex, lacinia in purus ac, pretium pulvinar mauris. Curabitur sapien risus, commodo eget turpis at, elementum convallis elit. Pellentesque enim turpis, hendrerit tristique.</p>
-						<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis dapibus rutrum facilisis. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Etiam tristique libero eu nibh porttitor fermentum. Nullam venenatis erat id vehicula viverra. Nunc ultrices eros ut ultricies condimentum. Mauris risus lacus, blandit sit amet venenatis non, bibendum vitae dolor. Nunc lorem mauris, fringilla in aliquam at, euismod in lectus. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. In non lorem sit amet elit placerat maximus. Pellentesque aliquam maximus risus, vel venenatis mauris vehicula hendrerit.</p>
-						<p>Interdum et malesuada fames ac ante ipsum primis in faucibus. Pellentesque venenatis dolor imperdiet dolor mattis sagittis. Praesent rutrum sem diam, vitae egestas enim auctor sit amet. Pellentesque leo mauris, consectetur id ipsum sit amet, fersapien risus, commodo eget turpis at, elementum convallis elit. Pellentesque enim turpis, hendrerit tristique lorem ipsum dolor.</p>
-
+						<div class="col-6">
+							<span class="image left"><img src="images/Ecosysteme/carrot.png" alt="" /><center><sup><i>modèle carotte</i></center></sup></span>
+							<ul>
+								<li>eau : 0%</li>
+								<li>sable : 1%</li>
+								<li>plaine : 3%</li>
+								<li>forêt : 30%</li>
+							</ul>
 						</div>
 					</div>
 
-				<!-- Footer -->
-					<footer id="footer">
-						<div class="inner">
-							<section>
-								<h2>Get in touch</h2>
-								<form method="post" action="#">
-									<div class="fields">
-										<div class="field half">
-											<input type="text" name="name" id="name" placeholder="Name" />
-										</div>
-										<div class="field half">
-											<input type="email" name="email" id="email" placeholder="Email" />
-										</div>
-										<div class="field">
-											<textarea name="message" id="message" placeholder="Message"></textarea>
-										</div>
-									</div>
-									<ul class="actions">
-										<li><input type="submit" value="Send" class="primary" /></li>
-									</ul>
-								</form>
-							</section>
-							<section>
-								<h2>Follow</h2>
-								<ul class="icons">
-									<li><a href="#" class="icon brands style2 fa-twitter"><span class="label">Twitter</span></a></li>
-									<li><a href="#" class="icon brands style2 fa-facebook-f"><span class="label">Facebook</span></a></li>
-									<li><a href="#" class="icon brands style2 fa-instagram"><span class="label">Instagram</span></a></li>
-									<li><a href="#" class="icon brands style2 fa-dribbble"><span class="label">Dribbble</span></a></li>
-									<li><a href="#" class="icon brands style2 fa-github"><span class="label">GitHub</span></a></li>
-									<li><a href="#" class="icon brands style2 fa-500px"><span class="label">500px</span></a></li>
-									<li><a href="#" class="icon solid style2 fa-phone"><span class="label">Phone</span></a></li>
-									<li><a href="#" class="icon solid style2 fa-envelope"><span class="label">Email</span></a></li>
-								</ul>
-							</section>
-							<ul class="copyright">
-								<li>&copy; Untitled. All rights reserved</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+					<br>
+					<p>L'apparition de la flore (arbres et carottes) s'effectue juste avant que la simulation ne commence. Par la suite des vagues de carottes (avec les mêmes probabilités d'apparition) auront lieux toutes les 60 secondes (considérées dans la simulation comme "un cycle").</p>
+
+					<p><i>un sommet sur deux*</i>	 : Il est possible d'analyser chaque sommets, cependant cette opération est relativement couteuse, de plus sauter un sommet permet aux éléments de ne pas entrer en collision.</p>
+
+					<h3>Espèces animales</h3>
+
+					<h4>Lapin</h4>
+
+					<div class="row">
+						<div class="col-6">
+
+							<p>Le premier animal a avoir été introduit sur le terrain fut le lapin. L'objectif est d'avoir une espèce capable d'interagir avec la flore, les carottes et les étendues d'eau dans notre cas.</p>
+							<p>Les lapins possèdent trois caractéristiques principales</p>
+							<ul>
+								<li>une vitesse de déplacement</li>
+								<li>un champs de vision</li>
+								<li>un temps de consommation (manger et boire)</li>
 							</ul>
 						</div>
-					</footer>
+						<div class="col-6">
+							<span class="image fit"><img src="images/Ecosysteme/red.png" alt="" /><center><sup><i>modèle lapin</i></center></sup></span>
+						</div>
+					</div>
 
-			</div>
+					<p>Mais surtout, ce qui determine si un individu est vivant ou non est son état d'eau et de nourriture. C'est données sont chacune simulées par une valeur comprise entre 0 et 100 et diminues progressivement en fonction du temps. Si le niveau d'eau OU de faim atteint 0, alors l'individu mourra.</p>
+					<p>
+						Afin de survivre, l'animal doit décider quand chercher à boire et à manger. Pour se faire, un seuil (défini par l'utilisateur) indiquera si oui ou non, le lapin devra chercher de l'eau ou de la nourriture.<br>
+						Si le niveau d'eau ou de nourriture de l'animal est inférieur au seuil défini, alors celui-ci ira checher l'élément adéquat.
+					</p>
 
-		<!-- Scripts -->
-			<script src="assets/js/jquery.min.js"></script>
-			<script src="assets/js/browser.min.js"></script>
-			<script src="assets/js/breakpoints.min.js"></script>
-			<script src="assets/js/util.js"></script>
-			<script src="assets/js/main.js"></script>
+
+
+					<div class="row">
+						<div class="col-6">
+							<p>La vidéo qui suit montre un lapin se balader, puis chercher de l'eau et de la nourriture quand il en a le besoin.<br>Dans cet exemple, les deux seuils sont définis à soixante-dix, et les carottes ainsi que l'eau redonne vingt à la jauge de l'animal.</p>
+							<p>Les jauges orange et bleue indiquent le niveau d'eau et de nourriture de chaque animal.</p>
+						</div>
+
+						<div class="col-6">
+							<span class="image fit">
+								<video controls width="100%">
+									<source src="images/Ecosysteme/Water-Food.mp4" type="video/webm">
+								</video>
+								<center><sup><i>Démonstration interaction avec nourriture et eau</i></sup></center>
+							</span>
+						</div>
+					</div>
+
+					<p>Maintenant que chaque animal est capable de survivre, nous pouvons définir les conditions de reproduction pour chaque individu.</p>
+					<p>Le principe sera similaire à celui de la nourriture et de l'eau. La possibilité de se reproduire sera définie par deux seuils. A nouveau, un pour la nourriture et un pour le niveau d'eau.</p>
+					<p>
+						Si le niveau d'eau ET celui de nourriture sont supérieurs alors, l'animal va chercher si dans son champs de vision, se trouve un lapin du sexe opposé, lui aussi apte à se reproduire.<br>
+						Une fois que deux lapins se sont reproduis, la femelle sera alors <i>porteuse*</i> et donnera naissance à plusieurs lapereaux une fois le temps de gestion écoulé.
+					</p>
+
+					<div class="row">
+						<div class="col-6">
+							<span class="image fit">
+								<video controls width="100%">
+									<source src="images/Ecosysteme/Reproduction.mp4" type="video/webm">
+								</video>
+								<center><sup><i>Démonstration reproduction</i></sup></center>
+							</span>
+						</div>
+						<div class="col-6">
+							<p>La prochaine vidéo montre premièrement la reproduction de deux lapins et par la suite la naissance de lapereaux, 2 males dans notre cas.</p>
+						</div>
+					</div>
+
+					<p><i>porteuse</i> : Le nombre d'animaux par portée aléatoire entre le minimum et le maximum (tous deux inclus) définis par l'utilisateur.</p>
+
+					<p>A partir de ce stade, le seul facteur capable de réguler la population de lapin est le nombre de carottes disponible. Il est donc temps pour les renards de faire leur apparition.</p>
+
+					<h4>Renard</h4>
+
+					<div class="row">
+						<div class="col-6">
+
+							<p>Les caractéristiques et actions du renard sont similaires à celles du lapin. A la différence que pour se nourrir, celui-ci ira chasser des lapins.</p>
+							<p>Pour rendre les choses plus réalistes, les lapins vont désormais fuir les prédateurs à proximité.</p>
+							<span class="image fit">
+								<video controls width="100%">
+									<source src="images/Ecosysteme/Fox-Eating.mp4" type="video/webm">
+								</video>
+								<center><sup><i>Démonstration reproduction</i></sup></center>
+							</span>
+
+						</div>
+						<div class="col-6">
+							<span class="image fit"><img src="images/Ecosysteme/fox.png" alt="" /><center><sup><i>modèle renard</i></center></sup></span>
+						</div>
+					</div>
+
+					<br><br><br><br><br><br><br><br><br><br><br><br>
+					<h3>Graphique</h3>
+
+					<hr>
+
+					<h2>Conclusion</h2>
+					<p>Donec eget ex magna. Interdum et malesuada fames ac ante ipsum primis in faucibus. Pellentesque venenatis dolor imperdiet dolor mattis sagittis. Praesent rutrum sem diam, vitae egestas enim auctor sit amet. Pellentesque leo mauris, consectetur id ipsum sit amet, fergiat. Pellentesque in mi eu massa lacinia malesuada et a elit. Donec urna ex, lacinia in purus ac, pretium pulvinar mauris. Curabitur sapien risus, commodo eget turpis at, elementum convallis elit. Pellentesque enim turpis, hendrerit tristique.</p>
+					<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis dapibus rutrum facilisis. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Etiam tristique libero eu nibh porttitor fermentum. Nullam venenatis erat id vehicula viverra. Nunc ultrices eros ut ultricies condimentum. Mauris risus lacus, blandit sit amet venenatis non, bibendum vitae dolor. Nunc lorem mauris, fringilla in aliquam at, euismod in lectus. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. In non lorem sit amet elit placerat maximus. Pellentesque aliquam maximus risus, vel venenatis mauris vehicula hendrerit.</p>
+					<p>Interdum et malesuada fames ac ante ipsum primis in faucibus. Pellentesque venenatis dolor imperdiet dolor mattis sagittis. Praesent rutrum sem diam, vitae egestas enim auctor sit amet. Pellentesque leo mauris, consectetur id ipsum sit amet, fersapien risus, commodo eget turpis at, elementum convallis elit. Pellentesque enim turpis, hendrerit tristique lorem ipsum dolor.</p>
+
+					</div>
+				</div>
+
+			<!-- Footer -->
+				<footer id="footer">
+					<div class="inner">
+						<section>
+							<h2>Get in touch</h2>
+							<form method="post" action="#">
+								<div class="fields">
+									<div class="field half">
+										<input type="text" name="name" id="name" placeholder="Name" />
+									</div>
+									<div class="field half">
+										<input type="email" name="email" id="email" placeholder="Email" />
+									</div>
+									<div class="field">
+										<textarea name="message" id="message" placeholder="Message"></textarea>
+									</div>
+								</div>
+								<ul class="actions">
+									<li><input type="submit" value="Send" class="primary" /></li>
+								</ul>
+							</form>
+						</section>
+						<section>
+							<h2>Follow</h2>
+							<ul class="icons">
+								<li><a href="#" class="icon brands style2 fa-twitter"><span class="label">Twitter</span></a></li>
+								<li><a href="#" class="icon brands style2 fa-facebook-f"><span class="label">Facebook</span></a></li>
+								<li><a href="#" class="icon brands style2 fa-instagram"><span class="label">Instagram</span></a></li>
+								<li><a href="#" class="icon brands style2 fa-dribbble"><span class="label">Dribbble</span></a></li>
+								<li><a href="#" class="icon brands style2 fa-github"><span class="label">GitHub</span></a></li>
+								<li><a href="#" class="icon brands style2 fa-500px"><span class="label">500px</span></a></li>
+								<li><a href="#" class="icon solid style2 fa-phone"><span class="label">Phone</span></a></li>
+								<li><a href="#" class="icon solid style2 fa-envelope"><span class="label">Email</span></a></li>
+							</ul>
+						</section>
+						<ul class="copyright">
+							<li>&copy; Untitled. All rights reserved</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+						</ul>
+					</div>
+				</footer>
+
+		</div>
+
+	<!-- Scripts -->
+		<script src="assets/js/jquery.min.js"></script>
+		<script src="assets/js/browser.min.js"></script>
+		<script src="assets/js/breakpoints.min.js"></script>
+		<script src="assets/js/util.js"></script>
+		<script src="assets/js/main.js"></script>
 
 	</body>
 </html>
