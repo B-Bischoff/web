@@ -53,7 +53,7 @@ Free for personal and commercial use under the CCA 3.0 license (html5up.net/lice
 
 						<h2>Contexte</h2>
 						<p>
-						Le premier but de ce projet était de m’améliorer dans le domaine du développement informatique. C’est alors que m’est venue l’idée de simuler un écosystème.
+						Le but de ce projet était de m’améliorer dans le domaine du développement informatique. C’est alors que m’est venue l’idée de simuler un écosystème.
 						<br>
 						Mon objectif était donc de créer deux espèces animales capables chacune de reproduire un comportement simplifié, mais réaliste. J'ai ainsi opté pour les lapins et les renards,
 						un cas typique que l'on retrouve régulièrement lors de simulation de ce genre.
@@ -98,10 +98,10 @@ Free for personal and commercial use under the CCA 3.0 license (html5up.net/lice
 					<p>
 						Les couches sont définies en faisant des fourchettes sur l'image du bruit Perlin. Ici, quatre couches ont été défini :
 						<ul>
-							<li>0 - 0.15 : eau </li>
-							<li>0.16 - 0.49 : sable </li>
-							<li>0.5 - 0.84 : plaine </li>
-							<li>0.85 - 1 : forêt </li>
+							<li>0 - 0.3 : eau </li>
+							<li>0.31 - 0.5 : sable </li>
+							<li>0.51 - 0.85 : plaine </li>
+							<li>0.86 - 1 : forêt </li>
 						</ul>
 					</p>
 
@@ -179,6 +179,27 @@ Free for personal and commercial use under the CCA 3.0 license (html5up.net/lice
 						</div>
 					</div>
 
+
+					<blockquote>
+						<p><b>Précisions techniques</b><br></p>
+						<p>
+							Déplacements :
+							<div class="image right"><img src="images/Ecosysteme/navMesh.png" alt="" /><center><sup><i>exemple de NavMesh</i></sup></center></div>
+							Les animaux utilisent la technologie <u>NavMesh component</u> fournie par Unity pour se déplacer.<br> Cette technologie permet de créer un type d'agent (que nous assignons à nos lapins) possédant une taille, une vitesse et une circonférence.<br>
+							Il faut ensutie créer une "NavMesh" du terrain, (voir photo ci-contre). Les zones bleues indiquent les endroits pouvant être empruntés par nos agents précédemment créés.<br>
+							Il suffit maintenant de spécifier une coordonnée à un individu pour que celui-ci s'y déplace en trouvant lui même le chemin le plus court.
+						</p>
+						<p>
+							Recherche nourriture et eau :
+							<div class="image right"><img src="images/Ecosysteme/water_spot.png" alt="" /><center><sup><i>Visualisation points d'eau</i></sup></center></div>
+							Lorsqu'un animal boit, il interagit avec une sphere (rendue visible sur la photo ci-contre) symbolisant un point d'eau. (une sphère est créée dès lors qu'un sommet se trouve avec une valeur de bruit Perlin entre 0.22 et 0.25)<br>
+							Une liste contient toutes les carottes présentes sur le terrain, il en est de même pour les points d'eau.<br>
+							Lorsqu'un animal désire trouver la carotte ou le point d'eau le plus proche, il parcourt la liste en question et calcul la distance entre l'élément souhaitée et sa position.
+							Si la distance est comprise dans son champs de vision celui-ci sera la cible de l'animal. Cependant, si un élément suivant dans la liste se trouve être plus proche de l'animal, il sera alors la nouvel cible.
+						</p>
+					</blockquote>
+
+
 					<p>Maintenant que chaque animal est capable de survivre, nous pouvons définir les conditions de reproduction pour chaque individu.</p>
 					<p>Le principe sera similaire à celui de la nourriture et de l'eau. La possibilité de se reproduire sera définie par deux seuils. A nouveau, un pour la nourriture et un pour le niveau d'eau.</p>
 					<p>
@@ -223,6 +244,37 @@ Free for personal and commercial use under the CCA 3.0 license (html5up.net/lice
 						</div>
 					</div>
 					<br>
+
+					<blockquote>
+						<p><b>Précisions techniques</b><br></p>
+						<p>
+							Déplacements :
+							<div class="image right"><img src="images/Ecosysteme/random_pos.png" alt="" /><center><sup><i>exemple de NavMesh</i></sup></center></div>
+							Lorsqu'un animal n'a pas le besoin de boire ou manger ni la capacité de se reproduire il se déplacera aléatoirement.<br>
+							L'idée est de générer une coordonnée ni trop loin, ni trop proche de la position actuelle de l'animal.<br>
+							Voici la fonction utilisée (code en langage C#) :
+							<pre><code>private Vector3 FindPosInCircle(Vector3 centre, float radius)
+{
+    Vector3 pos = new Vector3();
+    float angle = Random.value * 360;
+    float margin = 1.5f;
+
+    float norme = Random.Range(margin, radius);
+
+    pos.x = centre.x + (norme * Mathf.Cos(angle));
+    pos.z = centre.z + (norme * Mathf.Sin(angle));
+
+    return pos;
+}							</pre></code>
+							<p>
+								La fonction Random.value va générer un nombre entre 0 et 1. On définit alors un angle en multipliant cette valeur par 360.<br>
+								On genère ensuite une norme comprise entre la distance minimale et maximale du déplacement de l'animal.<br>
+								La variable "centre" correspond à la position actuelle de l'animal.
+
+							</p>
+						</p>
+					</blockquote>
+
 					<div class="row">
 						<div class="col-6">
 							<p>Conclusion sur les espèces animales.</p>
