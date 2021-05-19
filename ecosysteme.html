@@ -166,7 +166,7 @@ Free for personal and commercial use under the CCA 3.0 license (html5up.net/lice
 						<p>Mais surtout, ce qui determine si un individu est vivant ou non est son état d'eau et de nourriture. C'est données sont chacune simulées par une valeur comprise entre 0 et 100 et diminues progressivement en <b>fonction du temps</b>. Si le niveau d'eau <u>ou</u> de faim atteint 0, alors <b>l'individu mourra</b>.</p>
 						<p>
 							Afin de survivre, l'animal doit décider quand chercher à boire et à manger. Pour se faire, <b>un seuil</b> (défini par l'utilisateur) indiquera si oui ou non, le lapin devra chercher de l'eau ou de la nourriture.<br>
-							Si le niveau d'eau ou de nourriture de l'animal est inférieur au seuil défini, alors celui-ci ira checher l'élément adéquat.
+							Si le niveau d'eau <u>ou</u> de nourriture de l'animal est <u>inférieur au seuil</u> défini, alors celui-ci ira checher l'élément adéquat.
 						</p>
 
 
@@ -174,7 +174,7 @@ Free for personal and commercial use under the CCA 3.0 license (html5up.net/lice
 						<div class="row">
 							<div class="col-6">
 								<p>La vidéo qui suit montre un lapin se balader, puis chercher de l'eau et de la nourriture quand il en a le besoin.<br>Dans cet exemple, les 2 seuils sont définis à 70, et les carottes ainsi que l'eau redonne 20 à la jauge adéquate de l'animal.</p>
-								<p>Les jauges orange et bleue indiquent le niveau de nourriture et d'eau de chaque animal.</p>
+								<p>Les jauges orange et bleue <b>indiquent le niveau</b> de nourriture et d'eau de chaque animal.</p>
 							</div>
 
 							<div class="col-6">
@@ -275,21 +275,37 @@ Free for personal and commercial use under the CCA 3.0 license (html5up.net/lice
 
     return pos;
 }								</pre></code>
-								<p>
-									Le type de variable "Vector3" est une <u>structure propre à Unity</u> contenant en première position, une position X, en seconde une position Y (hauteur), et enfin une position Z.<br>
-									La fonction Random.value va générer un nombre <b>entre 0 et 1</b>. On définit alors un angle en multipliant cette valeur par 360.<br>
-									On genère ensuite une norme comprise <b>entre la distance minimale et maximale</b> du déplacement de l'animal.<br>
-									La variable "centre" correspond à la position <b>actuelle</b> de l'animal.<br>
-									On retrouve <b>la distance sur l'axe X</b> en multipliant la norme avec le cosinus de l'angle, puis on l'aditionne à la position (toujours sur l'axe X) de l'animal.<br>
-									On réalise la même opération pour l'axe Z mais cette fois-ci, avec le sinus.
-								</p>
+								<div class="row">
+									<div class="col-6">
+										<p>
+											Le type de variable "Vector3" est une <a href="https://docs.unity3d.com/ScriptReference/Vector3.html">structure propre à Unity</a> contenant en première position, une position X, en seconde une position Y (hauteur), et enfin une position Z.<br>
+											La fonction Random.value va générer un nombre <b>entre 0 et 1</b>. On définit alors un angle en multipliant cette valeur par 360.<br>
+											On genère ensuite une norme comprise <b>entre la distance minimale et maximale</b> du déplacement de l'animal.<br>
+											La variable "centre" correspond à la position <b>actuelle</b> de l'animal.<br>
+											On retrouve <b>la distance sur l'axe X</b> en multipliant la norme avec le cosinus de l'angle, puis on l'aditionne à la position (toujours sur l'axe X) de l'animal.<br>
+											On réalise la même opération pour l'axe Z mais cette fois-ci, avec le sinus.
+										</p>
+									</div>
+									<div class="col-6">
+										<div class="image fit"><img src="images/Ecosysteme/terrain-axis.png" alt="" /><center><sup><i>terrain avec axes</i></sup></center></div>
+									</div>
+								</div>
 							</p>
 						</blockquote>
 
 						<div class="row">
 							<div class="col-6">
 								<p>Conclusion sur les espèces animales.</p>
-								<p>Afin de représenter le comportement de nos espèces de manière synthétique, voici un <b>algorigramme</b> reprennant <u>l'intégralité des notions précédentes</u	>.</p>
+								<p>Afin de représenter le comportement de nos espèces de manière synthétique, voici un <b>algorigramme</b> reprennant <u>l'intégralité des notions précédentes</u>.</p>
+								<p>
+									Un choix personnel a été fait entre le besoin de nourriture et d'eau.<br>
+									Le schéma montre que <b>le besoin d'eau de l'animal est prioritaire</b> prioritaire par à sa faim.
+								</p>
+								<p>
+									Le déplacement aléatoire possède 2 utilités.<br>
+									Premièrement, quand l'animal n'a besoin ni d'eau ni de nourriture et n'est pas apte à se reproduire, il va se déplacer aléatoirement <b>jusqu'à ce qu'un besoin primaire survienne</b>.<br>
+									Ensuite, imaginons que notre animal éprouve le besoin de s'hydrater mais qu'aucun point d'eau n'est à proximité. L'animal va alors se déplacer aléatoirement sur le terrain puis analyser à nouveau si il peut satisfaire son besoin. <u>Ceci lui évite de se laisser mourir car il ne trouve pas l'élément désiré</u>.
+								</p>
 							</div>
 							<div class="col-6">
 								<span class="image fit"><img src="images/Ecosysteme/animal-algorigram.png" alt="" /><center><sup><i>algorigramme des espèces</i></center></sup></span>
@@ -327,39 +343,39 @@ Free for personal and commercial use under the CCA 3.0 license (html5up.net/lice
 									<li><u>Sauvegarde</u> et chargement de la disposition de la vue graphique</li>
 								</ul>
 							</div>
-
-							<blockquote>
-								<p><b>Précisions techniques</b><br></p>
-								<p>Mesure des informations :</p>
-								<p>
-									Comme mentionné précédemment, lapins, renards et carottes sont stockés dans des listes. C'est grâce à elles que nous pouvons obtenir une multitude d'informations sur chaque élément présent dans la simulation.
-								</p>
-								<p>
-									Les données sauvegardées sont les suivantes :
-									<ul>
-										<li>Le nombre de carottes</li>
-										<li>Le nombre de lapins et de renards</li>
-										<li>Le nombre décès</li>
-										<li>La cause du décès (déshydratation, famine, chassé)
-									</ul>
-
-									<p>Il y a 10 prises de données par cycle, autrement 1 toute les 6 secondes, car un cycle dure 1 minute.	</p>
-								</p>
-								<br>
-								<p>Graphiques :</p>
-								<p>Unity ne fournit pas d'outils pour dessiner des graphiques, j'ai ainsi après quelques recherches sur Internet réussi à reprendre des productions existantes (voir "Sources") et les adpater à mes besoins.</p>
-								<p>
-									Il faut premièrement délimiter la zone de chaque graphique.<br>
-									Dans mon cas, chaque graphique fait 33% de la longueur de l'écran sur l'axe horizontal (~633 pixels quand la résolution est en 16:9 soit, en 1920 / 1080 pixels) et un un peu moins de 40% sur l'axe vertical (soit ~420 pixels).
-								</p>
-								<p>
-									On place ensuite les points sur la surface précédement délimitée.
-									Chaque point est espacé sur l'axe X de 633 pixels (taille horizontal du graphique) divisé par le nombre de point à placer.<br>
-									Pour l'axe Y [(value / valeur max) * (graphHeight - margin)]
-								</p>
-
-							</blockquote>
 						</div>
+
+						<p>Voici données pouvant être affichées sont les suivantes :</p>
+						<ul>
+							<li>Le nombre de carottes</li>
+							<li>Le nombre de lapins et de renards</li>
+							<li>Le nombre décès</li>
+							<li>La cause du décès (déshydratation, famine, chassé)
+						</ul>
+
+
+						<blockquote>
+							<p><b>Précisions techniques</b><br></p>
+							<p>Mesure des informations :</p>
+							<p>Comme mentionné précédemment les lapins, renards et carottes <b>sont stockés dans des listes</b>. C'est grâce à elles que nous pouvons obtenir une multitude d'informations sur chaque élément présent dans la simulation.
+							<p>Il y a <b>10 prises de données par cycle</b>, autrement dit, <b>1 toute les 6 secondes</b>, car un cycle dure 1 minute.</p>
+							<p>A chaque prise de donnée, on reccueil les informations comme par exemple le nombre de lapins ou de carottes actuel afin de le garder en mémoire.</p>
+							<br>
+							<p>Graphiques :</p>
+							<p>Unity ne fournit pas d'outils pour dessiner des graphiques, j'ai ainsi après quelques recherches sur Internet réussi à <b>reprendre des productions existantes</b> (voir <a href="#sources">"Sources"</a>) et les <b>adpater à mes besoins</b>.</p>
+							<p>
+								Il faut premièrement <b>délimiter la zone de chaque graphique</b>.<br>
+								Dans mon cas, chaque graphique fait 33% de la longueur de l'écran sur l'axe horizontal (~633 pixels quand la résolution est en 16:9 soit, en 1920 par 1080 pixels) et un un peu moins de 40% sur l'axe vertical (soit ~420 pixels).
+							</p>
+							<p>
+								On place ensuite les points sur la surface précédement délimitée.
+								Chaque point est espacé sur l'axe X de 633 pixels (taille horizontal du graphique) <b>divisé par le nombre de point à placer</b>.<br>
+								Pour l'axe Y on cherche d'abord la <b>valeur la plus grande</b> dans la liste qui nous servira de référence. On divise alors la valeur de l'élément à placer par cette valeur maximum. <u>Le résultat sera entre 0 et 1</u>.
+								Pour l'afficher dans la zone de notre graphique on multiplie cette valeur par la hauteur du graphique (moins une legère marge afin de ne pas afficher de point sur la bordure de l'écran).
+							</p>
+
+						</blockquote>
+
 
 						<hr>
 
@@ -374,7 +390,7 @@ Free for personal and commercial use under the CCA 3.0 license (html5up.net/lice
 							</li>
 							<li><h4>La programmation</h4>
 								<p>
-									J'ai découvert de nombreuses fonctionnalités comme la génération de maillage customisé ou bien l'utilisation de navMesh. J'ai également pu renforcer certaines connaissances tel que le calcul vectoriel et l'utilisation de classes pour les animaux.<br>
+									J'ai découvert de nombreuses fonctionnalités comme la génération de maillage customisé ou bien l'utilisation de navMesh. J'ai également pu renforcer certaines connaissances telles que le calcul vectoriel et l'utilisation de classes pour les animaux.<br>
 									Le plus important est <b>la structure du code</b>. Elle est à ce jour loin d'être parfaite, mais j'ai pu constater son importance et m'exercer à le rendre le mieux possible.
 								</p>
 							</li>
@@ -397,7 +413,7 @@ Free for personal and commercial use under the CCA 3.0 license (html5up.net/lice
 						</p>
 
 						<hr>
-						<h2>Sources</h2>
+						<h2 id="sources">Sources</h2>
 
 						<h3>Inspirations</h3>
 						<p>
