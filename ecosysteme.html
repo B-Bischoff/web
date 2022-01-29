@@ -70,7 +70,7 @@ Free for personal and commercial use under the CCA 3.0 license (html5up.net/lice
 						<ul>
 							<li>Génération d'un terrain</li>
 							<li>Création des espèces animales</li>
-							<li>Visualisation de données sur un graphique</li>
+							<li>Visualisation de données à l'aied de graphiques</li>
 						</ul>
 
 						<br>
@@ -78,7 +78,7 @@ Free for personal and commercial use under the CCA 3.0 license (html5up.net/lice
 						<span class="image right"><img src="images/Ecosysteme/terrain-flipped.png" alt="" /><center><sup><i>rendu final</i><sup></center></span>
 						<h3>Terrain</h3>
 						<p>
-							Il y plusieurs points importants à respecter pour que le terrain soit le plus <u>réaliste possible</u>. <br><br>
+							Il y plusieurs points importants à respecter pour que le terrain soit <u>réaliste </u>. <br><br>
 							Premièrement, <b>le relief</b>, qui ajoutera des variations de hauteur et donnera au terrain un aspect naturel.<br>
 							Ensuite les <b>couches</b>, elles permettent de définir les zones d'eau, de sable et de forêt. <br>
 							Et enfin la <b>flore</b>, constituée d'arbres et de carottes. <br>
@@ -139,7 +139,7 @@ Free for personal and commercial use under the CCA 3.0 license (html5up.net/lice
 						<p>L'apparition de la flore (arbres et carottes) s'effectue <b>juste avant</b> que la simulation ne commence. Par la suite des vagues de carottes (avec les mêmes probabilités d'apparition) auront lieux toutes les <b>60 secondes</b> (considérées dans la simulation comme "1 cycle").</p>
 						<br>
 						<p id="bruit_perlin"><i>*Bruit Perlin</i> : Texture générée procéduralement avec pour particularité la <b>transition douce</b> entre les zones claires et sombres.</p>
-						<p id="un_sommet_sur_deux"><i>*Un sommet sur deux</i> : Il est possible d'analyser chaque sommet, cependant cette opération est relativement <b>couteuse</b>, de plus sauter un sommet permet aux éléments de ne pas entrer en <b>collision</b>.</p>
+						<p id="un_sommet_sur_deux"><i>*Un sommet sur deux</i> : Il est possible d'analyser chaque sommet, cependant cette opération est relativement <b>couteuse</b>, de plus sauter un sommet permet aux éléments générés de ne pas entrer en <b>collision</b>.</p>
 
 						</blockquote>
 
@@ -155,7 +155,7 @@ Free for personal and commercial use under the CCA 3.0 license (html5up.net/lice
 								<ul>
 									<li>une vitesse de déplacement</li>
 									<li>un champs de vision</li>
-									<li>un temps de consommation (manger et boire)</li>
+									<li>un temps de consommation (pour manger et boire)</li>
 								</ul>
 							</div>
 							<div class="col-6">
@@ -163,7 +163,7 @@ Free for personal and commercial use under the CCA 3.0 license (html5up.net/lice
 							</div>
 						</div>
 
-						<p>Mais surtout, ce qui determine si un individu est vivant ou non est son état d'eau et de nourriture. C'est données sont chacune simulées par une valeur comprise entre 0 et 100 et diminues progressivement en <b>fonction du temps</b>. Si le niveau d'eau <u>ou</u> de faim atteint 0, alors <b>l'individu mourra</b>.</p>
+						<p>Mais surtout, ce qui determine si un individu est vivant ou non est son état d'eau et de nourriture. Ces données sont chacune simulées par une valeur comprise entre 0 et 100 et diminuent progressivement en <b>fonction du temps</b>. Si le niveau d'eau <u>ou</u> de faim atteint 0, alors <b>l'individu mourra</b>.</p>
 						<p>
 							Afin de survivre, l'animal doit décider quand chercher à boire et à manger. Pour se faire, <b>un seuil</b> (défini par l'utilisateur) indiquera si oui ou non, le lapin devra chercher de l'eau ou de la nourriture.<br>
 							Si le niveau d'eau <u>ou</u> de nourriture de l'animal est <u>inférieur au seuil</u> défini, alors celui-ci ira checher l'élément adéquat.
@@ -258,7 +258,7 @@ Free for personal and commercial use under the CCA 3.0 license (html5up.net/lice
 							<p><b>Précisions techniques</b><br></p>
 							<p>
 								Déplacements :
-								<div class="image right"><img src="images/Ecosysteme/random_pos.png" alt="" /><center><sup><i>exemple de NavMesh</i></sup></center></div>
+								<div class="image right"><img src="images/Ecosysteme/random_pos.png" alt="" /><center><sup><i>représentation des déplacements aléatoires</i></sup></center></div>
 								Lorsqu'un animal n'a pas le besoin de boire ou manger ni la capacité de se reproduire il se <b>déplacera aléatoirement</b>.<br>
 								L'idée est de générer une coordonnée <u>ni trop loin, ni trop proche</u> de la position actuelle de l'animal.<br>
 								Voici la fonction utilisée (code en langage C#) :
@@ -345,7 +345,7 @@ Free for personal and commercial use under the CCA 3.0 license (html5up.net/lice
 							</div>
 						</div>
 
-						<p>Voici données pouvant être affichées sont les suivantes :</p>
+						<p>Les données pouvant être affichées sont les suivantes :</p>
 						<ul>
 							<li>Le nombre de carottes</li>
 							<li>Le nombre de lapins et de renards</li>
@@ -396,7 +396,7 @@ Free for personal and commercial use under the CCA 3.0 license (html5up.net/lice
 							</li>
 							<li><h4>La modélisation</h4>
 								<p>
-									Non sans expérience avec le logiciel <a href="https://www.blender.org/">Blender</a>, modéliser puis animer un animal avec le moins de détails possible était une <b>complète découverte</b>. J'en garde cependant un très bon souvenir.
+									Non sans expérience avec le logiciel <a href="https://www.blender.org/">Blender</a>, modéliser puis animer un animal avec le moins de détails possible était une <b>complète découverte</b>. J'en garde un très bon souvenir.
 								</p>
 							</li>
 							<li><h4>L'interface utilisateur</h4>
