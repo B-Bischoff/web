@@ -76,7 +76,7 @@ Free for personal and commercial use under the CCA 3.0 license (html5up.net/lice
 				<h4>Cellule</h4>
 				<p>
 					Dans sa forme la plus simple, une cellule est composée de murs (quatre pour une cellule de forme carrée) et d'une position.<br>
-					Sa position possède une coordonée X (axe des abscisses) et Y (axe des ordonnées). Cette position permet de la différencier parmis les autres cellules qui peuvent l'entourer.<br>
+					Sa position possède une coordonée X (axe des abscisses) et Y (axe des ordonnées). Cette position permet de la différencier parmi les autres cellules qui peuvent l'entourer.<br>
 					Nous verrons que certaines méthodes de création demandent à ce que les cellules possèdent des informations supplémentaires.<br>
 					Comme une valeur indiquant si cette cellule a été visitée ou bien une donnée séparant les cellules en sous-zones du labyrinthe.
 				</p>
@@ -300,14 +300,146 @@ Free for personal and commercial use under the CCA 3.0 license (html5up.net/lice
 					Chaque cellule du tableau possède un état visitée ou non (initialement mis à non-visitée). Depuis une cellule de départ, le programme va se déplacer aléatoirement sur une cellule non-visitée, voisine à la sienne (et définir son état comme visitée).
 					<br>
 					Dès lors que celle-ci ne possède plus de cellules voisines non-visitées, le programme revient sur ses pas jusqu'à en retrouver.
+					<br>
+					Si il n'en trouve plus, cela veut dire qu'il a testé toutes les possibilitées.
 				</p>
 
-				<b>ALGORITHME + PILE + CONCLUSION</b>
+				<p>
+					Pour garder en mémoire les déplacements effectués, nous stockerons les cellules visitées dans une pile<b>LIEN PILE</b> (une structure de donnée informatique).
+					<b>Représentation pile</b>
+				</p>
 
-				<h4>Prim's</h4>
+				<p>Algorithme :</p>
+					<pre><code>- Choisir une cellule, la marquer comme visitée et l'ajouter à la pile
+- Tant que la pile n'est pas vide
+    - Prendre la cellule au sommet de la pile et la considérer comme la cellule actuelle
+    - Si la cellule actuelle possède au moins un voisin "non-visité"
+        - Mettre la cellule actuelle au sommet de la pile
+        - Choisir une des cellules voisines non-visitée
+        - Relier la cellule actuelle à la cellule voisine
+        - Définir la cellule voisine comme visitée et la mettre au sommet de la pile</pre></code>
+
+				<p><b>GIF MAZE GENERATING + GIF THEORIE</b></p>
+
+				<p>
+					Cette méthode est extrêmement simple à implémenter et efficace. Elle peut cependant se révéler gourmande en stockage dû à la pile qui augmente en fonction de la taille du labyrinthe à générer.<br>
+					De plus, le résultat se retrouve quelques fois non pas "labyrinthique" mais juste comme un long chemin tortueux, avec que peu d'embranchements. Ceci s'explique par le fait que la méthode explore aussi loin que possible chaque
+					possibilitées, avant de revenir sur ses pas.
+				</p>
+
 				<h4>Kruskal</h4>
-				<h4>Récursif</h4>
-				<h4>Récursif amélioré</h4>
+
+				<p>
+					L'algorithme de Kruskal est initialement appliqué dans le domaine des graphes.<br>
+					Il permet de rechercher un arbre recouvrant le poids minimum dans un graphe.<br>
+					Une des applications concrètes que l'on pourrait lui trouver, serait de simplifier un câblage ou bien
+					de supprimer les chemins de transports les moins rentables.
+				</p>
+
+				<p>
+					Cette méthode est une version aléatoirisée de l'algorithme d'origine.<br>
+					Initialement la méthode séléctionne <a href="https://fr.wikipedia.org/wiki/Ar%C3%AAte_(th%C3%A9orie_des_graphes)#:~:text=En%20th%C3%A9orie%20des%20graphes%2C%20une,appel%C3%A9%20ar%C3%AAte%20orient%C3%A9e%20ou%20arc">
+					<i>les arêtes</i></a> d'un graphe par poids croissant.<br>
+					Or ici, elles seront séléctionnées de manière aléatoire.
+				</p>
+
+				<b>GIF KRUSKAL DANS UN GRAPH</b>
+
+				<p>
+					Plus concrètement, à partir d'un labyrinthe rempli de murs, chaque cellule possèdera un set (un identifiant unique).<br>
+					L'objectif est de relier les cellules de sets différents et d'appliquer un set commun aux cellules réliées.
+				</p>
+
+				<p>Algorithme :</p>
+					<pre><code>- Tant que toutes les cellules n'ont pas le même set
+	- Prendre deux cellules voisines avec un set différent
+	- Relier ces deux cellules
+	- Choisir un des deux set et l'appliquer à toutes les cellules du set opposé</pre></code>
+
+				<p>
+					Cet méthode est plutôt simple et direct. Elle peut cependant se révéler couteuse, notamment lorsqu'il faut changer le set d'un groupe de cellules.<br>
+					La manière la plus simple est d'itérer sur toutes les cellules du labyrinthe. Il est cependant possible d'utiliser des listes chainées ou d'autres structures de données pour isoler les sets
+					afin d'alléger cette opération.
+				</p>
+
+				<p>Dans sa finalité, l'algorithm de Kruskal créé de nombreuses impasses peu profondes.
+
+				<h4>Prim</h4>
+
+				<p>
+					La méthode de Prim a de nombreuses ressemblances à celle de Kruskal, son objectif est similaire, mais la manière de l'atteindre est fondamentalement différente.<br>
+					Cet algorithme permet également de trouver un arbre recouvrant le poids minimum dans un graphe.<br>
+					Là où la méthode de Kruskal sélectionne les arrêtes de poids faibles dans tout le graphe, Prim va, depuit un point de départ, faire croître un abre en sélectionnant les arêtes
+					de poids faibles incidentes à cet arbre.
+				</p>
+
+				<b>GIF PRIM DANS UN GRAPH</b>
+
+				<p>
+					Encore une fois, cette méthode est aléatoirisée par rapport à l'algorithme d'origine.<br>
+					Au lieu de choisir l'arête la plus faible, elle sera choisie de manière aléatoire.
+				</p>
+
+				<p>
+					Pour appliquer ce concept à nos labyrinthes, il va falloir garder en mémoire : <br>
+					Premièrement, les cellules visitées<br>
+					Et ensuite, les cellules voisines des cellules visitées (que nous appelerons les cellules "en bordure")
+				</p>
+
+				<p>
+					A partir d'une cellule de départ, le programme va relier une cellule en bordure à une cellule visitée.<br>
+					Cela aura pour effet de faire croître une "zone" qui va créer notre labyrinthe en supprimant les murs de manière aléatoire.
+				</p>
+
+				<p>Algorithme :</p>
+					<pre><code>- Choisir une cellule de départ et noter cette cellule comme visitée
+- Noter ses cellules voisines comme bordure
+- Tant qu'il existe des cellules en bordure
+	- Choisir aléatoirement une des cellules en bordures
+	- La relier à une cellule visitée voisine
+	- Noter cette cellule comme visitée et marquer ses voisins (non-visités) comme bordure</pre></code>
+
+
+				<p>
+					Sans grande surprise, le résultat est similaire à celui de Kruskal.<br>
+					Le labyrinthe possède ici aussi de nombreuses impasses peu profondes.<br>
+				</p>
+
+				<h4>Divisions récursives</h4>
+
+				<p>
+					Pour la première fois, nous partirons d'un labyrinthe sans murs à l'intérieurx !<br>
+					Cette méthode consiste à découper notre labyrinthe en une multitude de salle (que l'on appelera "chambre").<br>
+				</p>
+
+				<p>
+					Le concept et son implémentation sont on ne peut plus simple.<br>
+					Il faut diviser chaque chambre en quatre à l'aide de murs. Pour que les nouvelles chambres ne soient pas inaccessibles, il faut veiller à laisser un passage dans les murs créés.
+				</p>
+				<b>GIF DU PRINCIPE</b>
+
+				<p>
+					Il est possible de rendre le résultat un peu plus intéressant en divisant les chambres, non plus au milieu, mais de manière aléatoire.
+				</p>
+				<b>GIF MURS ALEATOIRES</b>
+
+				<p>Algorithme :</p>
+					<pre><code>- Depuis la chambre initiale, créer deux murs perpendiculaires (de sorte à créer 4 sous-chambres)
+- Créer un passage dans trois des quatre murs
+- Tant qu'il est possible de diviser une sous-chambre
+	- Répéter ce processus pour chaque sous-chambre</pre></code>
+
+				<p>
+					Le style de ce labyrinthe est extrêmement différent de ceux vues précédemment<br>
+					Cette méthode a tendance à crééer de longs couloirs ce qui rend la résolution du labyrinthe plus simple.<br><br>
+					Ce concept si simple, peut être légèrement modifié pour obtenir d'autres résultats.<br>
+					Il est par exemple possible de mettre une limite de recursivité afin d'obtenir des salles plus grandes.<br>
+					<b>PHOTOS</b>
+				</p>
+
+
+
+				<h4>Divisions récursives améliorées</h4>
 
 				<hr>
 
@@ -318,8 +450,6 @@ Free for personal and commercial use under the CCA 3.0 license (html5up.net/lice
 				<hr>
 				<h2>Sources</h2>
 
-
-				<h3>Inspirations</h3>
 				<hr>
 				<h2>Téléchargement</h2>
 				<!-- petite liste de 2 collones avec les icone de github et itch-->
