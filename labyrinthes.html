@@ -53,11 +53,19 @@ Free for personal and commercial use under the CCA 3.0 license (html5up.net/lice
 
 				<h2>Contexte</h2>
 
+				<p>
+					Je commence à me rendre compte que la difficulté de tout projet ne provient pas uniquement du fait de coder, mais surtout, de l'organisation et de la structure du projet en lui même.<br>
+					Le sujet que je compte explorer, la génération de labyrinthes me permettra de m'exercer sur ce point précis, à l'aide du moteur de jeu Unity.
+				<p>
+
+				<p>
+					De manière plus concrète, l'objectif est de pouvoir générer des labyrinthes avec différentes méthodes et formes, à partir d'un simple interface utilisateur.
+				</p>
+
 
 				<hr>
 
 				<h2>Réalisation</h2>
-				<br>
 				<h3>Concepts</h3>
 				<h4>Définition d'un labyrinthe</h4>
 				<span class="image right"><img src="images/Maze/perfect_maze.png" alt="" /><center><sup><i>Labyrinthe parfait</i><sup></center>
@@ -133,7 +141,6 @@ Free for personal and commercial use under the CCA 3.0 license (html5up.net/lice
 				</p>
 				<p>
 					D'après notre tableau deux dimensions, l'espacement entre chaque cellule est de 1 (sur l'axe X et Y), chaque cellule devrait donc faire une taille de 1 par 1.<br>
-					<b>Illustrer avec cellule + grid dans menu prefab</b>
 					Cependant, lorsque l'on crée un labyrinthe avec ces dimensions, certaines paroies possèdent des angles peu esthétique.(cf photo)<br>
 					Passer la taille des murs à 1,1 nous permet de résoudre ce problème. Les murs des cellules voisines seront désormais superposés.<br>
 					Cela ne pose pas de problème mais nous verrons comment les supprimer, dans le but d'optimiser les performances du programme.<br>
@@ -178,7 +185,7 @@ Free for personal and commercial use under the CCA 3.0 license (html5up.net/lice
 				<h4>Suppression de murs entre cellules</h4>
 				<span class="image right"><img src="images/Maze/wall_connexion.png" alt="" /><center><sup><i>cellules voisines</i><sup></center></span>
 				<p>
-					Voyons maintenant comment relier deux cellules voisines.<br>
+					Voyons maintenant comment relier deux cellu	les voisines.<br>
 					Relier veut en réaliter dire, supprimer les murs qui séparents ces cellules.<br>
 					Dans l'exemple suivant, nous voulons relier ces cellules voisines horizontalement. Pour ce faire, il faut supprimer le mur de droite de la cellule A et le mur gauche de la cellule B.
 					<br>
@@ -248,10 +255,10 @@ Free for personal and commercial use under the CCA 3.0 license (html5up.net/lice
 				<p>Un hexagone est un polygone à six sommets et six faces. On retrouve généralement cette forme géométrique sous deux orientations :</p>
 				<div class="row">
 					<div class="col-6">
-						<span class="image left"><img src="images/Ecosysteme/tree.png" alt="" /><center><sup><i>Hexagone pointy</i></center></sup></span>
+						<span class="image left"><img src="images/Maze/hexagon_pointy.png" alt="" /><center><sup><i>Hexagone pointy</i></center></sup></span>
 					</div>
 					<div class="col-6">
-						<span class="image left"><img src="images/Ecosysteme/carrot.png" alt="" /><center><sup><i>Hexagone flat</i></center></sup></span>
+						<span class="image left"><img src="images/Maze/hexagon_flat.png" alt="" /><center><sup><i>Hexagone flat</i></center></sup></span>
 					</div>
 				</div>
 
@@ -270,7 +277,7 @@ Free for personal and commercial use under the CCA 3.0 license (html5up.net/lice
 				<blockquote>
 					<p><b>Précisions techniques</b><br></p>
 					<p>
-						Voici la première difficultée des grilles hexagonales. Selon l'orientation de l'hexagone, une cellule sur deux sera décalée.<br>
+						Voici la première difficulté des grilles hexagonales. Selon l'orientation de l'hexagone, une cellule sur deux sera décalée.<br>
 						<b>PHOTOS ILLUSTRANT DECALAGE POUR POINT ET FLAT</b><br>
 						Ce choix de représentation nous force donc à différencier les opérations, en fonction de l'orientation de l'hexagone.<br>
 						Voici d'ailleurs un schéma illustrant comment sont situés les hexagones voisins à une cellule, en fonction de son orientation, mais également de son décalage précédemment mentionné.
@@ -310,14 +317,14 @@ Free for personal and commercial use under the CCA 3.0 license (html5up.net/lice
 				</p>
 
 				<p>Algorithme :</p>
-					<pre><code>- Choisir une cellule, la marquer comme visitée et l'ajouter à la pile
-- Tant que la pile n'est pas vide
-    - Prendre la cellule au sommet de la pile et la considérer comme la cellule actuelle
-    - Si la cellule actuelle possède au moins un voisin "non-visité"
-        - Mettre la cellule actuelle au sommet de la pile
-        - Choisir une des cellules voisines non-visitée
-        - Relier la cellule actuelle à la cellule voisine
-        - Définir la cellule voisine comme visitée et la mettre au sommet de la pile</pre></code>
+					<pre><code>1 - Choisir une cellule, la marquer comme visitée et l'ajouter à la pile
+2 - Tant que la pile n'est pas vide
+    1 - Prendre la cellule au sommet de la pile et la considérer comme la cellule actuelle
+    2 - Si la cellule actuelle possède au moins un voisin "non-visité"
+        1 - Mettre la cellule actuelle au sommet de la pile
+        2 - Choisir une des cellules voisines non-visitée
+        3 - Relier la cellule actuelle à la cellule voisine
+        4 - Définir la cellule voisine comme visitée et la mettre au sommet de la pile</pre></code>
 
 				<p><b>GIF MAZE GENERATING + GIF THEORIE</b></p>
 
@@ -351,10 +358,10 @@ Free for personal and commercial use under the CCA 3.0 license (html5up.net/lice
 				</p>
 
 				<p>Algorithme :</p>
-					<pre><code>- Tant que toutes les cellules n'ont pas le même set
-	- Prendre deux cellules voisines avec un set différent
-	- Relier ces deux cellules
-	- Choisir un des deux set et l'appliquer à toutes les cellules du set opposé</pre></code>
+					<pre><code>1 - Tant que toutes les cellules n'ont pas le même set
+    1 - Prendre deux cellules voisines avec un set différent
+    2 - Relier ces deux cellules
+    3 - Choisir un des deux set et l'appliquer à toutes les cellules du set opposé</pre></code>
 
 				<p>
 					Cet méthode est plutôt simple et direct. Elle peut cependant se révéler couteuse, notamment lorsqu'il faut changer le set d'un groupe de cellules.<br>
@@ -392,12 +399,12 @@ Free for personal and commercial use under the CCA 3.0 license (html5up.net/lice
 				</p>
 
 				<p>Algorithme :</p>
-					<pre><code>- Choisir une cellule de départ et noter cette cellule comme visitée
-- Noter ses cellules voisines comme bordure
-- Tant qu'il existe des cellules en bordure
-	- Choisir aléatoirement une des cellules en bordures
-	- La relier à une cellule visitée voisine
-	- Noter cette cellule comme visitée et marquer ses voisins (non-visités) comme bordure</pre></code>
+					<pre><code>1 - Choisir une cellule de départ et noter cette cellule comme visitée
+2 - Noter ses cellules voisines comme bordure
+3 - Tant qu'il existe des cellules en bordure
+    1 - Choisir aléatoirement une des cellules en bordures
+    2 - La relier à une cellule visitée voisine
+    3 - Noter cette cellule comme visitée et marquer ses voisins (non-visités) comme bordure</pre></code>
 
 
 				<p>
@@ -424,10 +431,10 @@ Free for personal and commercial use under the CCA 3.0 license (html5up.net/lice
 				<b>GIF MURS ALEATOIRES</b>
 
 				<p>Algorithme :</p>
-					<pre><code>- Depuis la chambre initiale, créer deux murs perpendiculaires (de sorte à créer 4 sous-chambres)
-- Créer un passage dans trois des quatre murs
-- Tant qu'il est possible de diviser une sous-chambre
-	- Répéter ce processus pour chaque sous-chambre</pre></code>
+							<pre><code>1 - Depuis la chambre initiale, créer deux murs perpendiculaires (de sorte à créer 4 sous-chambres)
+2 - Créer un passage dans trois des quatre murs
+3 - Si il est possible de diviser une sous-chambre
+    1 - Retourner à l'étape 1 pour chaque sous-chambre</pre></code>
 
 				<p>
 					Le style de ce labyrinthe est extrêmement différent de ceux vues précédemment<br>
@@ -441,15 +448,145 @@ Free for personal and commercial use under the CCA 3.0 license (html5up.net/lice
 
 				<h4>Divisions récursives améliorées</h4>
 
+
+				<b>SEULE DOC : http://weblog.jamisbuck.org/2015/1/15/better-recursive-division-algorithm.html</b>
+				<p>Pour finir, voici un algorithme de Jamis Buck, reprenant le concept de la méthode récursive.</p>
+				<p>
+					L'algorithme précédent, rend les passages entre les zones du labyrinthe plus que visibles.<br>
+					En repérant ce passage, il est possible de faire le chemin à l'envers et de trouver le moyen d'y arriver.<br><br>
+					<b>ILLUSTRATION<br></b>
+					Il est à noter que tous les labyrinthes possèdent ces passages. Si ils sont facilement repérables ici, c'est à cause des longs murs créés pour séparer les chambres.
+				</p>
+
+				<p>
+					L'objectif de cette nouvelle méthode est de rendre moins évident la séparation des zones du labyrinthes, tout en gardant les propriétées de la méthode récursive.
+				</p>
+
+				<p>
+					La solution trouvée par Jamis Buck consiste a aléatoiriser la forme des chambres. Au lieu d'avoir une surface rectangulaire, la chambre pourra être de n'importe quelle forme.<br>
+					C'est de cette manière qu'il réussit à "casser" le quadrillage de la méthode récursive de base.
+				</p>
+
+				<p>
+					La manière de trouver la forme de la chambre est assez atypique.<br>
+					La forme d'une chambre est désormais définie par une région.<br>
+					Une région, est un ensemble de cellules voisine les unes des autres. (Il ne peut donc pas y avoir de cellule non-reliée à la région).
+					<b><br>ILLUSTRATION REGION VALIDE/INVALIDE<br></b>
+
+					Initialement, toutes les cellules du labyrinthe formeront une région.<br>
+					Pour séparer cette chambre, il faut créer deux sous-régions.<br><br>
+
+					La manière dont ces sous-régions se partagent les cellules de la région principale est la suivante : <br>
+					Au début chaque, chaque sous région commence depuis une cellule choisie au hasard dans la région.<br>
+					Les sous-régions vont aléatoirement s'étendre sur leurs cellules voisines.<br>
+					Ce processus se termine dès lors qu'il ne reste plus de cellule non-occupée par une sous-région.<br>
+					C'est ainsi que nous nous retrouvons avec une chambre donc la séparation n'est plus aussi régulière et évidente que précédemment.
+
+
+					<b><br>ILLUSTRATION DEVELOPPEMENT SOUS-REGION</b>
+				</p>
+
+				<p>
+					Le reste est assez similaire à la méthode récursive de base.<br>
+					Une fois les sous-régions séparées et le passage entre elles créé, le processus se répéte de manière récursive pour chaque sous-région.
+				</p>
+
+				<p>Algorithme :</p>
+					<pre><code>1 - Former une région contenant toutes les cellules du labyrinthe
+2 - Séparer la région de la manière suivante :
+    1 - Choisir deux cellules de départ depuis la région initiale et les assigner à une une liste
+    2 - Choisir au hasard une cellule dans la liste puis la retirer de la liste
+    3 - Pour tous les voisins de la cellule choisie, si ils n'appartiennet pas déja à une sous-région
+        1 - Les rajouter à la liste
+        2 - Assigner le voisin à la sous-région de la cellule choisie
+    4 - Répéter 2.2 et 2.3 jusqu'à ce que la région soit séparéee
+3 - Construire un mur séparant les deux sous-régions tout en laissant un passage dedans
+4 - Répéter 2 et 3 de manière récursive pour chaque sous région</pre></code>
+
+				<p>
+					En limitant le nombre de récursion, il est possible de faire varier la taille des chambres.
+					A la place de n'avoir que des couloirs, il est désormais possible d'avoir des "salles" dans le labyrinthe. Ce qui change des générations vues auparavant.
+					<b>ILLUSTRATIONS<br></b>
+				</p>
+
+				<p>
+					En limitant la profondeur de récursion, il se peut qu'une chambre apparaisse au milieu d'une zone et qu'elle ne soit donc pas connectée au reste des murs du labyrinthe.<br>
+					Lorsque les deux sous-régions cherchent à s'étendre, il arrive que l'une d'entre elles entoure l'autre créant ces îlots.<br>
+					Pour éliminer ces cas, il faut modifier l'étape 2.1 de l'algorithme.<br>
+					En plus de choisir aléatoirement une cellule depuis la liste, il faut en plus vérifier que celle-ci se trouve en bordure de la région.<br>
+					Il est désormais impossible que ces îlots se forment car les cellules de départs seront dorénavent toujours rattachées au reste du labyrinthe.
+				</p>
+
+				<h3>Structure du projet</h3>
+
+				Forme de cellules nécessite une reecriture de la méthode
+				Collect des entrees utilisateurs
+				Besoin d'accueuillir de nouvelles formes de cellules et nouvelles méthodes si nécessaires
+
+
+
 				<hr>
 
 				<h2>Conclusion</h2>
 
-				<h3>Améliorations possibles</h3>
+				<p>
+					En travaillant sur ce projet les week-ends et quelques heures par semaines il m'a fallu 2 mois pour considérer ce projet comme stable et terminé.<br>
+				</p>
+
+				<p>
+					Il est cependant possible d'améliorer d'optimiser certaines méthodes de génération mise en place. Quelques unes comme la récursivité améliorée ou la méthode
+					de Kruskal sont assez demandeuses en ressources.
+				</p>
+
+				<p>
+					Avec du recul, je me rends compte que je n'ai que gratté la surface de la génération de labyrinthes.<br>
+					Il existe une immensité de méthodes avec toutes leurs spécificités, avantages et inconvénients.<br>
+					Pour rendre ce projet un peu plus complet, il est possible de rajouter d'autres méthodes de générations ainsi que d'autres formes de cellules (triangulaires, circulaires, ...).
+				</p>
+
+				<p>
+					Une suite à ce projet pourrait être de résoudre les différents labyrinthes créés.
+				</p>
+
+
 
 				<hr>
 				<h2>Sources</h2>
 
+				<h3>Concepts<h3>
+
+				<h3>Backtracker</h3>
+				<p>
+					Wikipedia | Maze generation algorithm : <a href="https://en.wikipedia.org/wiki/Maze_generation_algorithm">https://en.wikipedia.org/wiki/Maze_generation_algorithm</a>
+					Wikipedia | Retour sur trace : <a href="https://fr.wikipedia.org/wiki/Retour_sur_trace">https://fr.wikipedia.org/wiki/Retour_sur_trace</a><br>
+					Wikipedia | Backtracking : <a href="https://en.wikipedia.org/wiki/Backtracking">https://en.wikipedia.org/wiki/Backtracking</a><br>
+					The Coding Train | Coding Challenge #10.1: Maze Generator with p5.js - Part 1 : <a href="https://www.youtube.com/watch?v=HyK_Q5rrcr4">https://www.youtube.com/watch?v=HyK_Q5rrcr4</a><br>
+					Jamis Buck Blog | Recursive Backtracking : <a href="https://weblog.jamisbuck.org/2010/12/27/maze-generation-recursive-backtracking">https://weblog.jamisbuck.org/2010/12/27/maze-generation-recursive-backtracking</a>
+				</p>
+				<h3>Kruskal</h3>
+				<p>
+					Wikipedia | Algorithme de Kruskal : <a href="https://fr.wikipedia.org/wiki/Algorithme_de_Kruskal">https://fr.wikipedia.org/wiki/Algorithme_de_Kruskal</a><br>
+					Techno Science | Algorithme de Kruskal - Définition et Explications : <a href="https://www.techno-science.net/definition/6472.html">https://www.techno-science.net/definition/6472.html</a><br>
+					Hurna | Kruskal : <a href="https://hurna.io/academy/algorithms/maze_generator/kruskal_s.html">https://hurna.io/academy/algorithms/maze_generator/kruskal_s.html</a><br>
+					Jamis Buck Blog | Kruskal's algorithm : <a href="https://weblog.jamisbuck.org/2011/1/3/maze-generation-kruskal-s-algorithm">https://weblog.jamisbuck.org/2011/1/3/maze-generation-kruskal-s-algorithm</a><br>
+
+				</p>
+				<h3>Prim</h3>
+				<p>
+					Wikipedia | Maze generation algorithm : <a href="https://en.wikipedia.org/wiki/Maze_generation_algorithm">https://en.wikipedia.org/wiki/Maze_generation_algorithm</a><br>
+					Wikipedia | Algorithme de Prim : <a href="https://fr.wikipedia.org/wiki/Algorithme_de_Prim">https://fr.wikipedia.org/wiki/Algorithme_de_Prim</a><br>
+					Jamis Buck Blog | Prims algorithm : <a href="https://weblog.jamisbuck.org/2011/1/10/maze-generation-prim-s-algorithm">https://weblog.jamisbuck.org/2011/1/10/maze-generation-prim-s-algorithm</a>
+				</p>
+				<h3>Récursif</h3>
+				<p>
+					Wikipedia | Maze generation algorithm : <a href="https://en.wikipedia.org/wiki/Maze_generation_algorithm">https://en.wikipedia.org/wiki/Maze_generation_algorithm</a>
+					Lauren K. Williams | Recursive Division Maze Generation : <a href="http://www.integral-domain.org/lwilliams/Applets/algorithms/recursivedivision.php">http://www.integral-domain.org/lwilliams/Applets/algorithms/recursivedivision.php</a><br>
+					Jamis Buck Blog | Recursive Division Algorithm : <a href="http://weblog.jamisbuck.org/2011/1/12/maze-generation-recursive-division-algorithm">http://weblog.jamisbuck.org/2011/1/12/maze-generation-recursive-division-algorithm</a><br>
+				</p>
+				<h3>Récursif amélioré</h3>
+				<p>
+					Jamis Buck Blog | Better recursive division : <a href="http://weblog.jamisbuck.org/2015/1/15/better-recursive-division-algorithm.html">http://weblog.jamisbuck.org/2015/1/15/better-recursive-division-algorithm.html</a><br>
+				</p>
 				<hr>
 				<h2>Téléchargement</h2>
 				<!-- petite liste de 2 collones avec les icone de github et itch-->
