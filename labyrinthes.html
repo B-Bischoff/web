@@ -59,7 +59,7 @@ Free for personal and commercial use under the CCA 3.0 license (html5up.net/lice
 				<p>
 
 				<p>
-					De manière plus concrète, l'objectif est de pouvoir générer des labyrinthes avec différentes méthodes et formes, à partir d'un simple interface utilisateur.
+					De manière plus concrète, l'objectif est de pouvoir générer des labyrinthes avec différentes méthodes et formes, à partir d'une simple interface utilisateur.
 				</p>
 
 
@@ -84,7 +84,7 @@ Free for personal and commercial use under the CCA 3.0 license (html5up.net/lice
 				<h4>Cellule</h4>
 				<p>
 					Dans sa forme la plus simple, une cellule est composée de murs (quatre pour une cellule de forme carrée) et d'une position.<br>
-					Sa position possède une coordonée X (axe des abscisses) et Y (axe des ordonnées). Cette position permet de la différencier parmi les autres cellules qui peuvent l'entourer.<br>
+					Sa position possède une coordonée X (axe des abscisses) et Y (axe des ordonnées). Cette position permet de la différencier des autres cellules qui peuvent l'entourer.<br>
 					Nous verrons que certaines méthodes de création demandent à ce que les cellules possèdent des informations supplémentaires.<br>
 					Comme une valeur indiquant si cette cellule a été visitée ou bien une donnée séparant les cellules en sous-zones du labyrinthe.
 				</p>
@@ -106,23 +106,23 @@ Free for personal and commercial use under the CCA 3.0 license (html5up.net/lice
 10 	}
 11 }</code></pre>
 					On retrouve les entiers X et Y correspondant à la coordonée de la cellule.<br>
-					La taille du tableau <i>walls</i> sera fixé et son contenu rempli pendant la génération d'un tableau rempli de cellules.<br>
+					La taille du tableau <i>walls</i> sera fixée et son contenu assigné pendant la génération d'un tableau rempli de cellules.<br>
 					L'utilisation de classe rend le concept de cellule extrement modulable. Pour chaque méthode de génération, nous pourrons créer une classe héritant de <i>MazeCell</i> et ainsi n'avoir que les données dont nous avons besoin.
 				</blockquote>
 
 				<p>
-					Maintenant que nous possédons notre cellule sous forme de préfab, nous pouvons à l'aide d'une longueur et d'une largeur, faire apparaitre nos cellules.<br>
-					Il faut pour cela, parcourir chaque case de la coordonée [0, 0] à la coordonée [longueur - 1, largeur - 1] (-1, car on compte depuis 0).
+					Maintenant que nous avons définie informatiquement ce qu'est une cellule de labyrinthe, nous pouvons commencer à créer une grille constituée de plusieurs de ces cellules.
 				</p>
 
 				<h4>Tableau de cellules</h4>
 				<p>
-					C'est grâce à ces cellules, qui, une fois stockées dans un tableau en deux dimensions, permettent de représenter informatiquement un labyrinthe
+
+					C'est grâce à elles, qui, une fois stockées dans un tableau en deux dimensions, permettent de représenter informatiquement un labyrinthe.
 				</p>
 				<span class="image right"><img src="images/Maze/topview_5x5.png" alt="" /><center><sup><i>Labyrinthe vu de dessus</i><sup></center></span>
 				<span class="image right"><img src="images/Maze/2d_array_coord.png" alt="" /><center><sup><i>Tableau deux dimensions</i><sup></center></span>
 				<p>
-					Dans le cas d'un labyrinthe avec des cellules carrés, on voit de manière nette la relation entre le labyrinthe et sa représentation en tableau deux dimensions.
+					Dans le cas d'un labyrinthe carré, on voit de manière nette la relation entre celui-ci et sa représentation en tableau deux dimensions.
 					<br>
 				</p>
 				<p>
@@ -135,10 +135,15 @@ Free for personal and commercial use under the CCA 3.0 license (html5up.net/lice
 				<span class="image right"><img src="images/Maze/maze_cell.png" alt="" /><center><sup><i>Prefab de cellule</i><sup></center></span>
 				<p>
 					Maintenant que nous savons comment sont stockées nos cellules dans un tableau, nous pouvons essayer de les placer dans l'espace.<br>
-					Le plus simple est d'utiliser les "Unity's Prefab" https://docs.unity3d.com/Manual/Prefabs.html qui nous permettent de créer et configurer à l'avance,
+					Le plus simple est d'utiliser les "Unity's Prefab" <b>https://docs.unity3d.com/Manual/Prefabs.html</b> qui nous permettent de créer et configurer à l'avance,
 					un objet que nous pourrons réutiliser pendant l'éxecution du programme.<br>
 					Voici donc le prefab, de notre cellule carrée.
 				</p>
+
+				<br><br>
+
+
+				<span class="image left"><img src="images/Maze/corners.png" alt="" /><center><sup><i>Angles disgracieux</i><sup></center></span>
 				<p>
 					D'après notre tableau deux dimensions, l'espacement entre chaque cellule est de 1 (sur l'axe X et Y), chaque cellule devrait donc faire une taille de 1 par 1.<br>
 					Cependant, lorsque l'on crée un labyrinthe avec ces dimensions, certaines paroies possèdent des angles peu esthétique.(cf photo)<br>
@@ -150,7 +155,6 @@ Free for personal and commercial use under the CCA 3.0 license (html5up.net/lice
 					Maintenant que nous possédons notre cellule sous forme de préfab, nous pouvons à l'aide d'une longueur et d'une largeur, faire apparaitre nos cellules.<br>
 					Il faut pour cela, parcourir chaque case de la coordonée [0, 0] à la coordonée [longueur - 1, largeur - 1] (-1, car on compte depuis 0).
 				</p>
-
 
 				<blockquote>
 					<p><b>Précisions techniques</b><br></p>
@@ -177,16 +181,26 @@ Free for personal and commercial use under the CCA 3.0 license (html5up.net/lice
 19		maze[y, x].walls[3] = cell.transform.Find("RightWall").gameObject;
 21	}
 22 }					</pre></code>
-						A l'aide de la commande <i>Instantiate</i> de Unity, ce code nous permet de créer dans l'espace une cellule pour chaque case de notre tableau deux dimensions mais également de l'initialiser pour lui donner ses valeurs.
+						A l'aide de la fonction <i>Instantiate</i> de Unity, ce code nous permet de créer dans l'espace une cellule pour chaque case de notre tableau deux dimensions mais également de l'initialiser pour lui donner ses valeurs.
 					</p>
-					<span class="image"><img src="images/Maze/topview_5x10.png" alt="" /><center><sup><i>Labyrinthe rempli de mur</i><sup></center></span>
-				</blockquote>
+
+						<div class="row">
+							<div class="col-5">
+								<span class="image fit"><img src="images/Maze/topview_5x10.png" alt="" /><center><sup><i>Labyrinthe vu de dessus</i></center></sup></span>
+							</div>
+							<div class="col-4">
+								<span class="image fit "><img src="images/Maze/maze_grid.png" alt="" /><center><sup><i>Résultat en 3D</i></center></sup></span>
+							</div>
+						</div>
+					</blockquote>
+
+
 
 				<h4>Suppression de murs entre cellules</h4>
 				<span class="image right"><img src="images/Maze/wall_connexion.png" alt="" /><center><sup><i>cellules voisines</i><sup></center></span>
 				<p>
-					Voyons maintenant comment relier deux cellu	les voisines.<br>
-					Relier veut en réaliter dire, supprimer les murs qui séparents ces cellules.<br>
+					Voyons maintenant comment relier deux cellules voisines.<br>
+					Relier veut en réaliter dirée, supprimer les murs qui séparents ces cellules.<br>
 					Dans l'exemple suivant, nous voulons relier ces cellules voisines horizontalement. Pour ce faire, il faut supprimer le mur de droite de la cellule A et le mur gauche de la cellule B.
 					<br>
 				</p>
@@ -215,16 +229,26 @@ Free for personal and commercial use under the CCA 3.0 license (html5up.net/lice
 18 	Destroy(wall_2);
 19 }					</pre></code>
 						C'est à l'aide de la variable <i>dir</i> que nous pouvons savoir comment sont situées nos deux cellules.<br>
-						En fonction de cette information, il ne reste plus qu'à supprimer les murs des cellules avec la fonction <i>Destroy</i> de Unity.
-						<b>SCHEMA ILLUSTRANT CALCUL DE POSITION DES CELLULES</b>
+					</p>
+					<div class="box alt">
+						<div class="row gtr-uniform">
+							<div class="col-3"><span class="image fit"><img src="images/Maze/neighbors_abs.png" alt="" /></span></div>
+							<div class="col-3"><span class="image fit"><img src="images/Maze/neighbors_rel.png" alt="" /></span></div>
+						</div>
+					</div>
+					<p>
+						Voici un exemple expliquant de manière visuelle, comment la variable <i>dir</i> fonctionne et interprète les coordonnées qu'elle calcule.<br>
+						A gauche on peut voir les coordonées réelles des cellules, tandis qu'à droite, sont affichées les coordonées relatives à la cellule centrale.
+					</p>
+					<p>
+						Maintent que nous savons identifer les cellues voisines, il ne reste plus qu'à supprimer les murs avec la fonction <i>Destroy</i> de Unity.
 					</p>
 				</blockquote>
 
 				<h4>Suppresion des murs superposés</h4>
 				<p>
 					Une fois le labyrinthe généré, nous pouvons supprimer les murs superposés restant.<br>
-					Cela permet premièrement d'optimiser le programme (il y a moins d'entités à gérer) mais également d'éliminer certains "bugs" visuel où la texture d'un mur se confond celle du mur superposé.
-					<br><b>PHOTO GLITCH + PHOTO PERFS</b>
+					Cela permet d'optimiser l'efficacité du programme en supprimant les murs inutiles.
 				</p>
 				<blockquote>
 					<p><b>Précisions techniques</b><br></p>
@@ -274,15 +298,32 @@ Free for personal and commercial use under the CCA 3.0 license (html5up.net/lice
 					cependant, elle s'avère peu pratique lorsque l'on souhaite relier des cellules entre elles.<br>
 				</p>
 
+				<div class="box alt">
+					<div class="row gtr-uniform">
+						<div class="col-3"><span class="image fit"><img src="images/Maze/2d_array_coord.png" alt="" /><center><sup><i>Tableau deux dimensions</i></center></sup></span></div>
+						<div class="col-3"><span class="image fit"><img src="images/Maze/2d_array_coord_hex_flat.png" alt="" /><center><sup><i>Grille d'hexagones "flat"</i></center></sup></span></div>
+						<div class="col-3"><span class="image fit"><img src="images/Maze/2d_array_coord_hex_pointy.png" alt="" /><center><sup><i>Grille d'hexagones "pointy"</i></center></sup></span></div>
+					</div>
+				</div>
+
 				<blockquote>
 					<p><b>Précisions techniques</b><br></p>
 					<p>
 						Voici la première difficulté des grilles hexagonales. Selon l'orientation de l'hexagone, une cellule sur deux sera décalée.<br>
-						<b>PHOTOS ILLUSTRANT DECALAGE POUR POINT ET FLAT</b><br>
+						Sur l'image de gauche on peut constater que sur chaque ligne, un hexagone sur deux se trouve décalé en hauteur.<br>
+						A droite, ils seront décalée sur l'axe horizontal.
+						<div class="row">
+							<div class="col-6">
+								<span class="image left"><img src="images/Maze/grid_hexaflat.png" alt="" /><center><sup><i>Grille d'hexagones "flat"</i></center></sup></span>
+							</div>
+							<div class="col-6">
+								<span class="image left"><img src="images/Maze/grid_hexapointy.png" alt="" /><center><sup><i>Grille d'hexagones "pointy"</i></center></sup></span>
+							</div>
+						</div>
 						Ce choix de représentation nous force donc à différencier les opérations, en fonction de l'orientation de l'hexagone.<br>
-						Voici d'ailleurs un schéma illustrant comment sont situés les hexagones voisins à une cellule, en fonction de son orientation, mais également de son décalage précédemment mentionné.
+						Il existe cependant d'autres moyen de stocker ces hexagones dans un tableau.<br>
+						Ceux-ci sont présentés sur <a href="https://www.redblobgames.com/grids/hexagons/#map-storage">le guide des hexagones de Red Blob Games</a>
 						<br>
-						<b>REPRESENTATION VOISINS CELLULES HEXAGONALES</b>
 					</p>
 				</blockquote>
 
@@ -311,10 +352,16 @@ Free for personal and commercial use under the CCA 3.0 license (html5up.net/lice
 					Si il n'en trouve plus, cela veut dire qu'il a testé toutes les possibilitées.
 				</p>
 
+				<div class="row">
+				<div class="col-6 col-12-medium">
 				<p>
 					Pour garder en mémoire les déplacements effectués, nous stockerons les cellules visitées dans une pile<b>LIEN PILE</b> (une structure de donnée informatique).
-					<b>Représentation pile</b>
 				</p>
+				</div>
+				<div class="col-6 col-12-medium">
+						<span class="image right"><img src="images/Maze/pile.png" alt="" /><center><sup><i>Représentation pile	</i></center></sup></span>
+				</div>
+			</div>
 
 				<p>Algorithme :</p>
 					<pre><code>1 - Choisir une cellule, la marquer comme visitée et l'ajouter à la pile
@@ -333,6 +380,26 @@ Free for personal and commercial use under the CCA 3.0 license (html5up.net/lice
 					De plus, le résultat se retrouve quelques fois non pas "labyrinthique" mais juste comme un long chemin tortueux, avec que peu d'embranchements. Ceci s'explique par le fait que la méthode explore aussi loin que possible chaque
 					possibilitées, avant de revenir sur ses pas.
 				</p>
+
+
+				<div class="row">
+					<div class="col-5">
+						<span class="image fit">
+							<video controls width="100%">
+								<source src="images/Maze/Demo/backtracker_10x10.mp4" type="video/webm">
+							</video>
+							<center><sup><i>Démonstration backtracker avec labyrinthe 10 par 10</i></sup></center>
+						</span>
+					</div>
+					<div class="col-5">
+						<span class="image fit">
+							<video controls width="100%">
+								<source src="images/Maze/Demo/backtracker_30x30.mp4" type="video/webm">
+							</video>
+							<center><sup><i>Démonstration backtracker avec labyrinthe 30 par 30</i></sup></center>
+						</span>
+					</div>
+				</div>
 
 				<h4>Kruskal</h4>
 
@@ -369,7 +436,26 @@ Free for personal and commercial use under the CCA 3.0 license (html5up.net/lice
 					afin d'alléger cette opération.
 				</p>
 
-				<p>Dans sa finalité, l'algorithm de Kruskal créé de nombreuses impasses peu profondes.
+				<p>Dans sa finalité, l'algorithm de Kruskal créé de nombreuses impasses peu profondes.</p>
+
+				<div class="row">
+					<div class="col-5">
+						<span class="image fit">
+							<video controls width="100%">
+								<source src="images/Maze/Demo/kruskal_10x10.mp4" type="video/webm">
+							</video>
+							<center><sup><i>Démonstration Kruskal avec labyrinthe 10 par 10</i></sup></center>
+						</span>
+					</div>
+					<div class="col-5">
+						<span class="image fit">
+							<video controls width="100%">
+								<source src="images/Maze/Demo/kruskal_30x30.mp4" type="video/webm">
+							</video>
+							<center><sup><i>Démonstration Kruskal avec labyrinthe 30 par 30</i></sup></center>
+						</span>
+					</div>
+				</div>
 
 				<h4>Prim</h4>
 
@@ -412,6 +498,25 @@ Free for personal and commercial use under the CCA 3.0 license (html5up.net/lice
 					Le labyrinthe possède ici aussi de nombreuses impasses peu profondes.<br>
 				</p>
 
+				<div class="row">
+					<div class="col-5">
+						<span class="image fit">
+							<video controls width="100%">
+								<source src="images/Maze/Demo/prim_10x10.mp4" type="video/webm">
+							</video>
+							<center><sup><i>Démonstration Prim avec labyrinthe 10 par 10</i></sup></center>
+						</span>
+					</div>
+					<div class="col-5">
+						<span class="image fit">
+							<video controls width="100%">
+								<source src="images/Maze/Demo/prim_30x30.mp4" type="video/webm">
+							</video>
+							<center><sup><i>Démonstration Prim avec labyrinthe 30 par 30</i></sup></center>
+						</span>
+					</div>
+				</div>
+
 				<h4>Divisions récursives</h4>
 
 				<p>
@@ -443,6 +548,41 @@ Free for personal and commercial use under the CCA 3.0 license (html5up.net/lice
 					Il est par exemple possible de mettre une limite de recursivité afin d'obtenir des salles plus grandes.<br>
 					<b>PHOTOS</b>
 				</p>
+
+				<div class="row">
+					<div class="col-5">
+						<span class="image fit">
+							<video controls width="100%">
+								<source src="images/Maze/Demo/recur_10x10.mp4" type="video/webm">
+							</video>
+							<center><sup><i>Démonstration méthode récursive avec labyrinthe 10 par 10</i></sup></center>
+						</span>
+					</div>
+					<div class="col-5">
+						<span class="image fit">
+							<video controls width="100%">
+								<source src="images/Maze/Demo/recur_20x20.mp4" type="video/webm">
+							</video>
+							<center><sup><i>Démonstration méthode récursive avec labyrinthe 20 par 20</i></sup></center>
+						</span>
+					</div>
+					<div class="col-5">
+						<span class="image fit">
+							<video controls width="100%">
+								<source src="images/Maze/Demo/recur_80x80.mp4" type="video/webm">
+							</video>
+							<center><sup><i>Démonstration méthode récursive avec labyrinthe 80 par 80</i></sup></center>
+						</span>
+					</div>
+					<div class="col-5">
+						<span class="image fit">
+							<video controls width="100%">
+								<source src="images/Maze/Demo/recur_100x100.mp4" type="video/webm">
+							</video>
+							<center><sup><i>Démonstration méthode récursive (aléatoirisée) avec labyrinthe 100 par 100</i></sup></center>
+						</span>
+					</div>
+				</div>
 
 
 
@@ -516,6 +656,33 @@ Free for personal and commercial use under the CCA 3.0 license (html5up.net/lice
 					En plus de choisir aléatoirement une cellule depuis la liste, il faut en plus vérifier que celle-ci se trouve en bordure de la région.<br>
 					Il est désormais impossible que ces îlots se forment car les cellules de départs seront dorénavent toujours rattachées au reste du labyrinthe.
 				</p>
+
+				<div class="row">
+					<div class="col-5">
+						<span class="image fit">
+							<video controls width="100%">
+								<source src="images/Maze/Demo/better_rec_10x10.mp4" type="video/webm">
+							</video>
+							<center><sup><i>Démonstration méthode récursive améliorée avec labyrinthe 10 par 10</i></sup></center>
+						</span>
+					</div>
+					<div class="col-5">
+						<span class="image fit">
+							<video controls width="100%">
+								<source src="images/Maze/Demo/better_rec_30x30.mp4" type="video/webm">
+							</video>
+							<center><sup><i>Démonstration méthode récursive améliorée avec labyrinthe 30 par 30</i></sup></center>
+						</span>
+					</div>
+					<div class="col-5">
+						<span class="image fit">
+							<video controls width="100%">
+								<source src="images/Maze/Demo/better_rec_room_30x30.mp4" type="video/webm">
+							</video>
+							<center><sup><i>Démonstration méthode récursive améliorée (récursivité< limitée) avec labyrinthe 30 par 30</i></sup></center>
+						</span>
+					</div>
+				</div>
 
 				<h3>Structure du projet</h3>
 
@@ -591,7 +758,7 @@ Free for personal and commercial use under the CCA 3.0 license (html5up.net/lice
 				<h2>Téléchargement</h2>
 				<!-- petite liste de 2 collones avec les icone de github et itch-->
 				<ul class="actions">
-				<li><a href="#" class="button icon brands fa-github">Code source</a></li>
+				<li><a href="https://github.com/B-Bischoff/Maze" class="button icon brands fa-github">Code source</a></li>
 				<li><a href="#" class="button icon brands fa-itch-io">Exécutable</a></li>
 			</ul>
 			</div>
