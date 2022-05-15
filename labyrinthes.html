@@ -686,10 +686,38 @@ Free for personal and commercial use under the CCA 3.0 license (html5up.net/lice
 
 				<h3>Structure du projet</h3>
 
-				Forme de cellules nécessite une reecriture de la méthode
-				Collect des entrees utilisateurs
-				Besoin d'accueuillir de nouvelles formes de cellules et nouvelles méthodes si nécessaires
+				<p>Comme annoncé au début, l'objectif est de structurer le mieux possible ce projet.</p>
+				<p>L'idée est d'avoir quelque chose d'extrêmement modulable et améliorable, afin de pouvoir rajouter ou bien modifier des éléments sans déteriorer le travail existant.</p>
 
+				<p>
+					Pour l'utilisateur, le plus convénient est d'avoir une interface, offrant la possibilité de sélectionner et modifier :
+					<ul>
+						<li>La forme de cellule</li>
+						<li>Les dimensions du labyrinthe</li>
+						<li>La méthode de génération</li>
+						<li>D'autres parmètres, liés à la méthode choisie</li>
+					</ul>
+				</p>
+
+				<p>C'est cette interface qui, après avoir récolté les entrées de l'utilisateur, va transmettre les informations pour générer le labyrinthe demandé.</p>
+
+
+				<div class="row">
+					<div class="col-6">
+						<p>
+							Dans ce projet, le fait d'avoir plusieurs formes de cellule, oblige à réecrire les méthodes de génération pour chaque forme de cellule.<br>
+							Le plus convénient est donc de créer un intermédiaire pour chacune de ces formes.<br>
+							Cet intermédiaire aura pour rôle, de transmettre les informations récoltées par l'interface à la méthode choisie, mais également de générer le labyrinthe rempli de murs (si nécessaire).
+						</div>
+					<div class="col-5">
+						<span class="image fit"><img src="images/Maze/structure.png" alt="" /><center><sup><i>Schéma structure</i></center></sup></span>
+					</div>
+				</div>
+
+				<p>
+					Ce modèle permet de rajouter des méthodes de génération pour chaque forme de cellule.<br>
+					Il permet également d'implémenter de nouvelles formes sans altérer le fonctionnement de ce qui existerait déjà.
+				</p>
 
 
 				<hr>
@@ -724,7 +752,7 @@ Free for personal and commercial use under the CCA 3.0 license (html5up.net/lice
 
 				<h3>Backtracker</h3>
 				<p>
-					Wikipedia | Maze generation algorithm : <a href="https://en.wikipedia.org/wiki/Maze_generation_algorithm">https://en.wikipedia.org/wiki/Maze_generation_algorithm</a>
+					Wikipedia | Maze generation algorithm : <a href="https://en.wikipedia.org/wiki/Maze_generation_algorithm">https://en.wikipedia.org/wiki/Maze_generation_algorithm</a><br>
 					Wikipedia | Retour sur trace : <a href="https://fr.wikipedia.org/wiki/Retour_sur_trace">https://fr.wikipedia.org/wiki/Retour_sur_trace</a><br>
 					Wikipedia | Backtracking : <a href="https://en.wikipedia.org/wiki/Backtracking">https://en.wikipedia.org/wiki/Backtracking</a><br>
 					The Coding Train | Coding Challenge #10.1: Maze Generator with p5.js - Part 1 : <a href="https://www.youtube.com/watch?v=HyK_Q5rrcr4">https://www.youtube.com/watch?v=HyK_Q5rrcr4</a><br>
@@ -760,7 +788,7 @@ Free for personal and commercial use under the CCA 3.0 license (html5up.net/lice
 				<ul class="actions">
 				<li><a href="https://github.com/B-Bischoff/Maze" class="button icon brands fa-github">Code source</a></li>
 				<li><a href="#" class="button icon brands fa-itch-io">Exécutable</a></li>
-			</ul>
+				</ul>
 			</div>
 		</div>
 
