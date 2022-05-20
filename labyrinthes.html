@@ -54,8 +54,8 @@ Free for personal and commercial use under the CCA 3.0 license (html5up.net/lice
 				<h2>Contexte</h2>
 
 				<p>
-					Je commence à me rendre compte que la difficulté de tout projet ne provient pas uniquement du fait de coder, mais surtout, de l'organisation et de la structure du projet en lui même.<br>
-					Le sujet que je compte explorer, la génération de labyrinthes me permettra de m'exercer sur ce point précis, à l'aide du moteur de jeu Unity.
+					Je commence à me rendre compte que la difficulté de tout projet ne provient pas uniquement du fait de coder, mais surtout, de <b>l'organisation</b> et de la structure du projet en lui même.<br>
+					Le sujet que je compte explorer, <b>la génération de labyrinthes</b> me permettra de m'exercer sur ce point précis, à l'aide du moteur de jeu Unity.
 				<p>
 
 				<p>
@@ -71,21 +71,21 @@ Free for personal and commercial use under the CCA 3.0 license (html5up.net/lice
 				<span class="image right"><img src="images/Maze/perfect_maze.png" alt="" /><center><sup><i>Labyrinthe parfait</i><sup></center>
 				<img src="images/Maze/imperfect_maze.png" alt="" /><center><sup><i>Labyrinthe imparfait</i><sup></center></span>
 				<p>
-					D'après Wikipedia, "Un labyrinthe est un tracé sinueux, muni ou non d'embranchements, d'impasses et de fausses pistes destiné à perdre ou ralentir celui qui cherche à s'y déplacer."
+					D'après Wikipedia, "Un labyrinthe est un tracé <u>sinueux</u>, muni ou non d'embranchements, <u>d'impasses</u> et de fausses pistes destiné à perdre ou ralentir celui qui cherche à s'y déplacer."
 					<br>Il y a cependant quelques règles à respecter pour qu'un labyrinthe soit dit "parfait".<br>
-					Chaque cellule du labyrinthe doit être réliée aux autres et ce, par un chemin unique (on parle de surface connexe).
+					Chaque <b>cellule</b> du labyrinthe doit être <b>réliée</b> aux autres et ce, par un <b>chemin unique</b> (on parle de surface connexe).
 					Il ne doit ainsi pas y a avoir de boucles ou de zone fermée. <br>
 				</p>
-				<p>Il existe de nombreuses méthodes pour créer un labyrinthe, une des plus commune est la génération par "suppression de murs"<br>
-					On part d'une zone remplie de murs. Toutes ces zones entourées de murs seront appelés cellules.<br>
-					L'objectif est de relier ces cellules en supprimant les murs entre elles, afin de recréer cette impression de dédale.
+				<p>Il existe de nombreuses méthodes pour créer un labyrinthe, une des plus commune est la génération par "<b>suppression de murs</b>".<br>
+					Le labyrinthe est initialement rempli de murs. Toutes ces zones entourées de murs, sont appelés des cellules.<br>
+					L'objectif est de relier ces cellules, en supprimant les murs entre elles afin de recréer cette impression de dédale.
 				</p>
 
 				<h4>Cellule</h4>
 				<p>
-					Dans sa forme la plus simple, une cellule est composée de murs (quatre pour une cellule de forme carrée) et d'une position.<br>
-					Sa position possède une coordonée X (axe des abscisses) et Y (axe des ordonnées). Cette position permet de la différencier des autres cellules qui peuvent l'entourer.<br>
-					Nous verrons que certaines méthodes de création demandent à ce que les cellules possèdent des informations supplémentaires.<br>
+					Dans sa forme la plus simple, une cellule est <b>composée de murs</b> (quatre pour une cellule de forme carrée).<br>
+					Elle possède également <b>une position</b>, représentée par une coordonée X (axe des abscisses) et Y (axe des ordonnées). Cette position permet de la différencier des autres cellules du labyrinthe.<br>
+					Nous verrons que certaines méthodes de génération demandent à ce que les cellules possèdent des propriétés supplémentaires.<br>
 					Comme une valeur indiquant si cette cellule a été visitée ou bien une donnée séparant les cellules en sous-zones du labyrinthe.
 				</p>
 
@@ -107,7 +107,7 @@ Free for personal and commercial use under the CCA 3.0 license (html5up.net/lice
 11 }</code></pre>
 					On retrouve les entiers X et Y correspondant à la coordonée de la cellule.<br>
 					La taille du tableau <i>walls</i> sera fixée et son contenu assigné pendant la génération d'un tableau rempli de cellules.<br>
-					L'utilisation de classe rend le concept de cellule extrement modulable. Pour chaque méthode de génération, nous pourrons créer une classe héritant de <i>MazeCell</i> et ainsi n'avoir que les données dont nous avons besoin.
+					L'utilisation de <b>classe</b> rend le concept de cellule extrement modulable. Pour chaque méthode de génération, nous pourrons créer une classe <b>héritant</b> de <i>MazeCell</i> et ainsi n'avoir que les données dont nous avons besoin.
 				</blockquote>
 
 				<p>
@@ -117,16 +117,16 @@ Free for personal and commercial use under the CCA 3.0 license (html5up.net/lice
 				<h4>Tableau de cellules</h4>
 				<p>
 
-					C'est grâce à elles, qui, une fois stockées dans un tableau en deux dimensions, permettent de représenter informatiquement un labyrinthe.
+					C'est grâce à elles, qui, une fois stockées dans un <b>tableau</b> en deux dimensions, permettent de représenter notre labyrinthe.
 				</p>
 				<span class="image right"><img src="images/Maze/topview_5x5.png" alt="" /><center><sup><i>Labyrinthe vu de dessus</i><sup></center></span>
 				<span class="image right"><img src="images/Maze/2d_array_coord.png" alt="" /><center><sup><i>Tableau deux dimensions</i><sup></center></span>
 				<p>
-					Dans le cas d'un labyrinthe carré, on voit de manière nette la relation entre celui-ci et sa représentation en tableau deux dimensions.
+					Dans le cas d'un labyrinthe carré, on voit de manière nette la relation entre celui-ci et sa représentation en tableau deux à dimensions.
 					<br>
 				</p>
 				<p>
-					Habituellement, la coordonée [0, 0] des tableaux en deux dimensions se situent en haut à gauche.<br>
+					Habituellement, la coordonée [0, 0] des tableaux à deux dimensions se situe en haut à gauche.<br>
 					Afin de simplifier le placement de nos cellules dans l'espaces, la coordonée [0, 0] se trouvera en bas à gauche du tableau.<br>
 					Il sera ainsi plus aisé de convertir les coordonées des cellules (deux dimensions) dans l'espace (trois dimensions).
 					<br>
@@ -135,31 +135,36 @@ Free for personal and commercial use under the CCA 3.0 license (html5up.net/lice
 				<span class="image right"><img src="images/Maze/maze_cell.png" alt="" /><center><sup><i>Prefab de cellule</i><sup></center></span>
 				<p>
 					Maintenant que nous savons comment sont stockées nos cellules dans un tableau, nous pouvons essayer de les placer dans l'espace.<br>
-					Le plus simple est d'utiliser les "Unity's Prefab" <b>https://docs.unity3d.com/Manual/Prefabs.html</b> qui nous permettent de créer et configurer à l'avance,
-					un objet que nous pourrons réutiliser pendant l'éxecution du programme.<br>
+					Le plus simple est d'utiliser les <a href="https://docs.unity3d.com/Manual/Prefabs.html">"Unity's Prefab"</a> qui nous permettent de <b>créer et configurer</b>	 à l'avance,
+					un objet que nous pourrons <b>réutiliser</b> pendant l'éxecution du programme.<br>
 					Voici donc le prefab, de notre cellule carrée.
 				</p>
 
 				<br><br>
 
-
-				<span class="image left"><img src="images/Maze/corners.png" alt="" /><center><sup><i>Angles disgracieux</i><sup></center></span>
 				<p>
-					D'après notre tableau deux dimensions, l'espacement entre chaque cellule est de 1 (sur l'axe X et Y), chaque cellule devrait donc faire une taille de 1 par 1.<br>
-					Cependant, lorsque l'on crée un labyrinthe avec ces dimensions, certaines paroies possèdent des angles peu esthétique.(cf photo)<br>
-					Passer la taille des murs à 1,1 nous permet de résoudre ce problème. Les murs des cellules voisines seront désormais superposés.<br>
-					Cela ne pose pas de problème mais nous verrons comment les supprimer, dans le but d'optimiser les performances du programme.<br>
+					D'après notre tableau à deux dimensions, l'espacement entre chaque cellule est de 1 (sur l'axe X et Y), chaque cellule devrait donc faire une taille de 1 par 1.<br>
+					Cependant, lorsque l'on crée un labyrinthe avec ces dimensions, certaines paroies possèdent des angles peu esthétique.<br>
+					Passer la taille des murs à 1,1 (les faisant légèrement dépasser d) nous permet de résoudre ce problème. Les murs des cellules voisines seront désormais superposés.<br>
+					Cela ne pose pas de problème mais nous verrons comment les supprimer dans le but d'optimiser les performances du programme.<br>
 				</p>
 
-				<p>
-					Maintenant que nous possédons notre cellule sous forme de préfab, nous pouvons à l'aide d'une longueur et d'une largeur, faire apparaitre nos cellules.<br>
-					Il faut pour cela, parcourir chaque case de la coordonée [0, 0] à la coordonée [longueur - 1, largeur - 1] (-1, car on compte depuis 0).
-				</p>
+				<div class="row">
+					<div class="col-4">
+						<span class="image fit"><img src="images/Maze/corners.png" alt="" /><center><sup><i>Angles disgracieux</i><sup></center></span>
+						</div>
+						<div class="col-5">
+							<p>
+								Maintenant que nous possédons notre cellule sous forme de préfab, nous pouvons à l'aide d'une <b>longueur</b> et d'une <b>largeur</b>, faire apparaitre nos cellules.<br>
+								Il faut pour cela, parcourir chaque case depuis la coordonée [0, 0] à la coordonée [longueur - 1, largeur - 1] (-1, car on compte depuis 0).
+							</p>
+						</div>
+					</div>
 
 				<blockquote>
 					<p><b>Précisions techniques</b><br></p>
 					<p>
-						Voici le code permettant de créer un espace remplie de cellules.
+						Voici le code permettant de créer un labyrinthe rempli de cellules.
 						<pre><code>1  MazeCell[,] maze;
 2  GameObject cell_prefab;
 3  int height, width;
@@ -181,7 +186,7 @@ Free for personal and commercial use under the CCA 3.0 license (html5up.net/lice
 19		maze[y, x].walls[3] = cell.transform.Find("RightWall").gameObject;
 21	}
 22 }					</pre></code>
-						A l'aide de la fonction <i>Instantiate</i> de Unity, ce code nous permet de créer dans l'espace une cellule pour chaque case de notre tableau deux dimensions mais également de l'initialiser pour lui donner ses valeurs.
+						A l'aide de la fonction <i>Instantiate</i> de Unity, ce code nous permet de créer une cellule pour chaque case de notre tableau à deux dimensions mais également de l'initialiser pour lui donner ses valeurs.
 					</p>
 
 						<div class="row">
@@ -199,9 +204,9 @@ Free for personal and commercial use under the CCA 3.0 license (html5up.net/lice
 				<h4>Suppression de murs entre cellules</h4>
 				<span class="image right"><img src="images/Maze/wall_connexion.png" alt="" /><center><sup><i>cellules voisines</i><sup></center></span>
 				<p>
-					Voyons maintenant comment relier deux cellules voisines.<br>
-					Relier veut en réaliter dirée, supprimer les murs qui séparents ces cellules.<br>
-					Dans l'exemple suivant, nous voulons relier ces cellules voisines horizontalement. Pour ce faire, il faut supprimer le mur de droite de la cellule A et le mur gauche de la cellule B.
+					Voyons maintenant comment <b>relier deux cellules</b> voisines.<br>
+					Relier veut en réaliter dire, supprimer les murs qui séparents ces cellules.<br>
+					Dans l'exemple suivant, nous voulons relier deux cellules voisines horizontalement. Pour ce faire, il faut supprimer le mur de droite de la cellule A et le mur gauche de la cellule B.
 					<br>
 				</p>
 				<blockquote>
@@ -238,16 +243,16 @@ Free for personal and commercial use under the CCA 3.0 license (html5up.net/lice
 					</div>
 					<p>
 						Voici un exemple expliquant de manière visuelle, comment la variable <i>dir</i> fonctionne et interprète les coordonnées qu'elle calcule.<br>
-						A gauche on peut voir les coordonées réelles des cellules, tandis qu'à droite, sont affichées les coordonées relatives à la cellule centrale.
+						A gauche on peut voir les <b>coordonées réelles</b> des cellules, tandis qu'à droite, sont affichées les <b>coordonées relatives</b> à la cellule centrale.
 					</p>
 					<p>
-						Maintent que nous savons identifer les cellues voisines, il ne reste plus qu'à supprimer les murs avec la fonction <i>Destroy</i> de Unity.
+						Maintenant que nous savons identifer les cellules voisines, il suffit de supprimer les murs adéquats avec la fonction <i>Destroy</i> de Unity.
 					</p>
 				</blockquote>
 
 				<h4>Suppresion des murs superposés</h4>
 				<p>
-					Une fois le labyrinthe généré, nous pouvons supprimer les murs superposés restant.<br>
+					Une fois le labyrinthe généré, nous pouvons supprimer les <b>murs superposés</b> restants.<br>
 					Cela permet d'optimiser l'efficacité du programme en supprimant les murs inutiles.
 				</p>
 				<blockquote>
@@ -263,7 +268,7 @@ Free for personal and commercial use under the CCA 3.0 license (html5up.net/lice
 8			Destroy(_maze[y, x].TopWall
 9	}
 10  }</pre></code>
-						Pour chaque cellule, on vérifie qu'elle ne soit pas en bordure basse ou droite du labyrinthe (afin de ne pas ouvrir le labyrinthe).<br>
+						Pour chaque cellule, on vérifie qu'elle ne soit pas en bordure du labyrinthe (afin de ne pas ouvrir le labyrinthe).<br>
 						Si cette cellule possède un mur droit et que la cellule à sa droite possède un mur gauche. On supprime le mur droit de la cellule actuelle.<br>
 						Le processus est le même pour le mur du bas. Si la cellule scrutée et celle du dessous possèdent leurs murs voisins, on supprime le mur bas de la cellule actuelle.
 					</p>
@@ -271,7 +276,7 @@ Free for personal and commercial use under the CCA 3.0 license (html5up.net/lice
 
 				<p>
 					Voici donc tous les concepts nécessaires pour créer un labyrinthe.<br>
-					Avant de présenter les algorithmes de génération, voici une section montrant birèvement, comment ces concepts peuvent être réutilisées afin de créer des labyrinthes à cellules hexagonales regulières.<br>
+					Avant de présenter les algorithmes de génération, voici une section montrant brièvement, comment ces concepts peuvent être réutilisées afin de créer des labyrinthes à cellules hexagonales.<br>
 				</p>
 
 				<h4>Cellules hexagonales</h4>
@@ -288,13 +293,13 @@ Free for personal and commercial use under the CCA 3.0 license (html5up.net/lice
 
 				<p>
 					La seule différence avec la celulle carrée est le nombre de murs.<br>
-					La classe précédemment définie reste correcte, la seule chose à modifier est l'attribution des murs de la cellule.
+					La classe précédemment définie (<i>MazeCell </i>) <b>reste utilisable</b>, la seule chose à modifier est l'attribution des murs de la cellule.
 				<p>
 
 				<p>
-					La dernière question à nous poser est comment peut-on représenter une grille hexagonale dans un tableau en deux dimensions ?<br>
-					De nombreuses représentations existent déjà avec chacune des avantages et inconvénients.<br>
-					La solution choisie est d'utiliser la même méthode que pour les cellules carrées. C'est une représentation simple à mettre en place,
+					La dernière question à nous poser est comment peut-on <b>représenter</b> une grille hexagonale dans un tableau à deux dimensions ?<br>
+					De nombreuses représentations existent déjà avec chacune leurs avantages et inconvénients.<br>
+					La solution choisie ici, est d'utiliser la même méthode que pour les cellules carrées. C'est une représentation simple à mettre en place,
 					cependant, elle s'avère peu pratique lorsque l'on souhaite relier des cellules entre elles.<br>
 				</p>
 
@@ -309,7 +314,7 @@ Free for personal and commercial use under the CCA 3.0 license (html5up.net/lice
 				<blockquote>
 					<p><b>Précisions techniques</b><br></p>
 					<p>
-						Voici la première difficulté des grilles hexagonales. Selon l'orientation de l'hexagone, une cellule sur deux sera décalée.<br>
+						Voici la première difficulté des grilles hexagonales. Selon l'orientation de l'hexagone, une cellule sur deux sera <b>décalée</b>.<br>
 						Sur l'image de gauche on peut constater que sur chaque ligne, un hexagone sur deux se trouve décalé en hauteur.<br>
 						A droite, ils seront décalée sur l'axe horizontal.
 						<div class="row">
@@ -320,7 +325,7 @@ Free for personal and commercial use under the CCA 3.0 license (html5up.net/lice
 								<span class="image left"><img src="images/Maze/grid_hexapointy.png" alt="" /><center><sup><i>Grille d'hexagones "pointy"</i></center></sup></span>
 							</div>
 						</div>
-						Ce choix de représentation nous force donc à différencier les opérations, en fonction de l'orientation de l'hexagone.<br>
+						Ce choix de représentation nous force donc à <b>différencier les opérations</b>, en fonction de l'orientation de l'hexagone.<br>
 						Il existe cependant d'autres moyen de stocker ces hexagones dans un tableau.<br>
 						Ceux-ci sont présentés sur <a href="https://www.redblobgames.com/grids/hexagons/#map-storage">le guide des hexagones de Red Blob Games</a>
 						<br>
@@ -329,39 +334,46 @@ Free for personal and commercial use under the CCA 3.0 license (html5up.net/lice
 
 				<h3>Algorithmes</h3>
 
-				<p>
-					Voici une sélection de plusieurs méthodes de génération.<br>
-					Chacune possède ses avantages et ses inconvénients.<br>
-				</p>
-
 				<h4>Backtracker</h4>
+				<p>
+					Probablement l'une des plus répandues (car l'une des plus simples), la méthode du backtracker (ou retour arrière en français) permet de systématiquement tester <b>l'ensemble des possibilités</b>.
+					<br>
+					Cette famille d'algorithmes est utilisée pour résoudre des problèmes algorithmiques comme de l'optimisation combinatoire ou des jeux, telle que <a href="https://fr.wikipedia.org/wiki/Probl%C3%A8me_des_huit_dames">le problème des huit dames</a> ou la résolution de sudoku.
+				</p>
+				<div class="row">
+					<div class="col-5">
+						<p>
+							Appliqué à nos labyrinthe, en partant d'une grille remplie de murs, cette méthode a pour objectif de créer un chemin, en passant par toutes les cellules de notre labyrinthe.
+							<br>
+							De manière plus détaillée :<br>
+							Chaque cellule du tableau possède un <b>état visitée ou non</b> (initialement mis à non-visitée). Depuis une cellule de départ, le programme va se déplacer <b>aléatoirement</b> sur une cellule non-visitée, voisine à la sienne (et définir son état comme visitée).
+							<br>
+							Dès lors que celui-ci ne possède plus de cellules voisines non-visitées, il va revenir sur ses pas jusqu'à en retrouver.
+							<br>
+							Si il n'en trouve plus, cela veut dire que toutes les possibilités ont été testé.
+						</p>
+					</div>
+					<div class="col-5">
+						<span class="image fit">
+							<video controls width="100%">
+								<source src="images/Maze/Demo/backtracker.mp4" type="video/webm">
+							</video>
+							<center><sup><i>Illustration de la méthode du backtracker</i></sup></center>
+						</span>
+					</div>
+				</div>
 
-				<p>
-					Probablement l'une des plus répandues (car l'une des plus simples), la méthode du backtracker (ou retour arrière en français) permet de systématiquement tester l'ensemble des décisions possibles.
-					<br>
-					Cette famille d'algorithmes est utilisée pour résoudre des problèmes algorithmiques comme de l'optimisation combinatoire ou des jeux, telle que le problème des dix dames <b>LIEN</b> ou la résolution de sudoku.
-				</p>
-				<p>
-					Appliqué à nos labyrinthe, en partant d'une grille remplie de murs, cette méthode a pour objectif de créer un chemin, en passant par toutes les cellules de notre labyrinthe.
-					<br>
-					De manière plus détaillée :<br>
-					Chaque cellule du tableau possède un état visitée ou non (initialement mis à non-visitée). Depuis une cellule de départ, le programme va se déplacer aléatoirement sur une cellule non-visitée, voisine à la sienne (et définir son état comme visitée).
-					<br>
-					Dès lors que celle-ci ne possède plus de cellules voisines non-visitées, le programme revient sur ses pas jusqu'à en retrouver.
-					<br>
-					Si il n'en trouve plus, cela veut dire qu'il a testé toutes les possibilitées.
-				</p>
 
 				<div class="row">
-				<div class="col-6 col-12-medium">
-				<p>
-					Pour garder en mémoire les déplacements effectués, nous stockerons les cellules visitées dans une pile<b>LIEN PILE</b> (une structure de donnée informatique).
-				</p>
-				</div>
-				<div class="col-6 col-12-medium">
+					<div class="col-6 col-12-medium">
+						<p>
+							Pour garder en mémoire les déplacements effectués, nous stockerons les cellules visitées dans <a href="https://fr.wikipedia.org/wiki/Pile_(informatique)#:~:text=En%20informatique%2C%20une%20pile%20(en,le%20premier%20%C3%A0%20en%20sortir.">une pile</a> (une structure de donnée informatique).
+						</p>
+					</div>
+					<div class="col-6 col-12-medium">
 						<span class="image right"><img src="images/Maze/pile.png" alt="" /><center><sup><i>Représentation pile	</i></center></sup></span>
+					</div>
 				</div>
-			</div>
 
 				<p>Algorithme :</p>
 					<pre><code>1 - Choisir une cellule, la marquer comme visitée et l'ajouter à la pile
@@ -373,12 +385,10 @@ Free for personal and commercial use under the CCA 3.0 license (html5up.net/lice
         3 - Relier la cellule actuelle à la cellule voisine
         4 - Définir la cellule voisine comme visitée et la mettre au sommet de la pile</pre></code>
 
-				<p><b>GIF MAZE GENERATING + GIF THEORIE</b></p>
-
 				<p>
-					Cette méthode est extrêmement simple à implémenter et efficace. Elle peut cependant se révéler gourmande en stockage dû à la pile qui augmente en fonction de la taille du labyrinthe à générer.<br>
-					De plus, le résultat se retrouve quelques fois non pas "labyrinthique" mais juste comme un long chemin tortueux, avec que peu d'embranchements. Ceci s'explique par le fait que la méthode explore aussi loin que possible chaque
-					possibilitées, avant de revenir sur ses pas.
+					Cette méthode est extrêmement <b>simple à implémenter</b> et plutôt efficace. Elle peut cependant se révéler <b>gourmande en stockage</b> à cause de la taile de la pile, qui augmente en fonction de la surface du labyrinthe à générer.<br>
+					Un autre inconvénient est le résultat qui se retrouve quelques fois non pas "labyrinthique" mais juste comme un long chemin tortueux, avec que peu d'embranchements. Ceci s'explique par le fait que la méthode explore aussi loin que possible chaque
+					possibilitées, avant de revenir sur ses pas, limitant ainsi le choix des prochains déplacements.
 				</p>
 
 
@@ -410,18 +420,28 @@ Free for personal and commercial use under the CCA 3.0 license (html5up.net/lice
 					de supprimer les chemins de transports les moins rentables.
 				</p>
 
-				<p>
-					Cette méthode est une version aléatoirisée de l'algorithme d'origine.<br>
-					Initialement la méthode séléctionne <a href="https://fr.wikipedia.org/wiki/Ar%C3%AAte_(th%C3%A9orie_des_graphes)#:~:text=En%20th%C3%A9orie%20des%20graphes%2C%20une,appel%C3%A9%20ar%C3%AAte%20orient%C3%A9e%20ou%20arc">
-					<i>les arêtes</i></a> d'un graphe par poids croissant.<br>
-					Or ici, elles seront séléctionnées de manière aléatoire.
-				</p>
+				<div class="row">
+					<div class="col-5">
+						<p>
+							Cette méthode est une <b>version aléatoirisée</b> de l'algorithme d'origine.<br>
+							Initialement la méthode sélectionne <a href="https://fr.wikipedia.org/wiki/Ar%C3%AAte_(th%C3%A9orie_des_graphes)#:~:text=En%20th%C3%A9orie%20des%20graphes%2C%20une,appel%C3%A9%20ar%C3%AAte%20orient%C3%A9e%20ou%20arc">
+							<i>les arêtes</i></a> d'un graphe par poids croissant.<br>
+							Or ici, elles seront séléctionnées de manière aléatoire.
+						</p>
+					</div>
+					<div class="col-5">
+						<span class="image fit">
+							<video controls width="100%">
+								<source src="images/Maze/Demo/kruskal.mp4" type="video/webm">
+							</video>
+							<center><sup><i>Illustration de la méthode de Kruskal</i></sup></center>
+						</span>
+					</div>
+				</div>
 
-				<b>GIF KRUSKAL DANS UN GRAPH</b>
-
 				<p>
-					Plus concrètement, à partir d'un labyrinthe rempli de murs, chaque cellule possèdera un set (un identifiant unique).<br>
-					L'objectif est de relier les cellules de sets différents et d'appliquer un set commun aux cellules réliées.
+					Plus concrètement, à partir d'un labyrinthe rempli de murs, chaque cellule possèdera <b>un set</b> (un identifiant unique).<br>
+					L'objectif est de relier les cellules de sets différents et d'appliquer un <b>set commun</b> aux cellules réliées.
 				</p>
 
 				<p>Algorithme :</p>
@@ -433,7 +453,7 @@ Free for personal and commercial use under the CCA 3.0 license (html5up.net/lice
 				<p>
 					Cet méthode est plutôt simple et direct. Elle peut cependant se révéler couteuse, notamment lorsqu'il faut changer le set d'un groupe de cellules.<br>
 					La manière la plus simple est d'itérer sur toutes les cellules du labyrinthe. Il est cependant possible d'utiliser des listes chainées ou d'autres structures de données pour isoler les sets
-					afin d'alléger cette opération.
+					afin <b>d'alléger cette opération</b>.
 				</p>
 
 				<p>Dans sa finalité, l'algorithm de Kruskal créé de nombreuses impasses peu profondes.</p>
@@ -462,27 +482,38 @@ Free for personal and commercial use under the CCA 3.0 license (html5up.net/lice
 				<p>
 					La méthode de Prim a de nombreuses ressemblances à celle de Kruskal, son objectif est similaire, mais la manière de l'atteindre est fondamentalement différente.<br>
 					Cet algorithme permet également de trouver un arbre recouvrant le poids minimum dans un graphe.<br>
-					Là où la méthode de Kruskal sélectionne les arrêtes de poids faibles dans tout le graphe, Prim va, depuit un point de départ, faire croître un abre en sélectionnant les arêtes
+					Là où la méthode de Kruskal sélectionne les arrêtes de poids faibles dans tout le graphe, Prim va, depuit un point de départ, <b>faire croître un abre</b> en sélectionnant les arêtes
 					de poids faibles incidentes à cet arbre.
 				</p>
 
-				<b>GIF PRIM DANS UN GRAPH</b>
+				<div class="row">
+					<div class="col-5">
+						<p>
+							Encore une fois, cette méthode est <b>aléatoirisée</b> par rapport à l'algorithme d'origine.<br>
+							Au lieu de choisir l'arête la plus faible, elle sera choisie de manière aléatoire.
+						</p>
 
-				<p>
-					Encore une fois, cette méthode est aléatoirisée par rapport à l'algorithme d'origine.<br>
-					Au lieu de choisir l'arête la plus faible, elle sera choisie de manière aléatoire.
-				</p>
+						<p>
+							Pour appliquer ce concept à nos labyrinthes, il va falloir garder en mémoire : <br>
+							Premièrement, les <b>cellules visitées</b><br>
+							Puis, les cellules voisines des cellules visitées (que nous appelerons les cellules "<b>en bordure</b>")
+						</p>
 
-				<p>
-					Pour appliquer ce concept à nos labyrinthes, il va falloir garder en mémoire : <br>
-					Premièrement, les cellules visitées<br>
-					Et ensuite, les cellules voisines des cellules visitées (que nous appelerons les cellules "en bordure")
-				</p>
+						<p>
+							A partir d'une cellule de départ, le programme va relier une cellule en bordure à une cellule visitée.<br>
+							Cela aura pour effet de faire croître une "zone" qui va petit à petit, former notre labyrinthe en supprimant les murs de aléatoirement.
+						</p>
+					</div>
+					<div class="col-5">
+						<span class="image fit">
+							<video controls width="100%">
+								<source src="images/Maze/Demo/prim.mp4" type="video/webm">
+							</video>
+							<center><sup><i>Illustration de la méthode de Prim</i></sup></center>
+						</span>
+					</div>
+				</div>
 
-				<p>
-					A partir d'une cellule de départ, le programme va relier une cellule en bordure à une cellule visitée.<br>
-					Cela aura pour effet de faire croître une "zone" qui va créer notre labyrinthe en supprimant les murs de manière aléatoire.
-				</p>
 
 				<p>Algorithme :</p>
 					<pre><code>1 - Choisir une cellule de départ et noter cette cellule comme visitée
@@ -519,34 +550,44 @@ Free for personal and commercial use under the CCA 3.0 license (html5up.net/lice
 
 				<h4>Divisions récursives</h4>
 
-				<p>
-					Pour la première fois, nous partirons d'un labyrinthe sans murs à l'intérieurx !<br>
-					Cette méthode consiste à découper notre labyrinthe en une multitude de salle (que l'on appelera "chambre").<br>
-				</p>
 
-				<p>
-					Le concept et son implémentation sont on ne peut plus simple.<br>
-					Il faut diviser chaque chambre en quatre à l'aide de murs. Pour que les nouvelles chambres ne soient pas inaccessibles, il faut veiller à laisser un passage dans les murs créés.
-				</p>
-				<b>GIF DU PRINCIPE</b>
-
+				<div class="row">
+					<div class="col-5">
+						<p>
+							Pour la première fois, nous partirons d'un labyrinthe <b>sans murs à l'intérieur</b> !<br>
+							Cette méthode consiste à découper notre labyrinthe en une multitude de salle (que l'on nommera "chambre").<br>
+						</p>
+						<p>
+							Le concept et son implémentation sont on ne peut plus simple.<br>
+							Il faut <b>diviser</b> chaque chambre en quatre à l'aide de murs. Pour que les nouvelles chambres ne soient pas inaccessibles, il faut veiller à <b>laisser un passage</b> dans les murs créés.
+						</p>
+					</div>
+					<div class="col-5">
+						<span class="image fit">
+							<video controls width="100%">
+								<source src="images/Maze/Demo/recursive.mp4" type="video/webm">
+							</video>
+							<center><sup><i>Illustration de la méthode des divisons récursives</i></sup></center>
+						</span>
+					</div>
+				</div>
 				<p>
 					Il est possible de rendre le résultat un peu plus intéressant en divisant les chambres, non plus au milieu, mais de manière aléatoire.
 				</p>
-				<b>GIF MURS ALEATOIRES</b>
 
 				<p>Algorithme :</p>
 							<pre><code>1 - Depuis la chambre initiale, créer deux murs perpendiculaires (de sorte à créer 4 sous-chambres)
 2 - Créer un passage dans trois des quatre murs
 3 - Si il est possible de diviser une sous-chambre
-    1 - Retourner à l'étape 1 pour chaque sous-chambre</pre></code>
+    1 - Retourner à l'étape 1 pour cette sous-chambre</pre></code>
 
 				<p>
 					Le style de ce labyrinthe est extrêmement différent de ceux vues précédemment<br>
-					Cette méthode a tendance à crééer de longs couloirs ce qui rend la résolution du labyrinthe plus simple.<br><br>
+					Cette méthode a tendance à crééer de <b>longs couloirs</b> ce qui rend la résolution du labyrinthe plus aisé, notamment car les séparations entre les chambres sont </b>extrêmement appararentes.</b>
+				</p>
+				<p>
 					Ce concept si simple, peut être légèrement modifié pour obtenir d'autres résultats.<br>
-					Il est par exemple possible de mettre une limite de recursivité afin d'obtenir des salles plus grandes.<br>
-					<b>PHOTOS</b>
+					Il est par exemple possible de mettre une <b>limite de recursivité</b> afin d'obtenir des salles plus grandes.<br>
 				</p>
 
 				<div class="row">
@@ -563,7 +604,7 @@ Free for personal and commercial use under the CCA 3.0 license (html5up.net/lice
 							<video controls width="100%">
 								<source src="images/Maze/Demo/recur_20x20.mp4" type="video/webm">
 							</video>
-							<center><sup><i>Démonstration méthode récursive avec labyrinthe 20 par 20</i></sup></center>
+							<center><sup><i>Démonstration méthode récursive (aléatoirsée) avec labyrinthe 20 par 20</i></sup></center>
 						</span>
 					</div>
 					<div class="col-5">
@@ -584,51 +625,63 @@ Free for personal and commercial use under the CCA 3.0 license (html5up.net/lice
 					</div>
 				</div>
 
-
-
 				<h4>Divisions récursives améliorées</h4>
-
-
-				<b>SEULE DOC : http://weblog.jamisbuck.org/2015/1/15/better-recursive-division-algorithm.html</b>
 				<p>Pour finir, voici un algorithme de Jamis Buck, reprenant le concept de la méthode récursive.</p>
 				<p>
-					L'algorithme précédent, rend les passages entre les zones du labyrinthe plus que visibles.<br>
-					En repérant ce passage, il est possible de faire le chemin à l'envers et de trouver le moyen d'y arriver.<br><br>
-					<b>ILLUSTRATION<br></b>
+					L'algorithme précédent, rend les passages entre les zones du labyrinthe <b>extrêmement visibles</b>.<br>
+					En repérant ce passage, il est possible de faire le chemin à l'envers et de trouver la solution.
+				</p>
+				<p>
 					Il est à noter que tous les labyrinthes possèdent ces passages. Si ils sont facilement repérables ici, c'est à cause des longs murs créés pour séparer les chambres.
 				</p>
 
-				<p>
-					L'objectif de cette nouvelle méthode est de rendre moins évident la séparation des zones du labyrinthes, tout en gardant les propriétées de la méthode récursive.
-				</p>
+				<div class="row">
+					<div class="col-3">
+						<span class="image fit"><img src="images/Maze/bottleneck.png" alt="" /><center><sup><i>Grille d'hexagones "flat"</i></center></sup></span>
+					</div>
+					<div class="col-5">
+						<p>
+							L'objectif de cette nouvelle méthode est de rendre <b>moins évident</b> la séparation des zones du labyrinthes, tout en <b>gardant les propriétés</b> de la méthode récursive.
+						</p>
+					</div>
+				</div>
 
-				<p>
-					La solution trouvée par Jamis Buck consiste a aléatoiriser la forme des chambres. Au lieu d'avoir une surface rectangulaire, la chambre pourra être de n'importe quelle forme.<br>
-					C'est de cette manière qu'il réussit à "casser" le quadrillage de la méthode récursive de base.
-				</p>
+				<div class="row">
+					<div class="col-5">
+						<p>
+							La solution trouvée par Jamis Buck consiste a aléatoiriser la forme des chambres. Au lieu d'avoir une surface rectangulaire, la chambre pourra être de <b>n'importe quelle forme</b>.<br>
+							C'est de cette manière qu'il réussit à "casser" le quadrillage de la méthode récursive de base.
+						</p>
 
+
+					</div>
+					<div class="col-5">
+						<span class="image fit">
+							<video controls width="100%">
+								<source src="images/Maze/Demo/better_recur.mp4" type="video/webm">
+							</video>
+							<center><sup><i>Illustration de la méthode de divisions récursives améliorées</i></sup></center>
+						</span>
+					</div>
+				</div>
 				<p>
 					La manière de trouver la forme de la chambre est assez atypique.<br>
-					La forme d'une chambre est désormais définie par une région.<br>
-					Une région, est un ensemble de cellules voisine les unes des autres. (Il ne peut donc pas y avoir de cellule non-reliée à la région).
-					<b><br>ILLUSTRATION REGION VALIDE/INVALIDE<br></b>
-
+					La forme d'une chambre est désormais définie par une <b>région</b>.<br>
+					Une région, est un <b>ensemble de cellules</b>, voisines les unes des autres. (Il ne peut donc pas y avoir de cellule non-reliée à la région).
 					Initialement, toutes les cellules du labyrinthe formeront une région.<br>
-					Pour séparer cette chambre, il faut créer deux sous-régions.<br><br>
-
+					Pour séparer cette chambre, il faut créer deux sous-régions.
+				</p>
+				<p>
 					La manière dont ces sous-régions se partagent les cellules de la région principale est la suivante : <br>
-					Au début chaque, chaque sous région commence depuis une cellule choisie au hasard dans la région.<br>
-					Les sous-régions vont aléatoirement s'étendre sur leurs cellules voisines.<br>
+					Au début, chaque sous région commence depuis une cellule choisie au hasard.<br>
+					Les sous-régions vont <b>aléatoirement s'étendre</b> sur leurs cellules voisines.<br>
 					Ce processus se termine dès lors qu'il ne reste plus de cellule non-occupée par une sous-région.<br>
 					C'est ainsi que nous nous retrouvons avec une chambre donc la séparation n'est plus aussi régulière et évidente que précédemment.
-
-
-					<b><br>ILLUSTRATION DEVELOPPEMENT SOUS-REGION</b>
 				</p>
 
 				<p>
 					Le reste est assez similaire à la méthode récursive de base.<br>
-					Une fois les sous-régions séparées et le passage entre elles créé, le processus se répéte de manière récursive pour chaque sous-région.
+					Une fois les sous-régions séparées et le passage entre elles créé, le processus se <b>répéte de manière récursive</b> pour chaque sous-région.
 				</p>
 
 				<p>Algorithme :</p>
@@ -638,22 +691,21 @@ Free for personal and commercial use under the CCA 3.0 license (html5up.net/lice
     2 - Choisir au hasard une cellule dans la liste puis la retirer de la liste
     3 - Pour tous les voisins de la cellule choisie, si ils n'appartiennet pas déja à une sous-région
         1 - Les rajouter à la liste
-        2 - Assigner le voisin à la sous-région de la cellule choisie
+        2 - Assigner chaque	 voisin à la sous-région de la cellule choisie
     4 - Répéter 2.2 et 2.3 jusqu'à ce que la région soit séparéee
 3 - Construire un mur séparant les deux sous-régions tout en laissant un passage dedans
 4 - Répéter 2 et 3 de manière récursive pour chaque sous région</pre></code>
 
 				<p>
-					En limitant le nombre de récursion, il est possible de faire varier la taille des chambres.
+					En limitant le nombre de récursion, il est possible de faire <b>varier la taille des chambres</b>.
 					A la place de n'avoir que des couloirs, il est désormais possible d'avoir des "salles" dans le labyrinthe. Ce qui change des générations vues auparavant.
-					<b>ILLUSTRATIONS<br></b>
 				</p>
 
 				<p>
-					En limitant la profondeur de récursion, il se peut qu'une chambre apparaisse au milieu d'une zone et qu'elle ne soit donc pas connectée au reste des murs du labyrinthe.<br>
+					En limitant la profondeur de récursion, il se peut qu'une chambre apparaisse au <b>milieu d'une zone</b> et qu'elle ne soit donc pas connectée au reste des murs du labyrinthe.<br>
 					Lorsque les deux sous-régions cherchent à s'étendre, il arrive que l'une d'entre elles entoure l'autre créant ces îlots.<br>
 					Pour éliminer ces cas, il faut modifier l'étape 2.1 de l'algorithme.<br>
-					En plus de choisir aléatoirement une cellule depuis la liste, il faut en plus vérifier que celle-ci se trouve en bordure de la région.<br>
+					En plus de choisir aléatoirement une cellule depuis la liste, il faut en plus vérifier que celle-ci se trouve en <b>bordure</b> de la région.<br>
 					Il est désormais impossible que ces îlots se forment car les cellules de départs seront dorénavent toujours rattachées au reste du labyrinthe.
 				</p>
 
@@ -679,15 +731,15 @@ Free for personal and commercial use under the CCA 3.0 license (html5up.net/lice
 							<video controls width="100%">
 								<source src="images/Maze/Demo/better_rec_room_30x30.mp4" type="video/webm">
 							</video>
-							<center><sup><i>Démonstration méthode récursive améliorée (récursivité< limitée) avec labyrinthe 30 par 30</i></sup></center>
+							<center><sup><i>Démonstration méthode récursive améliorée (récursivité limitée) avec labyrinthe 30 par 30</i></sup></center>
 						</span>
 					</div>
 				</div>
 
 				<h3>Structure du projet</h3>
 
-				<p>Comme annoncé au début, l'objectif est de structurer le mieux possible ce projet.</p>
-				<p>L'idée est d'avoir quelque chose d'extrêmement modulable et améliorable, afin de pouvoir rajouter ou bien modifier des éléments sans déteriorer le travail existant.</p>
+				<p>Comme annoncé au début, l'objectif est de <b>structurer</b> le mieux possible ce projet.</p>
+				<p>L'idée est d'avoir quelque chose d'extrêmement <b>modulable</b> et <b>améliorable</b>, afin de pouvoir rajouter ou bien modifier des éléments sans déteriorer le travail existant.</p>
 
 				<p>
 					Pour l'utilisateur, le plus convénient est d'avoir une interface, offrant la possibilité de sélectionner et modifier :
@@ -705,9 +757,9 @@ Free for personal and commercial use under the CCA 3.0 license (html5up.net/lice
 				<div class="row">
 					<div class="col-6">
 						<p>
-							Dans ce projet, le fait d'avoir plusieurs formes de cellule, oblige à réecrire les méthodes de génération pour chaque forme de cellule.<br>
-							Le plus convénient est donc de créer un intermédiaire pour chacune de ces formes.<br>
-							Cet intermédiaire aura pour rôle, de transmettre les informations récoltées par l'interface à la méthode choisie, mais également de générer le labyrinthe rempli de murs (si nécessaire).
+							Dans ce projet, le fait d'avoir <b>plusieurs formes</b> de cellule, oblige à réecrire les méthodes de génération pour chaque forme de cellule.<br>
+							Le plus convénient est donc de créer un <b>intermédiaire</b> pour chacune de ces formes.<br>
+							Cet intermédiaire aura pour rôle, de transmettre les informations récoltées par l'interface, à la méthode choisie, mais également de générer le labyrinthe rempli de murs (si nécessaire).
 						</div>
 					<div class="col-5">
 						<span class="image fit"><img src="images/Maze/structure.png" alt="" /><center><sup><i>Schéma structure</i></center></sup></span>
@@ -716,7 +768,7 @@ Free for personal and commercial use under the CCA 3.0 license (html5up.net/lice
 
 				<p>
 					Ce modèle permet de rajouter des méthodes de génération pour chaque forme de cellule.<br>
-					Il permet également d'implémenter de nouvelles formes sans altérer le fonctionnement de ce qui existerait déjà.
+					Il permet également d'implémenter de nouvelles formes <b>sans altérer</b> le fonctionnement de ce qui existerait déjà.
 				</p>
 
 
@@ -724,31 +776,27 @@ Free for personal and commercial use under the CCA 3.0 license (html5up.net/lice
 
 				<h2>Conclusion</h2>
 
-				<p>
-					En travaillant sur ce projet les week-ends et quelques heures par semaines il m'a fallu 2 mois pour considérer ce projet comme stable et terminé.<br>
-				</p>
+				<p>En travaillant sur ce projet les week-ends et quelques heures par semaines il m'a fallu <b>2 mois</b> pour considérer ce projet comme stable et terminé.<br></p>
 
 				<p>
-					Il est cependant possible d'améliorer d'optimiser certaines méthodes de génération mise en place. Quelques unes comme la récursivité améliorée ou la méthode
+					Il est cependant possible <b>d'améliorer</b> et <b>d'optimiser</b> certaines méthodes de génération mise en place. Quelques unes comme la récursivité améliorée ou la méthode
 					de Kruskal sont assez demandeuses en ressources.
 				</p>
 
 				<p>
 					Avec du recul, je me rends compte que je n'ai que gratté la surface de la génération de labyrinthes.<br>
 					Il existe une immensité de méthodes avec toutes leurs spécificités, avantages et inconvénients.<br>
-					Pour rendre ce projet un peu plus complet, il est possible de rajouter d'autres méthodes de générations ainsi que d'autres formes de cellules (triangulaires, circulaires, ...).
+					Pour rendre ce projet un peu plus complet, il est possible de rajouter d'autres méthodes de générations ainsi que d'autres formes de cellules (triangulaires, circulaires, etc ...)
 				</p>
 
 				<p>
-					Une suite à ce projet pourrait être de résoudre les différents labyrinthes créés.
+					Une suite à ce projet pourrait être de <b>résoudre</b> les différents labyrinthes créés.
 				</p>
 
 
 
 				<hr>
 				<h2>Sources</h2>
-
-				<h3>Concepts<h3>
 
 				<h3>Backtracker</h3>
 				<p>
@@ -787,7 +835,7 @@ Free for personal and commercial use under the CCA 3.0 license (html5up.net/lice
 				<!-- petite liste de 2 collones avec les icone de github et itch-->
 				<ul class="actions">
 				<li><a href="https://github.com/B-Bischoff/Maze" class="button icon brands fa-github">Code source</a></li>
-				<li><a href="#" class="button icon brands fa-itch-io">Exécutable</a></li>
+				<li><a href="https://b-bischoff.itch.io/maze" class="button icon brands fa-itch-io">Exécutable</a></li>
 				</ul>
 			</div>
 		</div>
