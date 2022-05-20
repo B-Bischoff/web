@@ -154,7 +154,7 @@ int main(void)
 						<pre><code>int main(void)
 {
 	void *mlx;
-	void *mlx_win; 
+	void *mlx_win;
 	t_data img;
 
 	mlx = mlx_init();
@@ -249,7 +249,7 @@ int main(void)
 						</p>
 
 						<h3>Fondamentaux</h3>
-						
+
 						<b>SPEECH CONCEPT RAYCASTING ?<br></b>
 
 						<h4>Représentation de la carte</h4>
@@ -358,7 +358,7 @@ int main(void)
 								</span>
 							</div>
 							<div class="col-5">
-								<p>Voici le résultat obtenu lorsque l'on affiche le tableau précédemment générée. Le damier provient de la formule <i>(y % 2 + x) % 2</i> utilisé lors de la création du tableau. Je vous invite cependant a la modifier pour créer différents motifs. 
+								<p>Voici le résultat obtenu lorsque l'on affiche le tableau précédemment générée. Le damier provient de la formule <i>(y % 2 + x) % 2</i> utilisé lors de la création du tableau. Je vous invite cependant a la modifier pour créer différents motifs.
 								</p>
 							</div>
 						</div>
@@ -383,7 +383,7 @@ int main(void)
 	// Checking out of range coordinates
 	if (x < 0 || x >= data->tab_width || y < 0 || y >= data->tab_height)
 		return;
-	
+
 	// Changing cell value according to mouse button
 	if (data->mouse_button == LMB)
 		data->tab[tab_pos.y][tab_pos.x] = 1;
@@ -410,7 +410,7 @@ int main(void)
 						</div>
 
 						<h4>Détection de collision</h4>
-						
+
 						<div class="row">
 							<div class="col-5">
 								<p>
@@ -427,7 +427,7 @@ int main(void)
 								</span>
 							</div>
 						</div>
-						
+
 						<p>
 							L'idée ici est d'afficher l'endroit ou le segment entre en collision avec un mur.</p>
 						<p>
@@ -452,7 +452,7 @@ int main(void)
 								<p><b>EXPLIQUER FONCTIONNEMENT DDA</b></p>
 							</div>
 						</div>
-					
+
 
 						<h4>Création d'un cône de vision</h4>
 						<p>
@@ -462,17 +462,17 @@ int main(void)
 						<p><b>ILLUSTRATION</b></p>
 
 						<p>Nous allons commencer par limiter la longueur du segment [centre de l'écran | curseur] par une distance maximale.<br></p>
-						
+
 						<pre><code>void	create_rays(t_data *data, int length)
 {
 	t_vector2_d origin = {
 		data->win_width / 2,
 		data->win_height / 2
 	};
-	
+
 	// Getting the angle (in radian) of mouse position according to the origin
 	double angle = get_angle(origin, data->mouse_pos);
-	
+
 	t_vector2_d	direction = create_vector_d_from_origin(origin, -angle, length);
 	draw_circle_color(data, direction, GREEN);
 }</code></pre>
@@ -524,6 +524,16 @@ int main(void)
 		<script src="assets/js/breakpoints.min.js"></script>
 		<script src="assets/js/util.js"></script>
 		<script src="assets/js/main.js"></script>
+
+		<!-- Global site tag (gtag.js) - Google Analytics -->
+		<script async src="https://www.googletagmanager.com/gtag/js?id=G-CP7YYY7WEF"></script>
+		<script>
+		  window.dataLayer = window.dataLayer || [];
+		  function gtag(){dataLayer.push(arguments);}
+		  gtag('js', new Date());
+
+		  gtag('config', 'G-CP7YYY7WEF');
+		</script>
 
 	</body>
 </html>
