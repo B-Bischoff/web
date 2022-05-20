@@ -70,7 +70,7 @@ Free for personal and commercial use under the CCA 3.0 license (html5up.net/lice
 						<ul>
 							<li>Génération d'un terrain</li>
 							<li>Création des espèces animales</li>
-							<li>Visualisation de données à l'aied de graphiques</li>
+							<li>Visualisation de données à l'aide de graphiques</li>
 						</ul>
 
 						<br>
@@ -275,21 +275,12 @@ Free for personal and commercial use under the CCA 3.0 license (html5up.net/lice
 
     return pos;
 }								</pre></code>
-								<div class="row">
-									<div class="col-6">
-										<p>
-											Le type de variable "Vector3" est une <a href="https://docs.unity3d.com/ScriptReference/Vector3.html">structure propre à Unity</a> contenant en première position, une position X, en seconde une position Y (hauteur), et enfin une position Z.<br>
-											La fonction Random.value va générer un nombre <b>entre 0 et 1</b>. On définit alors un angle en multipliant cette valeur par 360.<br>
-											On genère ensuite une norme comprise <b>entre la distance minimale et maximale</b> du déplacement de l'animal.<br>
-											La variable "centre" correspond à la position <b>actuelle</b> de l'animal.<br>
-											On retrouve <b>la distance sur l'axe X</b> en multipliant la norme avec le cosinus de l'angle, puis on l'aditionne à la position (toujours sur l'axe X) de l'animal.<br>
-											On réalise la même opération pour l'axe Z mais cette fois-ci, avec le sinus.
-										</p>
-									</div>
-									<div class="col-6">
-										<div class="image fit"><img src="images/Ecosysteme/terrain-axis.png" alt="" /><center><sup><i>terrain avec axes</i></sup></center></div>
-									</div>
-								</div>
+								Le type de variable "Vector3" est une <a href="https://docs.unity3d.com/ScriptReference/Vector3.html">structure propre à Unity</a> contenant en première position, une position X, en seconde une position Y (hauteur), et enfin une position Z.<br>
+								La fonction Random.value va générer un nombre <b>entre 0 et 1</b>. On définit alors un angle en multipliant cette valeur par 360.<br>
+								On genère ensuite une norme comprise <b>entre la distance minimale et maximale</b> du déplacement de l'animal.<br>
+								La variable "centre" correspond à la position <b>actuelle</b> de l'animal.<br>
+								On retrouve <b>la distance sur l'axe X</b> en multipliant la norme avec le cosinus de l'angle, puis on l'aditionne à la position (toujours sur l'axe X) de l'animal.<br>
+								On réalise la même opération pour l'axe Z mais cette fois-ci, avec le sinus.
 							</p>
 						</blockquote>
 
