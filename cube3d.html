@@ -73,14 +73,14 @@ Free for personal and commercial use under the CCA 3.0 license (html5up.net/lice
 						<p>
 							Le sujet impose l'utilisation de la librairie graphique : MiniLibX.<br>
 							<b>PRECISER OS<br></b>
-							Cette librairie offre la possibilité de créer une fenetre, gérer différents types d'évenements ou encore dessiner sur des images.<br>
+							Cette librairie offre la possibilité de créer une fenêtre, gérer différents types d'évènements ou encore dessiner sur des images.<br>
 						</p>
 
 						<h4>Création d'une fenêtre</h4>
 						<p>
-							Voici la manière la plus simple de créer une fenêtre a partir de la MiniLibX.<br>
-							La fonction <i>mlx_init</i> renvoie un pointeur qui indique où se trouve l'instance de la mlx dans la mémoire. Le rôle de cette instance, est d'établir une connexion depuis notre programme, a l'environnement graphique de l'ordinateur.<br>
-							La fonction <i>mlx_new_window</i> permet de définir la taille de la fenetre ainsi que le titre de celle-ci.
+							Voici la manière la plus simple de créer une fenêtre à partir de la MiniLibX.<br>
+							La fonction <i>mlx_init</i> renvoie un pointeur qui indique où se trouve l'instance de la mlx dans la mémoire. Le rôle de cette instance, est d'établir une connexion entre notre programme et l'environnement graphique de l'ordinateur.<br>
+							La fonction <i>mlx_new_window</i> permet de définir la taille de la fenêtre ainsi que le titre de celle-ci.
 						</p>
 						<pre><code>int main(void)
 {
@@ -93,21 +93,21 @@ Free for personal and commercial use under the CCA 3.0 license (html5up.net/lice
 }</pre></code>
 
 						<p>
-							C'est <i>mlx_loop</i> qui va s'occuper d'actualiser et d'afficher la fenetre sur notre écran.<br>
-							Rendons cette fenetre un peu plus intéressante en dessinant dessus.
+							C'est <i>mlx_loop</i> qui va s'occuper d'actualiser et d'afficher la fenêtre sur notre écran.<br>
+							Nous allons dès à présent rendre cette fenêtre un peu plus intéressante en dessinant dessus.
 						</p>
 
 						<h4>Utilisation des images</h4>
 						<p>
-							Il existe la fonction <i>mlx_pixel_put</i> qui permet de placer des pixels sur notre fenetre, cependant cette fonction extrement lente car elle place le pixel et actualise directement l'afficher.<br>
- 							Un moyen plus optimisé, est de stocker tous les pixels que l'on souhaite placer (a l'aide d'un buffer), et seulement lorsqu'il que tous les pixels sont stockées, la fenetre met a jour son contenu.
+							Il existe la fonction <i>mlx_pixel_put</i> qui permet de placer des pixels sur notre fenêtre, cependant cette fonction extrêmement lente car elle place le pixel et actualise directement l'affichage.<br>
+ 							Par conséquent, j’ai opté pour un moyen plus optimisé, celui de stocker tous les pixels que l'on souhaite placer (à l'aide d'un buffer), et seulement lorsque tous les pixels sont stockés, la fenêtre met à jour son contenu.
 						</p>
 						<p>
 							Le moyen de stocker les pixels est d'utiliser une image.<br>
 							Cela implique de déclarer quelques variables supplémentaires comme :<br>
 							<ul>
 								<li>Une référence a l'instance de l'image</li>
-								<li>L'addresse mémoire de l'image</li>
+								<li>L'adresse mémoire de l'image</li>
 								<li>Le nombre de bits que chaque pixel occupe</li>
 								<li>La taille en mémoire qu'occupe une ligne de l'image</li>
 								<li>Une indication de quel boutiste (endian en anglais) utiliser</li>
@@ -132,14 +132,14 @@ int main(void)
 	img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, &img.line_length, &img.endian);
 }</code></pre>
 						<p>
-							Notre image (ici de dimension 1920 par 1080 pixels) est créée grace a la fonction <i>mlx_new_image</i><br>
+							Notre image (ici de dimension 1920 par 1080 pixels) est créée grâçe à la fonction <i>mlx_new_image</i><br>
 							Les informations supplémentaires décrites précédemment sont assignées par la fonction <i>mlx_get_data_addr</i>.
 						</p>
 
-						<h4>Ecriture sur une image</h4>
+						<h4>Écriture sur une image</h4>
 						<p>
-							Le dernier élément manquant, est un moyen de placer des pixels sur notre image.<br>
-							La fonction suivante permet, a partir d'une coordonées (x et y), d'écrire une certaine valeur (représentant une couleur) a l'endroit correspondant dans la mémoire de l'image.
+							Le dernier élément manquant est un moyen de placer des pixels sur notre image.<br>
+							La fonction suivante permet, à partir d'une coordonnée (x et y), d'écrire une certaine valeur (représentant une couleur) à l'endroit correspondant dans la mémoire de l'image.
 						</p>
 						<pre><code>void my_mlx_pixel_put(t_data *data, int x, int y, int color)
 {
@@ -149,16 +149,16 @@ int main(void)
 	*(unsigned int*)dst = color;
 }</code></pre>
 						<p>
-							Les informations de l'image sont ici extrement utiles, elles nous permettent de trouver le décalage entre la position de chaque pixel est de son emplacement dans la mémoire.<br>
+							Les informations de l'image sont ici extrêmement utiles, elles nous permettent de trouver le décalage entre la position de chaque pixel et son emplacement dans la mémoire.<br>
 						</p>
 						<p>
-							Il peut également etre utile de vérifier la cohérence des coordonées en début de fonction. Il se peut autrement que le programme aille chercher des données dans un espacement mémoire ne lui appartenant pas, causant ainsi l'arret du programme.
+							Il peut également être utile de vérifier la cohérence des coordonnées en début de fonction. Il se peut autrement que le programme aille chercher des données dans un espacement mémoire ne lui appartenant pas, causant ainsi l'arrêt du programme.
 						</p>
 
 						<h4>Affichage de l'image</h4>
 						<p>
-							Le moment tant attendu arrive, selui ou nous voyons des couleurs sur notre fenetre !
-							A l'aide des notions expliquées jusqu'ici (initialisation d'une fenetre et d'une image ainsi que la structure <i>data</i>) nous allons appeler <i>my_mlx_pixel_put</i> et afficher le contenu de l'image sur notre fenetre.
+							Le moment tant attendu arrive, celui où nous allons voir des couleurs sur notre fenêtre !
+							A l'aide des notions expliquées jusqu'ici (initialisation d'une fenêtre et d'une image ainsi que la structure <i>data</i>) nous allons appeler <i>my_mlx_pixel_put</i> et afficher le contenu de l'image sur notre fenêtre.
 						</p>
 
 						<pre><code>int main(void)
@@ -177,15 +177,15 @@ int main(void)
 }</code></pre>
 
 						<p>
-							Ce petit code a pour effet de placer un pixel rouge (<b>LIEN MLX COLORS</b>) a la coordonnées (en pixels) 100, 100 de notre fenetre.<br>
-							C'est ensuite <i>mlx_put_image_to_window</i> qui va mettre a jour la fenetre en affichant le contenu de notre image.
+							Ce petit code a pour effet de placer un pixel rouge (<b>LIEN MLX COLORS</b>) à la coordonnée (en pixels) 100, 100 de notre fenêtre.<br>
+							C'est ensuite <i>mlx_put_image_to_window</i> qui va mettre a jour la fenêtre en affichant le contenu de notre image.
 						</p>
 
 						<h4>Boucles</h4>
 						<p>
 							Pour créer un jeu vidéo avec lequel il est possible d'interagir, il est nécessaire d'implémenter ce qu'on appel une "game loop".<br>
 							<b>ILLUSTRATION GAME LOOP<br></b>
-							Une game loop tourne en continue pendant l'éxécution du jeu. Chaque tour de boucle, le programme lit les entrées de l'utilisateur, met a jour le contenu du jeu puis actualise l'affichage.
+							Une game loop tourne en continue pendant l'éxécution du jeu. À chaque tour de boucle, le programme lit les entrées de l'utilisateur, met à jour le contenu du jeu puis actualise l'affichage.
 						</p>
 						<p>Voyons comment implémenter cette boucle a l'aide de la MiniLibX.</p>
 
@@ -200,24 +200,24 @@ int main(void)
 	mlx_loop_hook(mlx, render_next_frame, &program_struct);
 	mlx_loop(mlx);
 }</code></pre>
-						<p>A chaque frame, la fonction <i>render_next_frame</i> sera appelée avec pour parametre <i>program_struct</i>.</p>
+						<p>À chaque frame, la fonction <i>render_next_frame</i> sera appelée avec pour paramètre <i>program_struct</i>.</p>
 
 						<h4>Entrées utilisateur</h4>
-						<p>Un jeu vidéo ne serait pas tres intéressant sans possibilités d'interaction.</p>
+						<p>Un jeu vidéo ne serait pas très intéressant sans possibilités d'interaction.</p>
 						<p>
-							La MiniLibX fournit la possibilité d'intercepter différents type d'evenements.<br>
-							Ces evenements (par exemple liés a la souris ou au clavier) ne font qu'appeler une fonction quand ils se déclenchent.<br>
-							Plus concretement, il faut au début du programme indiquer a la MiniLibX, quelles sont les evenements a écouter et quelles fonctions vont-ils appeller.
+							La MiniLibX fournit la possibilité d'intercepter différents type d'évènements.<br>
+							Ces évènements (par exemple liés à la souris ou au clavier) ne font qu'appeler une fonction quand ils se déclenchent.<br>
+							Plus concrètement, il faut au début du programme, indiquer à la MiniLibX quelles sont les évenèments à écouter, et quelles fonctions vont-ils appeller en conséquence.
 						</p>
 						<p>
-							Les evenements sont représentés par des nombres, voici une liste (minime) des evenements qui nous seront utiles :
+							Les évènements sont représentés par des nombres, voici une liste (minime) des évènements qui nous seront utiles :
 							<ul>
 								<li>02 : Touche du clavier pressée</li>
-								<li>03 : Touche du clavier relachée</li>
+								<li>03 : Touche du clavier relâchée</li>
 								<li>04 : Clique de souris pressé</li>
-								<li>05 : Clique de souris relaché</li>
+								<li>05 : Clique de souris relâché</li>
 								<li>06 : Mouvement de la souris</li>
-								<li>17 : Appui sur la croix rouge de la fenetre</li>
+								<li>17 : Appui sur la croix rouge de la fenêtre</li>
 							</ul>
 						</p>
 
@@ -239,18 +239,18 @@ int main(void)
 	mlx_loop(mlx);
 }</code></pre>
 						<p>
-							Rapellons que les actions efféctuées en fonction des entrées utilisateur (par exemple déplacer le personnage du joueur), se font dans la game loop précédement implémentée.<br>
-							Les evenements ne vont donc pas effectuer d'actions sur les données de notre jeu (personnage, carte, interface ou autre) mais uniquement mettre a jour les informations liées a nos controles (état des touches du clavier, position du curseur, état des cliques de la souris).
+							Rappelons que les actions effectuées en fonction des entrées utilisateur (par exemple déplacer le personnage du joueur) se font dans la game loop précédemment implémentée.<br>
+							Les évènements ne vont donc pas effectuer d'actions sur les données de notre jeu (personnage, carte, interface ou autre), mais uniquement mettre à jour les informations liées a nos contrôles (état des touches du clavier, position du curseur, état des cliques de la souris).
 						</p>
 						<p>
-							Cela implique pour notre programme d'avoir un moyen de stocker les données de nos péripheriques.<br>
-							Pour le clavier, il est possible de créer un tableau de booléens (du nombre de touches du clavier) et des qu'une touche est préssée, passer a vrai, la case du tableau correspondant a la touche.
+							Cela implique pour notre programme d'avoir un moyen de stocker les données de nos périphériques.<br>
+							Pour le clavier, il est possible de créer un tableau de booléens (du nombre de touches du clavier) et dès qu'une touche est pressée, la case du tableau correspondant à la touche est passée à vrai.
 						</p>
-						<p>Ainsi, dans notre game loop il ne reste qu'a vérifier si une touche (une case précise du tableau) est appuyée pour effectuer une action.</p>
+						<p>Ainsi, dans notre game loop il ne reste qu'à vérifier si une touche (une case précise du tableau) est appuyée pour effectuer une action.</p>
 
 						<h3>Définition de raycasting</h3>
 						<p>
-							Notamment connu pour les célebres Doom et Wolfenstein 3D (dans les annees 1990), le raycasting 2D est une technique de calcul d'images permettant de représenter en 3D un univers en 2D.
+							Notamment connu pour les célèbres Doom et Wolfenstein 3D (dans les années 1990), le raycasting 2D est une technique de calcul d'images permettant de représenter en 3D un univers en 2D.
 						</p>
 
 						<h3>Difference entre raycasting et raytracing</h3>
@@ -265,16 +265,16 @@ int main(void)
 						<h4>Représentation de la carte</h4>
 						<p>
 							Comme dit précédemment, le raycasting se base sur un univers en deux dimensions (vu du dessus).<br>
-							Voyons comment représenter informatiquement une carte contenant (pour commencer) des espaces vides et des murs.
+							Voyons, pour commencer, comment représenter informatiquement une carte contenant des espaces vides et des murs.
 						</p>
 
 						<p>
 							Le moyen le plus simple est d'utiliser un tableau a deux dimensions. Chacune de ses cellules aura une valeur que nous pourrons utiliser pour afficher notre monde (par exemple 1 pour un mur ou 0 pour un espace vide).
-							Un désavantage de ce choix est que nous sommes contraint d'avoir un résultat ou toutes les surfaces seront quadrillées.
+							Un des désavantage de ce choix est que nous sommes contraint d'avoir un résultat où toutes les surfaces seront quadrillées.
 						</p>
 
 						<p>
-							Pour faciliter l'acces a nos données, nous utiliserons une structure nommée <i>data</i>. Pour l'instant, elle ne contient que les éléments de la MiniLibX et les données utiles a notre tableau.
+							Pour faciliter l'accès à nos données, nous utiliserons une structure nommée <i>data</i>. Pour l'instant, elle ne contient que les éléments de la MiniLibX et les données utiles à notre tableau.
 						</p>
 						<pre><code>typedef struct s_data {
 	// MiniLibX
@@ -294,13 +294,13 @@ int main(void)
 	int	tab_height;
 }	t_data;</pre></code>
 						<p>
-							Il est important de dissocier les dimensions de la fenetre (<i>win_height</i> et <i>win_width</i> qui sont en pixels) des dimensions de notre tableau (<i>tab_height</i> et <i>tab_width</i> qui indiquent la hauteur et largeur de notre tableau en nombre de cellule).
+							Il est important de dissocier les dimensions de la fenêtre (<i>win_height</i> et <i>win_width</i> qui sont en pixels) des dimensions de notre tableau (<i>tab_height</i> et <i>tab_width</i> qui indiquent la hauteur et largeur de notre tableau en nombre de cellule).
 						</p>
 
 						<p>Voyons maintenant comment créer notre tableau deux dimensions.</p>
 
 						<p>
-							Pour par la suite visualiser le contenu du tableau, nous allons mettre un mur toutes les deux cellules (un mur étant la valeur 1).
+							Par la suite, pour visualiser le contenu du tableau, nous allons mettre un mur toutes les deux cellules (un mur étant la valeur 1).
 						</p>
 						<pre><code>int init_tab(t_data *data)
 {
@@ -330,9 +330,9 @@ int main(void)
 
 						<h4>Affichage de la carte</h4>
 						<p>
-							L'objectif est désormais d'afficher sur notre fenetre le contenu du tableau tout juste créé.<br>
-							Ici la difficulté est de passer du format de tableau (coordonnée de cellule) a une coordonnée en pixel de la fenetre.
-							La premiere chose a faire est de definir la taille (en pixel) que prendront nos cellules sur l'écran. Cette variable, ici nommée <i>cell_size</i>, est stockéé dans notre structure <i>data</i>.
+							L'objectif est désormais d'afficher sur notre fenêtre le contenu du tableau tout juste créé.<br>
+							Ici la difficulté est de passer du format de tableau (coordonnée de cellule) à une coordonnée en pixel de la fenêtre.
+							La première chose à faire est de définir la taille (en pixel) que prendront nos cellules sur l'écran. Cette variable, ici nommée <i>cell_size</i>, est stockée dans notre structure <i>data</i>.
 						</p>
 
 						<pre><code>void	print_grid(t_data *data)
@@ -368,19 +368,19 @@ int main(void)
 								</span>
 							</div>
 							<div class="col-5">
-								<p>Voici le résultat obtenu lorsque l'on affiche le tableau précédemment générée. Le damier provient de la formule <i>(y % 2 + x) % 2</i> utilisé lors de la création du tableau. Je vous invite cependant a la modifier pour créer différents motifs.
+								<p>Voici le résultat obtenu lorsque l'on affiche le tableau précédemment généré. Le damier provient de la formule <i>(y % 2 + x) % 2</i> utilisé lors de la création du tableau. Je vous invite cependant à la modifier pour créer différents motifs.
 								</p>
 							</div>
 						</div>
 
 						<h4>Modification de la carte</h4>
 						<p>
-							Maintenant que nous avons la possibilité de visualiser notre tableau, nous pouvons essayer de le modifier pendant l'éxécution du programme.<br>
-							A la fin nous pourrons placer des murs a l'aide du clique gauche et les supprimer avec le clique droit de la souris.
+							Maintenant que nous avons la possibilité de visualiser notre tableau, nous pouvons essayer de le modifier pendant l'exécution du programme.<br>
+							À la fin, nous pourrons placer des murs à l'aide du clique gauche, et les supprimer avec le clique droit de la souris.
 						</p>
 
-						<p>Cette fois-ci, le problème est de convertir la position de la souris sur la fenetre (qui est en pixel) en coordonées de cellules.</p>
-						<p>Encore une fois, c'est <i>cell_size</i> qui va nous nous aider a résoudre ce probleme.</p>
+						<p>Cette fois-ci, le problème est de convertir la position de la souris sur la fenêtre (qui est en pixel) en coordonnées de cellules.</p>
+						<p>Encore une fois, c'est <i>cell_size</i> qui va nous nous aider à résoudre ce problème.</p>
 
 						<pre><code>void	set_grid_cell(t_data *data, int x, int y)
 {
@@ -405,8 +405,8 @@ int main(void)
 						<div class="row">
 							<div class="col-5">
 								<p>
-									Cette fonctionnalité nous sera tres utile pour tester l'implémentation de notre premier lancer de rayons.<br>
-									Il va consister a analyser la collision entre un mur et un segment (définie par un point d'origine et une direction).
+									Cette fonctionnalité nous sera très utile pour tester l'implémentation de notre premier lancer de rayons.<br>
+									Il va consister à analyser la collision entre un mur et un segment (défini par un point d'origine et une direction).
 								</p>
 							</div>
 							<div class="col-5">
@@ -424,8 +424,8 @@ int main(void)
 						<div class="row">
 							<div class="col-5">
 								<p>
-									Pour commencer les choses simplement, commencons par créer un rayon du centre de la fenetre a la position du curseur.<br>
-									Rien de plus simple, a l'aide d'une fonction de tracer de segment (Bresenham dans l'exemple), on relie le centre de l'écran et la souris.
+									Pour aborder les choses simplement, commençons par créer un rayon du centre de la fenêtre à la position du curseur.<br>
+									Rien de plus simple, à l'aide d'une fonction de tracer de segment (Bresenham dans l'exemple), on relie le centre de l'écran et la souris.
 								</p>
 							</div>
 							<div class="col-5">
@@ -439,14 +439,14 @@ int main(void)
 						</div>
 
 						<p>
-							L'idée ici est d'afficher l'endroit ou le segment entre en collision avec un mur.</p>
+							L'idée ici est d'afficher l'endroit où le segment entre en collision avec un mur.</p>
 						<p>
-							Il existe de nombreux moyens de faire ceci-ci. Le moyen le plus simple serait de vérifier pour chaque pixel sur lequel passe le segment, si celui-ci appartient a un mur.<br>
-							Cependant, des que le nombre de segment augmente, cette option devient extrement couteuse et devient rapidement inutilisable.
+							Il existe de nombreux moyens de faire ceci. Le moyen le plus simple serait de vérifier pour chaque pixel sur lequel passe le segment, si celui-ci appartient à un mur.<br>
+							Cependant, dès que le nombre de segment augmente, cette option devient extrêmement couteuse et devient rapidement inutilisable.
 						</p>
 						<p>
-							Une méthode un plus élégante et adaptée a notre situation est l'afnalayseur diférentiel numérique (plus connu sous son acronyme anglais : DDA).<br>
-							Cet algorithme est utilisé pour faire varier des données depuis un point de départ, jusqu'a un point d'arrivé.
+							Une méthode un peu plus élégante et adaptée à notre situation est l'analayseur différentiel numérique (plus connu sous son acronyme anglais : DDA).<br>
+							Cet algorithme est utilisé pour faire varier des données depuis un point de départ, jusqu'à un point d'arrivé.
 						</p>
 
 						<div class="row">
@@ -466,8 +466,8 @@ int main(void)
 
 						<h4>Création d'un cône de vision</h4>
 						<p>
-							Ce champs visuel sera constitué d'une multitude de rayons. On souhaite pouvoir modifier le nombre de rayons, la largeur, mais également la distance maximale de ce champs de vision.<br>
-							L'astuce est d'utiliser un segment afin de savoir ou seront placés nos rayons. La position est la dimension de ce segment seront définies en fonction de la distance de vision et de la largeur du champs de vision.
+							Ce champ visuel sera constitué d'une multitude de rayons. On souhaite pouvoir modifier le nombre de rayons, la largeur, mais également la distance maximale de ce champ de vision.<br>
+							L'astuce est d'utiliser un segment afin de savoir où seront placés nos rayons. La position et la dimension de ce segment seront définies en fonction de la distance de vision et de la largeur du champ de vision.
 						</p>
 						<p><b>ILLUSTRATION</b></p>
 
@@ -497,7 +497,7 @@ int main(void)
 								</span>
 							</div>
 							<div class="col-5">
-								<p>Nous possédons dornénavant la hauteur de notre cone. Pour calculer </p>
+								<p>Nous possédons dorénavant la hauteur de notre cône. Pour calculer </p>
 							</div>
 						</div>
 
