@@ -459,10 +459,29 @@ int main(void)
 								</span>
 							</div>
 							<div class="col-5">
-								<p><b>EXPLIQUER FONCTIONNEMENT DDA</b></p>
+								<p>
+									Dans notre cas, la DDA permet de parcouris intelligemment les cases du tableau sur lesquelles passe notre rayon.<br>
+									C'est de cette manière qu'il est possible de détecter quand une collision se produit entre un mur et un rayon.
+								</p>
 							</div>
 						</div>
 
+						<p>
+							La vidéo précédente montre une implémentation basique de la DDA. A partir d'un point de départ (ici le centre de l'écran) le programme va prendre comme
+							direction la position du curseur. Il va alors parcourir toutes les cellules dans cette direction jusqu'à rencontrer une collision.
+						</p>
+						<p>
+							Bien évidemment, si la carte n'est pas entourée de murs, le programme continuera ses calculs à l'infini (causant un magnifique plantage de l'application).<br>
+							Il faut donc bien attention à deux choses :
+						</p>
+						<ul>
+							<li>Imposer une distance maximale de recherche de collision</li>
+							<li>Vérifier que la coordonnée (en pixel) soit dans la portée de notre tableau (sous peine de créer une erreur de segmentation)</li>
+						</ul>
+						<p>
+							Dans le cas où la DDA ne rencontre pas de collision, il faut définir quelle valeur celle-ci retournera.<br>
+							Étant donné que les coordonnées de notre tableau sont exclusivement positives, la valeur retournée par une "non-collision" sera un vecteur de (-1, -1).
+						</p>
 
 						<h4>Création d'un cône de vision</h4>
 						<p>
@@ -511,7 +530,7 @@ int main(void)
 							Nous voila avec le centre de la base du cône de vision. Pour trouver la longueur de la base du cône, le plus simple est de considérer que nous travaillons sur 2 triangles rectangles.
 						</p>
 						<b>SCHEMA<br></b>
-						
+
 						<p>
 							Ici nous voulons à partir d'un angle, définir la largeur de notre champ de vision. Rien de plus facile, il suffit d'utiliser la formule (tout droit tiré de SOH-CAH-TOA) qui dit : <br>
 							Le côté opposé d'un triangle rectangle est égal à la tangente de l'angle multiplié par son côté adjacent.<br>
@@ -520,16 +539,16 @@ int main(void)
 
 						<p>
 							Il ne reste qu'à placer les deux points à la base de notre cône.<br>
-							Le plus pratique est de réutiliser la fonction <i>create_vect_d_from_origin</i>, et depuis <i>view_dist_pos</i> créer un vecteur de la longueur du côté opposé avec pour angle, 
+							Le plus pratique est de réutiliser la fonction <i>create_vect_d_from_origin</i>, et depuis <i>view_dist_pos</i> créer un vecteur de la longueur du côté opposé avec pour angle,
 						</p>
 
 						<pre><code>void	create_rays(t_data *data)
 {
 	t_vector2_d origin = {data->win_width / 2, data->win_height / 2};
-	
+
 	// Getting the angle (in radian) of mouse position according to the origin
 	double angle = get_angle(origin, data->mouse_pos);
-	
+
 	t_vector2_d view_dist_pos = create_vector_d_from_origin(origin, angle, data->view_dst);
 	draw_circle_color(data, view_dist_pos, GREEN);
 
@@ -543,8 +562,8 @@ int main(void)
 	draw_circle_color(data, opposite_vect[0], BLUE);
 	draw_circle_color(data, opposite_vect[1], BLUE);
 }</code></pre>
-				
-						
+
+
 						<div class="row">
 							<div class="col-5">
 								<p>
@@ -611,16 +630,16 @@ for (int i = 0; i < data->rays_nb; i++)
 							Nous possédons maintenant plusieurs rayons mais tous passent au travers de la carte.<br>
 							Fort heureusement nous possédons déja l'algorithme de DDA permettant de détecter une collision à partir d'une position de départ et de destination.
 						</p>
-						
+
 						<p>
 							Comme la DDA est uniquement utilisé avec les rayons, à la place de donner une position en argument il est plus pratique de donner une référence à un rayon.<br>
 							La position <i>hit_point</i> du rayon sera utilisé comme destination et il sera en plus possible de modifier certaines données du rayon pendant l'exécution de la DDA.
 						</p>
-					
+
 						<pre><code>void calculate_collisions(t_data *data)
 {
 	t_vector2_d origin = {data->win_width / 2, data->win_height / 2};
-	
+
 	for (int i = 0; i < data->rays_nb; i++)
 	{
 		t_vector2_f res = dda(data, data->rays[i]);
