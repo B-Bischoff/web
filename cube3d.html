@@ -697,8 +697,99 @@ for (int i = 0; i < data->rays_nb; i++)
 									</video>
 									<center><sup><i>démonstration cône de vision avec des bords arrondis</i></sup></center>
 								</span>
-							</div>1
+							</div>
 						</div>
+
+						<h4>Déplacements</h4>
+						<p>Pour rendre notre programme un peu plus interactif essayons de controler notre joueur avec le clavier.</p>
+
+						<p>
+							Pour ordonner nos données, le joueur possèdera sa propre structure contenant ses informations.<br>
+							Une variable player (de type <i>t_player</i> sera donc ajoutée à notre structure data).
+						</p>
+						
+						<pre><code>typedef struct s_player
+{
+	t_vector2_f	pos;
+	t_vector2_d	view_dst_pos;
+	t_vector2_f	dir;
+}	t_player</code></pre>
+
+<p></p>
+						<p>
+							La position du joueur est définie par un vecteur utilisant des nombres flottants. Ce n'est pas obligatoire mais cela permet de rajouter un peu de précision et de fluidité à nos déplacements.<br>
+							Nous avons utilisé <i>view_dst_pos</i> pour générer nos rayons. Il fait sens de rattacher cette variable au joueur étant donnée que seul lui l'utilise et que nous en aurons besoin à différents endroits du programme.<br>
+							Enfin, <i>dir</i> permet de stocker en radian, la direction vers laquelle regarde le joueur.
+						</p>
+
+						<p>
+							Pour détecter et exécuter les entrées utilisateurs, nous allons comme indiqué par le concept de <i>gameloop</i>, créer une fonction en début <i>d'update</i> à cet effet.
+						</p>
+
+						<pre><code>int player_input(t_data *data)
+{
+	if (data->keyboard[KEY_A] == 1)
+		rotate_left(data);
+	if (data->keyboard[KEY_E] == 1)
+		rotate_right(data);
+}</code></pre>
+						<p>
+							Le format de cette fonction permet d'aisément rajouter des possibilités d'interaction à notre jeu. Pour l'instant il n'y a que la rotation mais plus tard nous ajouterons les déplacements du personnage.
+						</p>
+
+						<p>
+							Pour effectuer la rotation de notre personnage nous utiliserons la variables <i>dir</i>. C'est d'ailleurs cette variable qui va nous permettre de calculer <i>view_dst_pos</i>.
+						</p>
+
+						<p>
+							Il est nécessaire de donner une direction initiale à notre joueur pendant l'initialisation du programme. 
+							<ul>
+								<li>Nord : X = 0 | Y = -1</li>
+								<li>Sud : X = 0 | Y = 1</li>
+								<li>Est : X = 1 | Y = 0</li>
+								<li>Ouest : X = -1 | Y = 0</li>
+							</ul>
+							C'est ensuite a l'aide d'une matrice de rotation que nous calculons les nouvelles valeurs de la direction du joueur.
+						</p>
+
+						<pre><code>void rotate_right(t_data *data)
+{
+	double rot_speed = 1.5f;
+	double old_dir_x = data->player.dir.x;
+	data->player.dir.x = data->player.dir.x * cos(rot_speed) - data->player.dir.y * sin(rot_speed);
+	data->player.dir.y = old_dir_x * sin(rot_speed) + data->player.dir.y * cos(rot_speed);
+}
+</code></pre>
+						<p>
+							Pour tourner à gauche il suffit simplement de donner une valeur négative à <i>rot_speed</i> (libre à vous de factoriser ces fonctions de rotation).
+						</p>
+						
+						<p>
+							La direction va nous être très utile pour les déplacements. La difficulté est de garder ses mouvements relatifs à sa direction.<br>
+							Par exemple, lorsque l'on veut se déplacer vers l'avant, le joueur doit avancer la où il regarde.
+						</p>
+
+						<p>
+							Etant donné que valeurs de <i>dir</i> sont comprises entre -1 et 1, il suffit de multiplier une vitesse par ces valeurs et d'ajouter le résultat à la position du joueur.
+						</p>
+
+						<pre><code>move_forward(t_data *data)	
+{
+	double move_speed = 150;
+
+	// Calculating relative position
+	t_vector2_f new_pos = {
+		data->player.dir.x * move_speed, // x
+		data->player.dir.y * move_speed  // y
+	};
+
+	// Adding that position to the player
+	data->player.x += new_pos.x;
+	data->player.y += new_pos.y;
+}</code></pre>
+
+						<p>De nouveau, pour reculer il faut donner une valeur négative à move_speed</p>
+
 						<hr>
 
 						<h2>Conclusion</h2>
