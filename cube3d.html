@@ -479,6 +479,8 @@ int main(void)
 
 						<p>La première étape de la DDA consiste à initialiser toutes les données dont nous avons besoin.</p>
 
+						<b>GIF THEORIE DDA</b>
+
 						<pre><code>t_vector2_f dda(t_data *data, t_vector2_f dest)
 {
 	t_vector2_d origin = {win_width / 2, win_height / 2};
@@ -579,6 +581,48 @@ int main(void)
 							Étant donné que les coordonnées de notre tableau sont exclusivement positives, la valeur retournée par une "non-collision" sera un vecteur de (-1, -1).
 						</p>
 
+						<p>
+							Voici donc une version améliorée de la DDA. La recherche de collision est désormais limitée par une distance maximale, et l'accès au tableau est sécurisé.
+						</p>
+
+						<pre><code>// Using squared values is faster than using square root function
+float ray_length = get_vector_d_length_squared(origin, map);
+
+while (ray_length < data->view_dst * data->view_dst)
+{
+	if (side_dist.x < side_dist.y)
+	{
+		side_dist.x += delta_dist.x;
+		map.x += step.x;
+	}
+	else
+	{
+		side_dist.y += delta_dist.y;
+		map.y += step.y;
+	}
+
+	ray_length = get_vector_d_length_squared(origin, map);
+
+	// Converting pixel coordinates to tab coordinates
+	t_vector2_d cell = {
+		map.x / data->cell_size,
+		map.y / data->cell_size
+	};
+
+	if (cell.x < 0 || cell.x >= data->win_width)
+		continue;
+	if (cell.y < 0 || cell.y >= data->win_height)
+		continue;
+
+	if (data->tab[cell.y][cell.x] == 1) // Is a wall
+	{
+		return (vector_d_to_f(map));
+	}
+}</code></pre>
+						<p>
+							L'utilisation de l'instruction <i>continue</i> permet de détecter des collisions malgré le fait que le joueur soit hors de la carte.
+						</p>
+
 						<h4>Création d'un cône de vision</h4>
 						<p>
 							Ce champ visuel sera constitué d'une multitude de rayons. On souhaite pouvoir modifier le nombre de rayons, la largeur, mais également la distance maximale de ce champ de vision.<br>
@@ -622,16 +666,25 @@ int main(void)
 							La fonction <i>create_vector_d_from_origin</i> permet depuis une position de départ, de créer un vecteur dans une direction spécifique (indiquée par un angle en radian) pour une longueur donnée (en pixel).
 						</p>
 
-						<p>
-							Nous voila avec le centre de la base du cône de vision. Pour trouver la longueur de la base du cône, le plus simple est de considérer que nous travaillons sur 2 triangles rectangles.
-						</p>
-						<b>SCHEMA<br></b>
+						<div class="row">
+							<div class="col-7">
+								<p>
+									Nous voila avec le centre de la base du cône de vision. Pour trouver la longueur de la base du cône, le plus simple est de considérer que nous travaillons sur 2 triangles rectangles.
+								</p>
+								<p>
+									Ici nous voulons à partir d'un angle, définir la largeur de notre champ de vision. Rien de plus facile, il suffit d'utiliser la formule (tout droit tiré de SOH-CAH-TOA) qui dit : <br>
+									Le côté opposé d'un triangle rectangle est égal à la tangente de l'angle multiplié par son côté adjacent.<br>
+									Attention cependant, dans notre cas, l'angle est divisé par deux car nous avons séparé notre cône en deux triangles rectangles.
+								</p>
+							</div>
+							<div class="col-4">
+								<span class="image fit">
+									<span class="image fit"><img src="images/cube3d/schema-cone.png" alt="" /></span>
+								</span>
+							</div>
+						</div>
 
-						<p>
-							Ici nous voulons à partir d'un angle, définir la largeur de notre champ de vision. Rien de plus facile, il suffit d'utiliser la formule (tout droit tiré de SOH-CAH-TOA) qui dit : <br>
-							Le côté opposé d'un triangle rectangle est égal à la tangente de l'angle multiplié par son côté adjacent.<br>
-							Attention cependant, dans notre cas, l'angle est divisé par deux car nous avons séparé notre cône en deux triangles rectangles.
-						</p>
+
 
 						<p>
 							Il ne reste qu'à placer les deux points à la base de notre cône.<br>
@@ -873,7 +926,7 @@ else
 	data->player.dir.y = old_dir_x * sin(rot_speed) + data->player.dir.y * cos(rot_speed);
 }
 </code></pre>
-						
+
 						<div class="row">
 							<div class="col-5">
 								<p>
@@ -918,7 +971,7 @@ else
 							De nouveau, pour reculer il faut donner une valeur négative à move_speed.
 							Le fait de calculer de combien de combien le joueur va se déplacer (sans directement lui attribuer sa nouvelle position), va être très pratique pour vérifier les collisions.
 						</p>
-						
+
 
 						<p>
 							Voyons maintenant le dernier mouvemement possible de notre personnage, les déplacements latéraux.<br>
