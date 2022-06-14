@@ -743,9 +743,9 @@ for (int i = 0; i < data->rays_nb; i++)
 
 	for (int i = 0; i < data->rays_nb; i++)
 	{
-		t_vector2_f res = dda(data, data->rays[i]);
+		t_vector2_f res = dda(data, data->rays[i].hit_point);
 
-		if (res.x == -1 && res.y == -1) // Hit
+		if (res.x != -1 && res.y != -1) // Hit
 		{
 			data->rays[i].hit_point = res; // Update ray hit point
 			data->rays[i].length = get_vector_f_length(data->player.pos, res);
@@ -873,9 +873,22 @@ else
 	data->player.dir.y = old_dir_x * sin(rot_speed) + data->player.dir.y * cos(rot_speed);
 }
 </code></pre>
-						<p>
-							Pour tourner à gauche il suffit simplement de donner une valeur négative à <i>rot_speed</i> (libre à vous de factoriser ces fonctions de rotation).
-						</p>
+						
+						<div class="row">
+							<div class="col-5">
+								<p>
+									Pour tourner à gauche il suffit simplement de donner une valeur négative à <i>rot_speed</i> (libre à vous de factoriser ces fonctions de rotation).
+								</p>
+							</div>
+							<div class="col-5">
+								<span class="image fit">
+									<video controls width="100%">
+										<source src="images/cube3d/player_rotate.mp4" type="video/webm">
+									</video>
+									<center><sup><i>démonstration rotation du joueur avec le clavier</i></sup></center>
+								</span>
+							</div>
+						</div
 
 						<p>
 							La direction va nous être très utile pour les déplacements. La difficulté est de garder ses mouvements relatifs à sa direction.<br>
@@ -905,6 +918,7 @@ else
 							De nouveau, pour reculer il faut donner une valeur négative à move_speed.
 							Le fait de calculer de combien de combien le joueur va se déplacer (sans directement lui attribuer sa nouvelle position), va être très pratique pour vérifier les collisions.
 						</p>
+						
 
 						<p>
 							Voyons maintenant le dernier mouvemement possible de notre personnage, les déplacements latéraux.<br>
@@ -930,15 +944,27 @@ else
 	data->player.x += new_pos.x;
 	data->player.y += new_pos.y;
 }</pre></code>
-						<p>
-							Après avoir ajouté ces fonctions dans <i>player_input</i>, nous avons désormais la possibilité de déplacer notre joueur.<br>
-							Il faut cependant faire attention à désormais utiliser la position de notre personnage dans les fonctions utilisant les rayons et non plus le centre de l'écran.<br>
-							De plus, il ne faut pas oublier de mettre à jour <i>view_dst_pos</i> à la fin de la fonction <i>player_input</i>.
-						</p>
+						<div class="row">
+							<div class="col-5">
+								<span class="image fit">
+									<video controls width="100%">
+										<source src="images/cube3d/player_move.mp4" type="video/webm">
+									</video>
+									<center><sup><i>démonstration déplacements du joueur avec le clavier</i></sup></center>
+								</span>
+							</div>
+							<div class="col-5">
+								<p>
+									Après avoir ajouté ces fonctions dans <i>player_input</i>, nous avons désormais la possibilité de déplacer notre joueur.<br>
+									Il faut cependant faire attention à désormais utiliser la position de notre personnage dans les fonctions utilisant les rayons et non plus le centre de l'écran.<br>
+									De plus, il ne faut pas oublier de mettre à jour <i>view_dst_pos</i> à la fin de la fonction <i>player_input</i>.
+								</p>
+							</div>
+						</div>
+
 						<pre><code>data->player.view_dst_pos.x = data->player.dir.x * data->view_dst + data->player.pos.x;
 data->player.view_dst_pos.y = data->player.dir.y * data->view_dst + data->player.pos.y;</code></pre>
 
-						<b>VIDEO DEPLACEMENTS</b>
 
 						<p>
 							Comme mentionné plus haut, il serait un peu plus réaliste de pouvoir heurter un mur au lieu de passer au travers.<br>
@@ -983,9 +1009,19 @@ if (!is_colliding_cell(data, p_pos->x + new_pos.x, p_pos->y))
 if (!is_colliding_cell(data, p_pos->x, p_pos->y + new_pos.y))
 	p_pos->y += new_pos.y;
 </code></pre>
-						<p>Le fait de séparer la vérification des coordonées X et Y permet de ne pas être "bloqué" dès lors que le joueur se trouve près d'un mur. Au lieu de ca, le personnage va longer le mur.</p>
-
-						<b>VIDEO COLLISION</b>
+						<div class="row">
+							<div class="col-5">
+								<p>Le fait de séparer la vérification des coordonées X et Y permet de ne pas être "bloqué" dès lors que le joueur se trouve près d'un mur. Au lieu de ca, le personnage va longer le mur.</p>
+							</div>
+							<div class="col-5">
+								<span class="image fit">
+									<video controls width="100%">
+										<source src="images/cube3d/player_collision.mp4" type="video/webm">
+									</video>
+									<center><sup><i>démonstration collisions</i></sup></center>
+								</span>
+							</div>
+						</div>
 
 						<h4>Rendu en première personne</h4>
 
