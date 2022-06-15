@@ -244,9 +244,28 @@ int main(void)
 						</p>
 						<p>
 							Cela implique pour notre programme d'avoir un moyen de stocker les données de nos périphériques.<br>
-							Pour le clavier, il est possible de créer un tableau de booléens (du nombre de touches du clavier) et dès qu'une touche est pressée, la case du tableau correspondant à la touche est passée à vrai.
+							Pour le clavier, il est possible de créer un tableau de booléens (du nombre de touches du clavier) et dès qu'une touche est pressée, la case du tableau correspondant à la touche est passée à vrai.<br>
+							Voici le code permettant de gérer un tableau (d'une taile de 200 booléens) à l'aide des hooks 02 et 03.
 						</p>
-						<p>Ainsi, dans notre game loop il ne reste qu'à vérifier si une touche (une case précise du tableau) est appuyée pour effectuer une action.</p>
+
+						<pre><code>int	key_press(int keycode, t_struct *prg_struct)
+{
+	if (keycode < 200)
+		prg_struct->keyboard[keycode] = 1;
+
+	return (0);
+}
+
+int	key_release(int keycode, t_struct *prg_struct)
+{
+	if (keycode < 200)
+		prg_struct->keyboard[keycode] = 0;
+
+	return (0);
+}</code></pre>
+						
+
+						<p>Ainsi, dans notre game loop il ne reste qu'à vérifier si une touche (à une case précise du tableau) est appuyée pour effectuer une action.</p>
 
 						<h3>Définition de raycasting</h3>
 						<p>
@@ -623,6 +642,50 @@ while (ray_length < data->view_dst * data->view_dst)
 							L'utilisation de l'instruction <i>continue</i> permet de détecter des collisions malgré le fait que le joueur soit hors de la carte.
 						</p>
 
+						<h4>Utilisation d'une structure "rayon"</h4>
+
+						<p>
+							intro rayon,
+							utilité,
+							de quoi ils sont composés,
+							recuperer ces composantes,
+							changement dda,
+						</p>
+						
+						<p>
+							La dernière vidéo illutre le principe d'un rayon. Cependant, étant donné que nous en aurons une multitude, il est nécessaire d'avoir une structure, capable d'accueilir toutes les informations relatives à chaque rayon.<br>
+						</p>
+
+						<p>Pour le moment, les informations dont nous aurons besoin sont les suivantes :</p>
+
+						<div class="row">
+							<div class="col-4">
+								<pre><code>typedef struct t_ray {
+	t_vector2_f hit_point;
+	t_vector2_d cell;
+	double length;
+	int side_hit;
+} t_ray;</code></pre>
+							</div>
+							<div class="col-7">
+								<p>
+									La coordonnée de l'impact (en pixel) est stockée dans le vecteur <i>hit_point</i> avec des nombres flottants pour garder un maximum de précision.<br>
+									La position de la cellule (sur laquelle à eu lieu l'impact) est conservée dans le vecteur <i>cell</i>.<br>
+									Pour afficher la portion de mur dont nous parlé il est important de connaître la longueur du rayon (entre le joueur et le point d'impact du rayon).<br>
+									Et enfin, le côté du mur qui vient d'être touché, cette valeur allant de 0 à 3 va nous permettre d'afficher une couleur pour chaque orientation du mur.
+								</p>
+							</div>
+						</div>
+						
+						<p>
+							L'usage de cette structure permet de garder en mémoire ces données pour plus tard les réutiliser.
+Cela nécessite simplement d'allouer un tableau de N rayons (stocké dans data) à l'initilisation de notre programme.
+						</p>
+
+						<p>
+							<b>ASSIGNER DONNEES DEPUIS LA DDA</b>
+						</p>
+
 						<h4>Création d'un cône de vision</h4>
 						<p>
 							Ce champ visuel sera constitué d'une multitude de rayons. On souhaite pouvoir modifier le nombre de rayons, la largeur, mais également la distance maximale de ce champ de vision.<br>
@@ -683,8 +746,6 @@ while (ray_length < data->view_dst * data->view_dst)
 								</span>
 							</div>
 						</div>
-
-
 
 						<p>
 							Il ne reste qu'à placer les deux points à la base de notre cône.<br>
@@ -768,13 +829,10 @@ for (int i = 0; i < data->rays_nb; i++)
 									Etant donnée que nous utiliserons énormément ces rayons, il est judicieux de créer une structure contenant plusieurs informations sur chaque rayon.<br>
 									Comme par exemple le point de collision d'un rayon, le côté du mur qu'il a touché ou encore sa longueur.<br>
 								</p>
-								<p>
-									L'usage de cette structure permet de garder en mémoire les données de différents rayons pour plus tard les réutiliser.<br>
-									Cela nécessite simplement d'allouer un tableau de N rayons (stocké dans <i>data</i>) à l'initilisation de notre programme.
-								</p>
 							</div>
 						</div>
-
+					
+					
 						<p>
 							Nous possédons maintenant plusieurs rayons mais tous passent au travers de la carte.<br>
 							Fort heureusement nous possédons déja l'algorithme de DDA permettant de détecter une collision à partir d'une position de départ et de destination.
@@ -1090,28 +1148,12 @@ if (!is_colliding_cell(data, p_pos->x, p_pos->y + new_pos.y))
 							dont la hauteur va dépendre de la distance qu'à mis le rayon pour trouver une collision.
 						</p>
 
-						<p>Repassons en revu de quoi est constitué un  rayon.</p>
-
-						<pre><code>typedef struct t_ray {
-	t_vector2_f hit_point;
-	t_vector2_d cell;
-	double length;
-	int side_hit;
-} t_ray;</code></pre>
-
 						<p>
-							La coordonnée de l'impact (en pixel) est stockée dans le vecteur <i>hit_point</i> avec des nombres flottants pour garder un maximum de précision.<br>
-							La position de la cellule (sur laquelle à eu lieu l'impact) est conservée dans le vecteur <i>cell</i>.<br>
-							Pour afficher la portion de mur dont nous parlé il est important de connaître la longueur du rayon (entre le joueur et le point d'impact du rayon).<br>
-							Et enfin, le côté du mur qui vient d'être touché, cette valeur allant de 0 à 3 va nous permettre d'afficher une couleur pour chaque orientation du mur.
+							C'est donc après avoir calculé la position de l'impact des rayons (fonction <i>calculate_collisions</i>) que nous voulons afficher nos murs.<br>
+							Créons une fonction nommée <i>rays_render</i> qui se chargera de ceci.
 						</p>
 
-						<p>
-							C'est donc après avoir calculé l'impact des rayons (fonction <i>calculate_collisions</i>) que nous voulons afficher nos murs.<br>
-							Créons une fonction nommée <i>rays_render</i> qui se chargera de faire ceci.
-						</p>
-
-						<p>Il faut premièrememnt calculer la largeur d'une tranche et ensuite itérer sur tous les rayons et être sûr que le rayon scrutée ait belle et bien rencontré une collision.</P>
+						<p>Il faut premièrement calculer la largeur d'une tranche et ensuite itérer sur tous les rayons et être sûr que le rayon scrutée ait belle et bien rencontré une collision.</P>
 
 						<pre><code>void rays_render(t_data *data)
 {
@@ -1157,7 +1199,7 @@ else if (ray->side_hit == 1)
 else if (ray->side_hit == 2)
 	color = YELLOW;
 else
-	color = GREEN;é
+	color = GREEN;
 </pre></code>
 
 						<p>
