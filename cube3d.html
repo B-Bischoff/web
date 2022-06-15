@@ -263,7 +263,7 @@ int	key_release(int keycode, t_struct *prg_struct)
 
 	return (0);
 }</code></pre>
-						
+
 
 						<p>Ainsi, dans notre game loop il ne reste qu'à vérifier si une touche (à une case précise du tableau) est appuyée pour effectuer une action.</p>
 
@@ -475,7 +475,7 @@ int	key_release(int keycode, t_struct *prg_struct)
 						</p>
 
 						<p>
-							Afin de suivre de nous diriger dans la direction que nous voulons suivre, il faut alterner entre avancer (de 1 pixel à chaque fois)
+						 	Afin de nous déplacer vers le point d'arrivée, il faut alterner entre avancer (de 1 pixel à chaque fois)
 							sur l'axe horizontal et vertical.
 						</p>
 
@@ -483,7 +483,7 @@ int	key_release(int keycode, t_struct *prg_struct)
 							Pour ne rater aucune cellule, il faut progresser sur l'axe le moins avancé.<br>
 							Mesurer l'avancement d'un axe se fait en utilisant les propriétés du triangle rectangle.<br>
 							Il est possible de calculer la longueur de l'hypténuse pour un avancement de 1 (pour l'axe horizontal ET vertical) en utilisant la pente de la droite.<br>
-							La seule chose restante est d'avancer sur l'axe qui possède la plus petite longueur d'hypoténuse, jusqu'à rencontrer une collision.
+							La dernière étape est d'avancer sur l'axe qui possède la plus petite longueur d'hypoténuse, jusqu'à rencontrer une collision.
 						</p>
 
 						<p>
@@ -582,14 +582,14 @@ int	key_release(int keycode, t_struct *prg_struct)
 							<div class="col-5">
 								<p>
 									La vidéo suivante montre une démonstration de la DDA. A partir d'un point de départ (ici le centre de l'écran) le programme va prendre comme
-									direction la position du curseur. Il va alors parcourir toutes les cellules dans cette direction jusqu'à rencontrer une collision.
+									direction la position du curseur. Il va alors parcourir toutes les cellules dans cette direction jusqu'à rencontrer une collision, représentée par un cercle vert.
 								</p>
 							</div>
 						</div>
 
 						<p>
 							Bien évidemment, si la carte n'est pas entourée de murs, le programme continuera ses calculs à l'infini (causant un magnifique plantage de l'application).<br>
-							Il faut donc bien attention à deux choses :
+							Il faut donc bien faire attention à deux choses :
 						</p>
 						<ul>
 							<li>Imposer une distance maximale de recherche de collision</li>
@@ -601,7 +601,8 @@ int	key_release(int keycode, t_struct *prg_struct)
 						</p>
 
 						<p>
-							Voici donc une version améliorée de la DDA. La recherche de collision est désormais limitée par une distance maximale, et l'accès au tableau est sécurisé.
+							Voici donc une version améliorée de la DDA. La recherche de collision est désormais limitée par une distance maximale, et l'accès au tableau est sécurisé.<br>
+							L'utilisation de l'instruction <i>continue</i> permet de détecter des collisions malgré le fait que le joueur soit hors de la carte.
 						</p>
 
 						<pre><code>// Using squared values is faster than using square root function
@@ -638,9 +639,6 @@ while (ray_length < data->view_dst * data->view_dst)
 		return (vector_d_to_f(map));
 	}
 }</code></pre>
-						<p>
-							L'utilisation de l'instruction <i>continue</i> permet de détecter des collisions malgré le fait que le joueur soit hors de la carte.
-						</p>
 
 						<h4>Utilisation d'une structure "rayon"</h4>
 
@@ -651,9 +649,13 @@ while (ray_length < data->view_dst * data->view_dst)
 							recuperer ces composantes,
 							changement dda,
 						</p>
-						
+
+						<p>Tout le concept du raycasting gravite autour de "rayons". Ils permettent à partir de notre monde 2D, d'afficher un résultat semblable à de la 3D.</p>
+						<p>Le champs de vision du joueur ne sera ni plus ni moins qu'un ensemble de rayons, tachés de représenter à l'écran le monde environnant à partir des informations qu'ils contiennent.</p>
+
 						<p>
-							La dernière vidéo illutre le principe d'un rayon. Cependant, étant donné que nous en aurons une multitude, il est nécessaire d'avoir une structure, capable d'accueilir toutes les informations relatives à chaque rayon.<br>
+							La dernière vidéo illustre une version extrêmement basique d'un rayon.<br>
+							Cependant, comme il est nécessaire de stocker plusieurs informations pour un seul rayon, ceci seront représentées par une structure.
 						</p>
 
 						<p>Pour le moment, les informations dont nous aurons besoin sont les suivantes :</p>
@@ -668,22 +670,41 @@ while (ray_length < data->view_dst * data->view_dst)
 } t_ray;</code></pre>
 							</div>
 							<div class="col-7">
-								<p>
-									La coordonnée de l'impact (en pixel) est stockée dans le vecteur <i>hit_point</i> avec des nombres flottants pour garder un maximum de précision.<br>
-									La position de la cellule (sur laquelle à eu lieu l'impact) est conservée dans le vecteur <i>cell</i>.<br>
-									Pour afficher la portion de mur dont nous parlé il est important de connaître la longueur du rayon (entre le joueur et le point d'impact du rayon).<br>
-									Et enfin, le côté du mur qui vient d'être touché, cette valeur allant de 0 à 3 va nous permettre d'afficher une couleur pour chaque orientation du mur.
-								</p>
+								<ul>
+									<li>
+										<i>hit_point</i> : Cette valeur va premièrement indiquer dans quelle direction chercher une collision (de la même manière que la souris dans l'exemple précédent).
+										Sa valeur sera alors mise à jour si une collision a été trouvée.
+									</li>
+									<li>
+										<i>cell</i> : La position de la cellule sur laquelle à eu lieu l'impact est conservée dans le vecteur <i>cell</i> en coordonée de cellules.
+									</li>
+									<li>
+										<i>length</i> : Pour par la suite afficher une portion de mur dans la phase de rendu, il est important de connaître la longueur du rayon (entre le joueur et le point d'impact du rayon).
+									</li>
+									<li>
+										<i>side_hit</i> : Le côté du mur qui vient d'être touché, cette valeur allant de 0 à 3 va nous permettre d'afficher une couleur différente pour chaque orientation du mur.
+									</li>
+								</ul>
 							</div>
 						</div>
-						
-						<p>
-							L'usage de cette structure permet de garder en mémoire ces données pour plus tard les réutiliser.
-Cela nécessite simplement d'allouer un tableau de N rayons (stocké dans data) à l'initilisation de notre programme.
-						</p>
+
 
 						<p>
-							<b>ASSIGNER DONNEES DEPUIS LA DDA</b>
+							L'usage de cette structure permet de garder en mémoire ces données pour plus tard les réutiliser.
+Cela nécessite d'allouer un tableau de N rayons (stocké dans data) à l'initilisation de notre programme.
+						</p>
+
+
+						<p>
+							Certaines valeurs (comme <i>side_hit</i> ou <i>cell</i>) peuvent dores et déjà être obtenues depuis la fonction DDA.<br>
+							Cela nécessite cependant de modifier les paramètres qu'elle accepte, pour que elle possède une référence au rayon afin de mettre à jour ses informations au sein même de la fonction.
+						</p>
+
+						<p>Voici à quoi ressemble désormais le prototype de la fonction <i>DDA</i></p>
+						<pre><code>t_vector2_f dda(t_data *data, t_ray *ray)</code></pre>
+						<p>
+							Il ne reste qu'à assigner <i>ray->cell</i> et <i>ray->side_hit</i> (ce dernier pouvant être determiné grâce à <i>side_dist</i>).
+							Mais surtout ! Remplacer <i>dest</i> par <i>ray->hit_point</i> qui est calculé dans la partie suivante.
 						</p>
 
 						<h4>Création d'un cône de vision</h4>
@@ -704,7 +725,7 @@ Cela nécessite simplement d'allouer un tableau de N rayons (stocké dans data) 
 	// Getting the angle (in radian) of mouse position according to the origin
 	double angle = get_angle(origin, data->mouse_pos);
 
-	t_vector2_d	direction = create_vector_d_from_origin(origin, -angle, length);
+	t_vector2_d direction = create_vector_d_from_origin(origin, -angle, length);
 	draw_circle_color(data, direction, GREEN);
 }</code></pre>
 
@@ -804,7 +825,7 @@ Cela nécessite simplement d'allouer un tableau de N rayons (stocké dans data) 
 							Pour appliquer ce concept à des vecteurs il faut simplement faire une interpolation linéaire par composante du vecteur (une pour X et une autre pour Y).<br>
 						</p>
 
-						<p>Il suffit simpliment de calculer l'incrémentation de l'interpolation linéaire en fonction du nombre de rayons et le tour est joué.</p>
+						<p>Il suffit simplement de calculer l'incrémentation de l'interpolation linéaire en fonction du nombre de rayons et le tour est joué.</p>
 
 						<p>Le code suivant est la suite de la fonction <i>create_rays</i></p>
 						<pre><code>double increment = 1.0f / (data->rays_nb - 1.0f);
@@ -826,26 +847,15 @@ for (int i = 0; i < data->rays_nb; i++)
 							</div>
 							<div class="col-5">
 								<p>
-									Etant donnée que nous utiliserons énormément ces rayons, il est judicieux de créer une structure contenant plusieurs informations sur chaque rayon.<br>
-									Comme par exemple le point de collision d'un rayon, le côté du mur qu'il a touché ou encore sa longueur.<br>
+									Nous possédons maintenant plusieurs rayons simulant notre champs de vision. Cependant, si vous essayez de placer des murs devant eux, tous passerons au travers.<br>
+									Fort heureusement nous possédons déja l'algorithme de DDA permettant de détecter une collision à partir d'une position de départ et d'un rayon.
 								</p>
 							</div>
 						</div>
-					
-					
-						<p>
-							Nous possédons maintenant plusieurs rayons mais tous passent au travers de la carte.<br>
-							Fort heureusement nous possédons déja l'algorithme de DDA permettant de détecter une collision à partir d'une position de départ et de destination.
-						</p>
-
-						<p>
-							Comme la DDA est uniquement utilisé avec les rayons, à la place de donner une position en argument il est plus pratique de donner une référence à un rayon.<br>
-							La position <i>hit_point</i> du rayon sera utilisé comme destination et il sera en plus possible de modifier certaines données du rayon pendant l'exécution de la DDA.
-						</p>
 
 						<p>
 							Nous aurons plus tard besoin de connaitre la longueur des rayons ayant touché un mur, il faut donc un moyen d'indiquer quand les rayons n'ont pas heurté de mur.<br>
-							De la même manière que pour la DDA, nous symboliserons une non-collision par une longueur de -1.
+							De la même manière que pour la DDA, nous symboliserons une "non-collision" par une longueur de -1.
 						</p>
 
 						<pre><code>void calculate_collisions(t_data *data)
@@ -859,7 +869,7 @@ for (int i = 0; i < data->rays_nb; i++)
 		if (res.x != -1 && res.y != -1) // Hit
 		{
 			data->rays[i].hit_point = res; // Update ray hit point
-			data->rays[i].length = get_vector_f_length(data->player.pos, res);
+			data->rays[i].length = get_vector_f_length(origin, res);
 		}
 		else
 		{
@@ -879,32 +889,22 @@ for (int i = 0; i < data->rays_nb; i++)
 									<center><sup><i>démonstration collisions avec 100 rayons et distance max de 1000 pixels</i></sup></center>
 								</span>
 							</div>
-							<div class="col-5">
-								<p>
-									Dans la vidéo suivante, la distance maximale de vision a été abaissée à 300 pixels.<br>
-									On constate alors les rayons aux bords du cône de vision traversent parfois les murs.
-								</p>
-								<p>
-									Ce phénomène provient du fait que la DDA cesse de détecter les collisions à partir de la distance maximale de vision.
-									Cependant, la manière dont nous avons généré nos rayons fait que leur distance (depuis l'origine) est supérieure à cette distance maximale.
-								</p>
-							</div>
 						</div>
 
 						<p>
-							Pour régler cette imprécision visuelle, il faut modifier le vecteur que reçois le rayon (dans la fonction <i>calculate_collisions</i>) si celui-ci ne touche aucun obstacle :
+							Dans la vidéo un peu plus bas, la distance maximale de vision a été abaissée à 300 pixels.<br>
+							On constate alors les rayons aux bords du cône de vision traversent parfois les murs.
 						</p>
-						<pre><code>if (res.x == -1 && res.y == -1) // Hit
-{
-	data->rays[i].hit_point = res; // Update ray hit point
-	data->rays[i].length = get_vector_f_length(data->player.pos, res);
-}
-else
-{
-	data->rays[i].length = -1;
-	data->rays[i].hit_point = create_vector_f_from_origin(origin, get_angle_f(origin, vector), data->view_dst);
-}</code></pre>
-						<p>Le cône de vision possède désormais des bords arrondis rendant le résutat juste et précis.</p>
+						<p>
+							Ce phénomène provient du fait que la DDA cesse de détecter les collisions à partir de la distance maximale de vision.
+							Cependant, la manière dont nous avons généré nos rayons fait que la distance des rayons aux extremités du cone, est supérieure à cette distance maximale.
+						</p>
+
+						<p>
+							Pour régler cette imprécision visuelle, il faut normaliser le vecteur que reçois le rayon à la longeur maximale de vision.<br>
+							Le cône de vision possède désormais des bords arrondis rendant le résutat juste et précis.
+						</p>
+
 						<div class="row">
 							<div class="col-5">
 								<span class="image fit">
@@ -924,6 +924,18 @@ else
 							</div>
 						</div>
 
+						<i>partie de code provenant de la fonction "calculate_collisions"</i>
+						<pre><code>if (res.x == -1 && res.y == -1) // Hit
+{
+	data->rays[i].hit_point = res; // Update ray hit point
+	data->rays[i].length = get_vector_f_length(data->player.pos, res);
+}
+else
+{
+	data->rays[i].length = -1;
+	data->rays[i].hit_point = create_vector_f_from_origin(origin, get_angle_f(origin, vector), data->view_dst);
+}</code></pre>
+
 						<h4>Déplacements</h4>
 						<p>Pour rendre notre programme un peu plus interactif essayons de controler notre joueur avec le clavier.</p>
 
@@ -941,7 +953,7 @@ else
 <p></p>
 						<p>
 							La position du joueur est définie par un vecteur utilisant des nombres flottants. Ce n'est pas obligatoire mais cela permet de rajouter un peu de précision et de fluidité à nos déplacements.<br>
-							Nous avons utilisé <i>view_dst_pos</i> pour générer nos rayons. Il fait sens de rattacher cette variable au joueur étant donnée que seul lui l'utilise et que nous en aurons besoin à différents endroits du programme.<br>
+							Nous avons précédemment utilisé <i>view_dst_pos</i> pour générer nos rayons. Il fait sens de rattacher cette variable au joueur étant donnée que seul lui l'utilise et que nous en aurons besoin à différents endroits du programme.<br>
 							Enfin, <i>dir</i> permet de stocker en radian, la direction vers laquelle regarde le joueur.
 						</p>
 
@@ -1034,7 +1046,7 @@ else
 						<p>
 							Voyons maintenant le dernier mouvemement possible de notre personnage, les déplacements latéraux.<br>
 							Celui-ci est en réalité une combinaison de la rotation et du déplacement.<br>
-							Il faut créer (temporairement) une nouvelle direction vers la gauche ou droite du personnage, et faire avancer celui-ci comme précédemment.
+							Il faut temporairement créer nouvelle direction à 90° à gauche ou à droite du personnage, et le faire avancer dans cette nouvelle direction.
 						</p>
 
 						<pre><code>void move_left(t_data *data)
@@ -1073,6 +1085,7 @@ else
 							</div>
 						</div>
 
+						<i>Mise à jour de view_dst_pos à la fin de la fonction "player_input"</i>
 						<pre><code>data->player.view_dst_pos.x = data->player.dir.x * data->view_dst + data->player.pos.x;
 data->player.view_dst_pos.y = data->player.dir.y * data->view_dst + data->player.pos.y;</code></pre>
 
@@ -1082,7 +1095,7 @@ data->player.view_dst_pos.y = data->player.dir.y * data->view_dst + data->player
 							Rien de bien compliqué tout est déja en place.
 						</p>
 						<p>
-							Avant de mettre à jour les coordonées du joueur lors d'un déplacement, il faut vérifier si il ne va sur une case mur de notre tableau (représentée par la valeur 1 dans notre cas).
+							Avant de mettre à jour les coordonées du joueur lors d'un déplacement, il faut vérifier qu'il n'aille pas sur une cellule représentant un mur dans notre tableau.
 							Voici la fonction pour vérifier si une cellule est un mur, à partir de coordonnées dans l'espace.
 						</p>
 
@@ -1145,7 +1158,7 @@ if (!is_colliding_cell(data, p_pos->x, p_pos->y + new_pos.y))
 						<p>
 							C'est grâce aux données contenues dans les rayons que nous sommes en capacité de simuler un affichage en première personne.<br>
 							Notre écran sera constitué de plusieurs bandes vertcales (autant qu'il y a de rayons). Il faut dessiner sur chaque bande, un rectangle (représentant une portion de mur)
-							dont la hauteur va dépendre de la distance qu'à mis le rayon pour trouver une collision.
+							dont la hauteur va dépendre de la distance qu'à mis le rayon à une collision.
 						</p>
 
 						<p>
@@ -1153,7 +1166,7 @@ if (!is_colliding_cell(data, p_pos->x, p_pos->y + new_pos.y))
 							Créons une fonction nommée <i>rays_render</i> qui se chargera de ceci.
 						</p>
 
-						<p>Il faut premièrement calculer la largeur d'une tranche et ensuite itérer sur tous les rayons et être sûr que le rayon scrutée ait belle et bien rencontré une collision.</P>
+						<p>Après avoir calculé la largeur d'une tranche, il faut itérer sur tous les rayons et vérifier que ceux-ci ont belle et bien rencontré une collision.</p>
 
 						<pre><code>void rays_render(t_data *data)
 {
@@ -1179,7 +1192,7 @@ if (!is_colliding_cell(data, p_pos->x, p_pos->y + new_pos.y))
 						</p>
 
 						<p>
-							La hauteur de la tranche se calcul en multpliant, l'inverse de la longueur du rayon par la hauteur de l'écran.<br>
+							La hauteur de la tranche se calcul en multipliant, l'inverse de la longueur du rayon par la hauteur de l'écran.<br>
 							Il est possible d'ajuster le résultat obtenu en ajoutant un coefficient comme 2 pour doubler la taille des tranches ou 0.5 pour au contraire, diviser la hauteur par 2.
 						</p>
 
@@ -1187,7 +1200,7 @@ if (!is_colliding_cell(data, p_pos->x, p_pos->y + new_pos.y))
 						<pre><code>// Calculating slice height
 float slice_height = 1.0f / ray->length;
 slice_height = slice_height * data->win_height;
-slice_height = slice_height * 2; // Make the slice two times bigger
+slice_height = slice_height * 2; // Make the wall two times bigger
 </code></pre>
 
 						<p>Comme mentionné dans la description de la structure <i>t_ray</i>, la couleur à afficher va dépendre de l'orientation du mur.</p>
@@ -1222,13 +1235,13 @@ t_vector2_d br = {
 
 draw_rect_color(data, tl, br, color);</code></pre>
 
-					
-						
+
+
 						<div class="row">
 							<div class="col-5">
 								<p>
 								Il est important que le nombre de rayons soit un multiple de la taille horizontale de la fenêtre. Etant donné qu'il n'est pas possible de dessiner sur des fractions de pixels,
-								si nous avions par exemple une fenêtre de 100 pixels (de largeur) et 30 rayons, la dernière tranche de pixels serait perdue et n'afficherait rien.
+								si nous avions une fenêtre de 100 pixels (de largeur) et 30 rayons, la dernière tranche de pixels serait perdue et n'afficherait rien.
 							</p>
 							<p>Cette possibilité d'utiliser un rayon pour plusieurs tranches, est cependant très utiles pour optimiser l'efficacité de notre programme (bien qu'au détriment d'une certaine précision).</p>
 							<p>Voici le résultat obtenu lorsque nous naviguons sur la carte en première personne cette fois-ci.</p>
@@ -1254,10 +1267,10 @@ draw_rect_color(data, tl, br, color);</code></pre>
 
 						<pre><code>int update(t_data *data)
 {
-	player_input(data); 
+	player_input(data);
 
 	floor_and_ceiling(data);
-	
+
 	create_rays(data);
 	calculate_collisions(data);
 	rays_render(data);
