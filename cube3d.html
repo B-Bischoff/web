@@ -1180,14 +1180,48 @@ t_vector2_d br = {
 
 draw_rect_color(data, tl, br, color);</code></pre>
 
-						<p>
-							Il est important que le nombre de rayons soit un multiple de la taille horizontale de la fenêtre. Etant donné qu'il n'est pas possible de dessiner sur des fractions de pixels,
-							si nous avions par exemple une fenêtre de 100 pixels (de largeur) et 30 rayons, la dernière tranche de pixels serait perdue et n'afficherait rien.
-						</p>
-						<p>Cette possibilité d'utiliser un rayon pour plusieurs tranches, est cependant très utiles pour optimiser l'efficacité de notre programme (bien qu'au détriment d'une certaine précision).</p>
+					
+						
+						<div class="row">
+							<div class="col-5">
+								<p>
+								Il est important que le nombre de rayons soit un multiple de la taille horizontale de la fenêtre. Etant donné qu'il n'est pas possible de dessiner sur des fractions de pixels,
+								si nous avions par exemple une fenêtre de 100 pixels (de largeur) et 30 rayons, la dernière tranche de pixels serait perdue et n'afficherait rien.
+							</p>
+							<p>Cette possibilité d'utiliser un rayon pour plusieurs tranches, est cependant très utiles pour optimiser l'efficacité de notre programme (bien qu'au détriment d'une certaine précision).</p>
+							<p>Voici le résultat obtenu lorsque nous naviguons sur la carte en première personne cette fois-ci.</p>
+							</div>
+							<div class="col-5">
+								<span class="image fit">
+									<video controls width="100%">
+										<source src="images/cube3d/fish_eye.mp4" type="video/webm">
+									</video>
+									<center><sup><i>démonstration rendu</i></sup></center>
+								</span>
+							</div>
+						</div>
 
-						<p>Voici le résultat obtenu lorsque nous naviguons sur la carte en première personne cette fois-ci.</p>
-						<b>VIDEO FISH EYE</b>
+						<p>
+							Sur cette vidéo, les deux moitiés de l'écran sont repeintes en bleu et gris pour donner une impression de sol et de ciel.<br>
+							Ceci est effectué dans une fonction nommée <i>floor_and_ceiling</i> (non presentée sur cette page).
+						</p>
+
+						<p>
+							Maintenant que nous possédons tous les éléments importants du raycasting, voici à quoi ressemble notre fonction <i>update</i>
+						</p>
+
+						<pre><code>int update(t_data *data)
+{
+	player_input(data); 
+
+	floor_and_ceiling(data);
+	
+	create_rays(data);
+	calculate_collisions(data);
+	rays_render(data);
+
+	mlx_put_image_to_window(data);
+}</code></pre>
 
 						<hr>
 
