@@ -642,16 +642,8 @@ while (ray_length < data->view_dst * data->view_dst)
 
 						<h4>Utilisation d'une structure "rayon"</h4>
 
-						<p>
-							intro rayon,
-							utilité,
-							de quoi ils sont composés,
-							recuperer ces composantes,
-							changement dda,
-						</p>
-
 						<p>Tout le concept du raycasting gravite autour de "rayons". Ils permettent à partir de notre monde 2D, d'afficher un résultat semblable à de la 3D.</p>
-						<p>Le champs de vision du joueur ne sera ni plus ni moins qu'un ensemble de rayons, tachés de représenter à l'écran le monde environnant à partir des informations qu'ils contiennent.</p>
+						<p>Le champs de vision du joueur ne sera ni plus ni moins qu'un ensemble de rayons, ayant pour but de représenter à l'écran le monde environnant à partir des informations qu'ils contiennent.</p>
 
 						<p>
 							La dernière vidéo illustre une version extrêmement basique d'un rayon.<br>
@@ -682,7 +674,7 @@ while (ray_length < data->view_dst * data->view_dst)
 										<i>length</i> : Pour par la suite afficher une portion de mur dans la phase de rendu, il est important de connaître la longueur du rayon (entre le joueur et le point d'impact du rayon).
 									</li>
 									<li>
-										<i>side_hit</i> : Le côté du mur qui vient d'être touché, cette valeur allant de 0 à 3 va nous permettre d'afficher une couleur différente pour chaque orientation du mur.
+										<i>side_hit</i> : Le côté du mur a été touché, cette valeur allant de 0 à 3 va nous permettre d'afficher une couleur différente pour chaque orientation du mur.
 									</li>
 								</ul>
 							</div>
@@ -697,7 +689,7 @@ Cela nécessite d'allouer un tableau de N rayons (stocké dans data) à l'initil
 
 						<p>
 							Certaines valeurs (comme <i>side_hit</i> ou <i>cell</i>) peuvent dores et déjà être obtenues depuis la fonction DDA.<br>
-							Cela nécessite cependant de modifier les paramètres qu'elle accepte, pour que elle possède une référence au rayon afin de mettre à jour ses informations au sein même de la fonction.
+							Pour mettre à jour les données d'un rayon au sein même de cette fonction, il faut modifier ses paramètres pour lui passer une référence à un rayon. 
 						</p>
 
 						<p>Voici à quoi ressemble désormais le prototype de la fonction <i>DDA</i></p>
@@ -710,12 +702,12 @@ Cela nécessite d'allouer un tableau de N rayons (stocké dans data) à l'initil
 						<h4>Création d'un cône de vision</h4>
 						<p>
 							Ce champ visuel sera constitué d'une multitude de rayons. On souhaite pouvoir modifier le nombre de rayons, la largeur, mais également la distance maximale de ce champ de vision.<br>
-							L'astuce est d'utiliser un segment afin de savoir où seront placés nos rayons. La position et la dimension de ce segment seront définies en fonction de la distance de vision et de la largeur du champ de vision.
+							L'astuce est d'utiliser un segment afin de savoir où seront placés nos rayons. La position et la dimension de ce segment seront définies par la distance de vision ainsi que la largeur du champ de vision.
 						</p>
 
-						<p>Nous allons commencer par limiter la longueur du segment [centre de l'écran | curseur] par une distance maximale.<br></p>
+						<p>Nous allons commencer par limiter la longueur du segment [centre de l'écran | curseur] par une distance maximale, <i>view_dst</i> stockée dans dans notre structure <i>data</i></p>
 
-						<pre><code>void	create_rays(t_data *data, int length)
+						<pre><code>void	create_rays(t_data *data)
 {
 	t_vector2_d origin = {
 		data->win_width / 2,
@@ -725,7 +717,7 @@ Cela nécessite d'allouer un tableau de N rayons (stocké dans data) à l'initil
 	// Getting the angle (in radian) of mouse position according to the origin
 	double angle = get_angle(origin, data->mouse_pos);
 
-	t_vector2_d direction = create_vector_d_from_origin(origin, -angle, length);
+	t_vector2_d view_dst_pos = create_vector_d_from_origin(origin, angle, data->view_dst);
 	draw_circle_color(data, direction, GREEN);
 }</code></pre>
 
@@ -735,7 +727,7 @@ Cela nécessite d'allouer un tableau de N rayons (stocké dans data) à l'initil
 									<video controls width="100%">
 										<source src="images/cube3d/ray_max_length.mp4" type="video/webm">
 									</video>
-									<center><sup><i>Démonstration détection de collision</i></sup></center>
+									<center><sup><i>Affichage de view_dst_pos</i></sup></center>
 								</span>
 							</div>
 							<div class="col-5">
@@ -770,7 +762,8 @@ Cela nécessite d'allouer un tableau de N rayons (stocké dans data) à l'initil
 
 						<p>
 							Il ne reste qu'à placer les deux points à la base de notre cône.<br>
-							Le plus pratique est de réutiliser la fonction <i>create_vect_d_from_origin</i>, et depuis <i>view_dist_pos</i> créer un vecteur de la longueur du côté opposé avec pour angle,
+							Le plus pratique est de réutiliser la fonction <i>create_vect_d_from_origin</i>, et depuis <i>view_dst_pos</i> créer un vecteur de la longueur du côté opposé.<br>
+							L'angle du premier point sera la direction du joueur +90° et -90° pour le second.
 						</p>
 
 						<pre><code>void	create_rays(t_data *data)
@@ -780,8 +773,8 @@ Cela nécessite d'allouer un tableau de N rayons (stocké dans data) à l'initil
 	// Getting the angle (in radian) of mouse position according to the origin
 	double angle = get_angle(origin, data->mouse_pos);
 
-	t_vector2_d view_dist_pos = create_vector_d_from_origin(origin, angle, data->view_dst);
-	draw_circle_color(data, view_dist_pos, GREEN);
+	t_vector2_d view_dst_pos = create_vector_d_from_origin(origin, angle, data->view_dst);
+	draw_circle_color(data, view_dst_pos, GREEN);
 
 	int opposite_length = tan(degree_to_radian(data->fov / 2)) * data->view_dst;
 
@@ -791,7 +784,7 @@ Cela nécessite d'allouer un tableau de N rayons (stocké dans data) à l'initil
 	};
 
 	draw_circle_color(data, opposite_vect[0], BLUE);
-	draw_circle_color(data, opposite_vect[1], BLUE);
+	draw_circle_color(data, opposite_vect[1], RED);
 }</code></pre>
 
 
@@ -799,7 +792,7 @@ Cela nécessite d'allouer un tableau de N rayons (stocké dans data) à l'initil
 							<div class="col-5">
 								<p>
 									Il est important de noter que le degré du champ de vision ne pourra jamais atteindre (et donc ne peut pas dépasser) les 180°.<br>
-									Plus la base du cone est longue plus le champs de vision sera large. A 180°, la longueur de la base du cône tendra donc vers l'infini (ce qui déplaira certainement à votre ordinateur).
+									Plus la base du cône est longue plus le champs de vision sera large. A 180°, la longueur de la base du cône tendra donc vers l'infini (ce qui déplaira certainement à votre ordinateur).
 								</p>
 							</div>
 							<div class="col-5">
@@ -834,7 +827,7 @@ for (int i = 0; i < data->rays_nb; i++)
 {
 	t_vector2_f vector = vector_f_lerp(opposite_vect[0], opposite_vect[1], increment * i);
 	bresenham(data, origin, vector, YELLOW);
-	data->rays[i].hit_point = vector;
+	data->rays[i].hit_point = vector; // Set ray direction
 }</code></pre>
 						<div class="row">
 							<div class="col-5">
@@ -864,7 +857,7 @@ for (int i = 0; i < data->rays_nb; i++)
 
 	for (int i = 0; i < data->rays_nb; i++)
 	{
-		t_vector2_f res = dda(data, data->rays[i].hit_point);
+		t_vector2_f res = dda(data, &data->rays[i]); // Passing ray reference
 
 		if (res.x != -1 && res.y != -1) // Hit
 		{
@@ -889,6 +882,12 @@ for (int i = 0; i < data->rays_nb; i++)
 									<center><sup><i>démonstration collisions avec 100 rayons et distance max de 1000 pixels</i></sup></center>
 								</span>
 							</div>
+							<div class="col-5">
+								<p>
+									Voici le résultat obtenu une fois tous les rayons passés dans la DDA.<br>
+									N'oubliez pas d'uniquement afficher le résultat à partir de cette fonction, ou bien de tracer les traits d'une couleur différentes que dans la fonction <i>create_rays</i>.
+								</p>
+							</div>
 						</div>
 
 						<p>
@@ -897,7 +896,7 @@ for (int i = 0; i < data->rays_nb; i++)
 						</p>
 						<p>
 							Ce phénomène provient du fait que la DDA cesse de détecter les collisions à partir de la distance maximale de vision.
-							Cependant, la manière dont nous avons généré nos rayons fait que la distance des rayons aux extremités du cone, est supérieure à cette distance maximale.
+							Cependant, la manière dont nous avons généré nos rayons fait que la distance des rayons aux extremités du cône, est supérieure à cette distance maximale.
 						</p>
 
 						<p>
@@ -925,7 +924,7 @@ for (int i = 0; i < data->rays_nb; i++)
 						</div>
 
 						<i>partie de code provenant de la fonction "calculate_collisions"</i>
-						<pre><code>if (res.x == -1 && res.y == -1) // Hit
+						<pre><code>if (res.x != -1 && res.y != -1) // Hit
 {
 	data->rays[i].hit_point = res; // Update ray hit point
 	data->rays[i].length = get_vector_f_length(data->player.pos, res);
@@ -1079,8 +1078,8 @@ else
 							<div class="col-5">
 								<p>
 									Après avoir ajouté ces fonctions dans <i>player_input</i>, nous avons désormais la possibilité de déplacer notre joueur.<br>
-									Il faut cependant faire attention à désormais utiliser la position de notre personnage dans les fonctions utilisant les rayons et non plus le centre de l'écran.<br>
-									De plus, il ne faut pas oublier de mettre à jour <i>view_dst_pos</i> à la fin de la fonction <i>player_input</i>.
+									Il faut cependant veiller à désormais <b>utiliser la position de notre personnage</b> dans les fonctions utilisant les rayons <b>et non plus le centre de l'écran</b>.<br>
+									De plus, il ne faut pas oublier de <b>mettre à jour <i>view_dst_pos</i></b> à la fin de la fonction <i>player_input</i>.
 								</p>
 							</div>
 						</div>
@@ -1096,7 +1095,7 @@ data->player.view_dst_pos.y = data->player.dir.y * data->view_dst + data->player
 						</p>
 						<p>
 							Avant de mettre à jour les coordonées du joueur lors d'un déplacement, il faut vérifier qu'il n'aille pas sur une cellule représentant un mur dans notre tableau.
-							Voici la fonction pour vérifier si une cellule est un mur, à partir de coordonnées dans l'espace.
+							Voici la fonction pour vérifier si une cellule est un mur, à partir de coordonnées en pixels.
 						</p>
 
 <pre><code>int is_colliding_cell(t_data *data, float x, float y)
@@ -1121,8 +1120,9 @@ data->player.view_dst_pos.y = data->player.dir.y * data->view_dst + data->player
 }</pre></code>
 
 						<p>Si à l'avenir notre programme devait accueillir d'autres valeurs de cellules, nous pourrons ici définir si elles sont solides ou non.</p>
-						<p>Vérifier une collision est maintenant on ne peut plus simple. (le code suivant est la suite de la fonction <i>move_forward</i>)</p>
+						<p>Vérifier une collision est maintenant on ne peut plus simple.</p>
 
+						<i>le code suivant est la suite de la fonction move_forward</i>
 						<pre><code>t_vector2_f *p_pos = &data->player_pos; // Reference to player pos
 
 // Check collision on X coordinate
@@ -1261,9 +1261,7 @@ draw_rect_color(data, tl, br, color);</code></pre>
 							Ceci est effectué dans une fonction nommée <i>floor_and_ceiling</i> (non presentée sur cette page).
 						</p>
 
-						<p>
-							Maintenant que nous possédons tous les éléments importants du raycasting, voici à quoi ressemble notre fonction <i>update</i>
-						</p>
+						<p>Maintenant que nous possédons tous les éléments importants du raycasting, voici à quoi ressemble notre fonction <i>update</i></p>
 
 						<pre><code>int update(t_data *data)
 {
@@ -1278,6 +1276,67 @@ draw_rect_color(data, tl, br, color);</code></pre>
 	mlx_put_image_to_window(data);
 }</code></pre>
 
+						
+						<div class="row">
+							<div class="col-5">
+								<p>
+									Si le rendu des murs parait étrange, c'est à cause du tant redouté "fish eye effect".<br>
+									En français, "l'effet oeil de poission", apparait lorsque l'on utilise la distance euclidienne des rayons.<br>
+									Le moyen de repérer cet effet, est de se mettre face à un mur. Les côtés du mur seront alors courbés d'une façon non-naturelle.
+								</p>
+							</div>
+							<div class="col-5">
+								<span class="image fit">
+									<img src="images/cube3d/fish_eye_wall.png" alt="" />
+									<center><sup><i>Rendu avec fish eye</i></sup></center>
+								</span>
+							</div>
+						</div>
+
+						<p>
+							Les rayons en bordure du champs de vision mettent une plus grande distance à atteindre le mur, c'est pourquoi leur hauteur est moins grande comparé à celle des rayons du centre.
+						</p>
+
+						<b>SCHEMA</b>
+
+						<p>
+							Un moyen d'uniformiser cette longueur est d'utiliser un plan de caméra.<br>
+							Ce plan sera perpendiculaire à la direction du joueur et se prolongera à l'infini
+						</p>
+						<b>SCHEMA</b>
+
+						<p>
+							Pour avoir cette distance uniformisée, il nous faut un point en plus du joueur et du hit.<br>
+							Ces trois points formeront un triangle rectangle en ce nouveau point.<br>
+							C'est la distance entre le hit et ce nouveau point que nous utiliserons pour afficher notre portion de mur.<br>
+							Cette valeur sera stockée sous format de <i>double</i> <b>dans une nouvelle donnée de la structure t_ray, nommée <i>perp_length</i></b></p>
+						</p>
+						<b>SCHEMA</b>
+
+						<p>
+							Ce calcul se fera dans la DDA. La page Lode's Computer Graphics Tutorial offre un moyen très efficace pour directement calculer cette longueur.<br>
+							Si le dernier axe incrémenté est l'axe horizontal, <i>perp_length</i> sera égal à :<br>
+							<pre><code>ray->perp_length = (side_dist.x - delta_dist.x) * data->cell_size</code></pre>
+							Autrement, perp_length prendra la valeur :<br>
+							<pre><code>ray->perp_length = (side_dist.y - delta_dist.y) * data->cell_size</code></pre>
+						</p>
+
+						<div class="row">
+							<div class="col-5">
+								<span class="image fit">
+									<video controls width="100%">
+										<source src="images/cube3d/fish_eye_corrected.mp4" type="video/webm">
+									</video>
+									<center><sup><i>démonstration rendu avec correction fish eye</i></sup></center>
+								</span>
+							</div>
+							<div class="col-5">
+								<p>
+									Voici le résultat quand <i>perp_length</i> est utilisé à la place de <i>length</i> dans la fonction <i>rays_render</i>.<br>
+									Le problème de fish eye est corrigé et les murs sont maintenant beaucoup plus lisses.
+								</p>
+							</div>
+						</div>
 						<hr>
 
 						<h2>Conclusion</h2>
