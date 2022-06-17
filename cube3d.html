@@ -346,7 +346,8 @@ int	key_release(int keycode, t_struct *prg_struct)
 						<p>
 							L'objectif est désormais d'afficher sur notre fenêtre le contenu du tableau tout juste créé.<br>
 							Ici la difficulté est de passer du format de tableau (coordonnée de cellule) à une coordonnée en pixel de la fenêtre.
-							La première chose à faire est de définir la taille (en pixel) que prendront nos cellules sur l'écran. Cette variable, ici nommée <i>cell_size</i>, est stockée dans notre structure <i>data</i>.
+							La première chose à faire est de définir la taille (en pixel) que prendront nos cellules sur l'écran. Cette variable, ici nommée <i>cell_size</i>, est stockée dans notre structure <i>data</i>.<br>
+							Dans tous les exemples se trouvant sur cette page, <i>cell_size</i> est égal à 40.
 						</p>
 
 						<pre><code>void	print_grid(t_data *data)
@@ -1337,8 +1338,36 @@ draw_rect_color(data, tl, br, color);</code></pre>
 								</p>
 							</div>
 						</div>
-						<hr>
 
+						<h4>Utilisation de textures</h4>
+
+						<p>
+							La dernière partie de ce guide va consister à donner des textures aux différentes orientation des murs.<br>
+							Il va premièrement falloir stocker nos textures au sein de notre programme. La solution est de créer une structure contenant toutes les informations relatives à une texture.
+						</p>
+
+						<div class="row">
+							<div class="col-5">
+								<pre><code>typedef struct s_text
+{
+	void *text;
+	char *text_adr;
+	int bits_per_pixel;
+	int line_length;
+	int endian;
+	int width_img;
+	int height_img;
+}</code></pre>
+							</div>
+							<div class="col-5">
+								<p><b>INIT TAB TEXTURE</b></p>
+							</div>
+						</div>
+
+						
+
+
+						<hr>
 						<h2>Conclusion</h2>
 						<hr>
 
