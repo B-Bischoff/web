@@ -689,7 +689,7 @@ Cela nécessite d'allouer un tableau de N rayons (stocké dans data) à l'initil
 
 						<p>
 							Certaines valeurs (comme <i>side_hit</i> ou <i>cell</i>) peuvent dores et déjà être obtenues depuis la fonction DDA.<br>
-							Pour mettre à jour les données d'un rayon au sein même de cette fonction, il faut modifier ses paramètres pour lui passer une référence à un rayon. 
+							Pour mettre à jour les données d'un rayon au sein même de cette fonction, il faut modifier ses paramètres pour lui passer une référence à un rayon.
 						</p>
 
 						<p>Voici à quoi ressemble désormais le prototype de la fonction <i>DDA</i></p>
@@ -1215,11 +1215,21 @@ else
 	color = GREEN;
 </pre></code>
 
-						<p>
-							L'affichage de nos tranches, se fera depuis le milieu de l'écran. Si une tranche fait 500 pixels de hauteur, 250 pixels seront affichés vers le bas, et 250 vers le haut de l'écran.<br>
-							Pour ce qui est de l'espacement horizontal, nous avons calculé <i>slice_width</i> qui va nous permettre d'espacer correctement nos tranches.
-						</p>
-						<b>SCHEMA<br></b>
+						<div class="row">
+							<div class="col-6">
+								<p>
+									L'affichage de nos tranches, se fera depuis le milieu de l'écran. Si une tranche fait 500 pixels de hauteur, 250 pixels seront affichés vers le bas, et 250 vers le haut de l'écran.<br>
+									Pour ce qui est de l'espacement horizontal, nous avons calculé <i>slice_width</i> qui va nous permettre d'espacer correctement nos tranches.
+								</p>
+							</div>
+							<div class="col-4">
+								<span class="image fit">
+									<img src="images/cube3d/rays_spacing.png" alt="" />
+									<center><sup><i>Schéma affichage des tranches (avec 5 rayons)</i></sup></center>
+								</span>
+							</div>
+						</div>
+
 
 						<pre><code>// Calculating top left corner position of the slice to draw
 t_vector2_d tl = {
@@ -1276,7 +1286,7 @@ draw_rect_color(data, tl, br, color);</code></pre>
 	mlx_put_image_to_window(data);
 }</code></pre>
 
-						
+
 						<div class="row">
 							<div class="col-5">
 								<p>
@@ -1337,6 +1347,74 @@ draw_rect_color(data, tl, br, color);</code></pre>
 								</p>
 							</div>
 						</div>
+
+
+						<h4>Ajouter des textures aux murs</h4>
+
+						<p>
+							La dernière étape de ce guide consiste à remplacer les magnifiques couleurs de nos murs par des textures.<br>
+							Il est possible de convertir des images au format XPM, en données utilisables par notre programme.
+						</p>
+
+						<div class="row">
+							<div class="col-5">
+								<p>Voici la structure utilisée pour représenter une texture au sein de notre programme.</p>
+								<p>Essayons maintenant de créer une fonction capable d'initialiser une texture à partir d'un fichier de notre PC.</p>
+							</div>
+							<div class="col-5">
+								<pre><code>typedef s_text
+{
+	void *text;
+	char *text_adr;
+	int bits_per_pixel;
+	int line_length;
+	int endian;
+	int width_img;
+	int height_img;
+} t_text;</code></pre>
+							</div>
+						</div>
+
+						<p>Nous utiliserons les fonction de la MiniLibX <i>mlx_xpm_file_to_image</i> et <i>mlx_get_data_addr</i>.</p>
+
+						<pre><code>int load_texture(t_data *data, t_texture *texture, char *texture_path)
+{
+	texture->text = mlx_xpm_file_to_image(data->mlx, texture_path, &texture->width_image, &texture->height_img);
+	if (texture->text == NULL) // Check conversion error
+		return (1);
+
+	texture->text_adr = mlx_get_data_addr(texture->text, &texture->bits_per_pixel, &texture->line_length, &texture->endian);
+	if (texture->text_adr == NULL)
+		return (1);
+
+	return (0);
+}</code></pre>
+
+						<p>
+							<i>texture</i> correspond à l'addresse de la variable qui va stocker notre texture.<br>
+							Ici nous voulons une texture pour toutes les face d'une cellule. Dans notre structure <i>data</i> se trouvera donc un tableau
+							de textures (de taille 4), que nous itialiserons avec les textures que nous voulons charger .<br>
+						</p>
+
+						<p>
+							Pour fidèlement projeter une image sur un mur, il est essentiel de pouvoir prévéler les pixels à une certaine position de notre texture.<br>
+							La manière de faire est on ne peut plus similaire à la fonction de <i>my_mlx_pixel_put</i> présentée au début.
+						</p>
+
+						<pre><code>int get_text_pixel(t_text *texture, int x, int y)
+{
+	int color;
+
+	// Check out of texture coordinate
+	if (x < 0 || x >= text->width_img)
+		return (0); // Returning black color
+	if (y < 0 || y >= text->height_img)
+		return (0);
+
+	color = (*(int *)text->text_adr + (y * text->line_length) + (x * text->bits_per_pixel / 8))
+	return (color);
+}</code></pre>
+
 						<hr>
 
 						<h2>Conclusion</h2>
