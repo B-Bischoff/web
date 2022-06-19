@@ -1415,6 +1415,62 @@ draw_rect_color(data, tl, br, color);</code></pre>
 	return (color);
 }</code></pre>
 
+						<p><b>Récuperer pos x de la texture à partir du hit</b></p>
+
+						<p>
+							La difficulté à présent est d'afficher à l'échelle de notre portion de mur, une bande de la texture.<br>
+							Si la hauteur de notre portion de mur est supérieure à la hauteur de la texture, cela veut dire qu'il faudra étirer la texture en hauteur pour pouvoir remplir toute la zone.<br>
+							A l'inverse, si notre portion est moins haute, il faudra "écraser" la texture pour que celle-ci puisse être entièrement affichée.
+						</p>
+
+						<b>SCHEMA</b>
+
+						<p>
+							Pour trouver le pas permettant d'afficher à l'échelle une texture, il suffit de diviser la hauteur de la texture par la hauteur de notre portion de mur.<br>
+							Il ne reste alors qu'à partir de haut en bas la portion de mur et d'y déposer les pixels de la texture.
+						</p>
+
+						<pre><code>void rays_render(t_data *data)
+{
+	const int slice_width = data->win_width / data->rays_nb;
+
+	for (int i = 0; i < data->rays_nb; i++)
+	{
+		t_ray *ray = &data->rays[i];
+
+		if (ray->length == -1)
+			continue;
+
+		<b>NORME PERP_LENGTH ?</b>
+
+		float slice_height = (float)(data->win_height / ray->perp_length);
+		t_vector2_d tl = {i * slice_width, data->win_height / 2 + slice_height / 2};
+		t_vector2_d br = {i * slice_width + slice_width, data->win_height / 2 - slice_height / 2};
+
+		t_text *texture = &data->textures[rays->side_hit]; // Reference to the texture according on side_hit
+
+		int tex_x = get_tex_x(data, ray, texture);
+		double tex_y = 0;
+
+		double step = texture->height_img / data->slice_height;
+
+		for (int y = tl.y; y < br.y, y++)
+		{
+			if (y >= 0 && y < data->win_height)
+			{
+				int color = get_text_pixel(texture, tex_x, tex_y);
+
+				for (int x = tl.x; x > br.x; x++)
+					my_mlx_pixel_put(data, x, y, color);
+			}
+		}
+	}
+}</pre></code>
+
+						<p>
+							Voici l'entièreté de la fonction <i>rays_render</i>, reprenant
+						</p>
+
 						<hr>
 
 						<h2>Conclusion</h2>
