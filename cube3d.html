@@ -1421,7 +1421,6 @@ draw_rect_color(data, tl, br, color);</code></pre>
 	return (color);
 }</code></pre>
 
-						<p><b>Récuperer pos x de la texture à partir du hit</b></p>
 
 						<p>
 							De la même manière que pour afficher une couleur sur un mur, c'est a partir d'une tranche de l'écran que nous déposerons les pixels de haut en bas.<br>
@@ -1533,13 +1532,31 @@ t_vector2_f wall_x = create_vect_f_from_origin(data->player.pos, ray->angle, hit
 				for (int x = tl.x; x > br.x; x++)
 					my_mlx_pixel_put(data, x, y, color);
 			}
+			tex_y += step;
 		}
 	}
 }</pre></code>
 
-						<p>
-							Voici l'entièreté de la fonction <i>rays_render</i>, reprenant le code montré précédemment ainsi que la partie texture.
-						</p>
+						<div class="row">
+							<div class="col-5">
+								<p>
+									Voici l'entièreté de la fonction <i>rays_render</i>, reprenant le code montré précédemment ainsi que la partie texture.<br>
+									La dernière boucle <i>for</i> permet de remplir dans la largeur de chaque portion de mur. Cette partie du code est essentielle
+									si il y a moins de rayons que de pixels en largeur sur la fenêtre.
+								</p>
+								<p>
+									Voici le résultat avec des textures provenant du jeu provenant du jeu Wolfenstein 3D.
+								</p>
+							</div>
+							<div class="col-5">
+								<span class="image fit">
+									<video controls width="100%">
+										<source src="images/cube3d/textures.mp4" type="video/webm">
+									</video>
+									<center><sup><i>démonstration du rendu avec textures</i></sup></center>
+								</span>
+							</div>
+						</div>
 
 						<hr>
 
