@@ -1450,7 +1450,7 @@ t_vector2_f wall_x = create_vect_f_from_origin(data->player.pos, ray->angle, hit
 						<p>
 							A partir de cette position, il est possible de trouver la coordonnée horizontale de la texture.<br>
 							Il faut pour cela trouver où notre rayon entre en collision sur la cellule.<br>
-							Exemple (avec <i>cell_size</i> égal à 40): 
+							Exemple (avec <i>cell_size</i> égal à 40):
 						</p>
 
 						<p>
@@ -1466,11 +1466,11 @@ t_vector2_f wall_x = create_vect_f_from_origin(data->player.pos, ray->angle, hit
 	double	hit_length = ray->perp_length * 0.5f * data->cell_size / sin(perp_angle);
 	t_vector2_f wall_x = create_vect_f_from_origin(data->player.pos, ray->angle, hit_length);
 
-	float cell_pos; 
+	float cell_pos;
 	// Getting hit position relative to the cell
 	if (ray->side_hit == 1 || ray->side_hit == 3) // Horizontal hit
 		cell_pos = wall_x.y - (int)(wall_x.y / data->cell_size) * data->cell_size;
-	else // Vertical hit 
+	else // Vertical hit
 		cell_pos = wall_x.x - (int)(wall_x.x / data->cell_size) * data->cell_size;
 
 	if (ray->side_hit == 3 || ray->side_hit == 2) // Converting cell_pos to ratio
@@ -1494,7 +1494,43 @@ t_vector2_f wall_x = create_vect_f_from_origin(data->player.pos, ray->angle, hit
 							A l'inverse, si notre portion est moins haute, il faudra "écraser" la texture pour que celle-ci puisse être entièrement affichée.
 						</p>
 
-						<b>SCHEMA</b>
+						<div class="row">
+							<div class="col-4">
+								<span class="image fit">
+									<img src="images/cube3d/stretch0.png" alt="" />
+									<center><sup><i>Texture de base</i></sup></center>
+								</span>
+							</div>
+							<div class="col-4">
+								<span class="image fit">
+									<img src="images/cube3d/stretch1.png" alt="" />
+									<center><sup><i>Texture étirée</i></sup></center>
+								</span>
+							</div>
+							<div class="col-4">
+								<span class="image fit">
+									<img src="images/cube3d/stretch2.png" alt="" />
+									<center><sup><i>Texture écrasée</i></sup></center>
+								</span>
+							</div>
+						</div>
+
+						<p>Bien sûr ce changement d'échelle dépendra de l'orientation du joueur par rapport au mur. C'est d'ailleurs celui-ci qui va rendre l'incrustation de la texture naturelle.</p>
+
+						<div class="row">
+							<div class="col-6">
+								<span class="image fit">
+									<img src="images/cube3d/no_texture.png" alt="" />
+									<center><sup><i>Mur sans texture</i></sup></center>
+								</span>
+							</div>
+							<div class="col-6">
+								<span class="image fit">
+									<img src="images/cube3d/texture.png" alt="" />
+									<center><sup><i>Mur avec texture</i></sup></center>
+								</span>
+							</div>
+						</div>
 
 						<p>
 							Pour trouver le pas permettant d'afficher à l'échelle une texture, il suffit de diviser la hauteur de la texture par la hauteur de notre portion de mur.<br>
