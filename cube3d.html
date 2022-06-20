@@ -660,6 +660,7 @@ while (ray_length < data->view_dst * data->view_dst)
 	t_vector2_d cell;
 	double length;
 	int side_hit;
+	double angle;
 } t_ray;</code></pre>
 							</div>
 							<div class="col-7">
@@ -677,6 +678,9 @@ while (ray_length < data->view_dst * data->view_dst)
 									<li>
 										<i>side_hit</i> : Le côté du mur a été touché, cette valeur allant de 0 à 3 va nous permettre d'afficher une couleur différente pour chaque orientation du mur.
 									</li>
+									<li>
+										<i>angle</i> : Le degré en radian du rayon.
+									</li>
 								</ul>
 							</div>
 						</div>
@@ -690,7 +694,7 @@ Cela nécessite d'allouer un tableau de N rayons (stocké dans data) à l'initil
 
 						<p>
 							Certaines valeurs (comme <i>side_hit</i> ou <i>cell</i>) peuvent dores et déjà être obtenues depuis la fonction DDA.<br>
-							Pour mettre à jour les données d'un rayon au sein même de cette fonction, il faut modifier ses paramètres pour lui passer une référence à un rayon. 
+							Pour mettre à jour les données d'un rayon au sein même de cette fonction, il faut modifier ses paramètres pour lui passer une référence à un rayon.
 						</p>
 
 						<p>Voici à quoi ressemble désormais le prototype de la fonction <i>DDA</i></p>
@@ -828,6 +832,7 @@ for (int i = 0; i < data->rays_nb; i++)
 {
 	t_vector2_f vector = vector_f_lerp(opposite_vect[0], opposite_vect[1], increment * i);
 	bresenham(data, origin, vector, YELLOW);
+	data->rays[i].angle = get_angle_f(origin, vector); // Set ray angle
 	data->rays[i].hit_point = vector; // Set ray direction
 }</code></pre>
 						<div class="row">
@@ -1216,11 +1221,21 @@ else
 	color = GREEN;
 </pre></code>
 
-						<p>
-							L'affichage de nos tranches, se fera depuis le milieu de l'écran. Si une tranche fait 500 pixels de hauteur, 250 pixels seront affichés vers le bas, et 250 vers le haut de l'écran.<br>
-							Pour ce qui est de l'espacement horizontal, nous avons calculé <i>slice_width</i> qui va nous permettre d'espacer correctement nos tranches.
-						</p>
-						<b>SCHEMA<br></b>
+						<div class="row">
+							<div class="col-6">
+								<p>
+									L'affichage de nos tranches, se fera depuis le milieu de l'écran. Si une tranche fait 500 pixels de hauteur, 250 pixels seront affichés vers le bas, et 250 vers le haut de l'écran.<br>
+									Pour ce qui est de l'espacement horizontal, nous avons calculé <i>slice_width</i> qui va nous permettre d'espacer correctement nos tranches.
+								</p>
+							</div>
+							<div class="col-4">
+								<span class="image fit">
+									<img src="images/cube3d/rays_spacing.png" alt="" />
+									<center><sup><i>Schéma affichage des tranches (avec 5 rayons)</i></sup></center>
+								</span>
+							</div>
+						</div>
+
 
 						<pre><code>// Calculating top left corner position of the slice to draw
 t_vector2_d tl = {
@@ -1277,7 +1292,7 @@ draw_rect_color(data, tl, br, color);</code></pre>
 	mlx_put_image_to_window(data);
 }</code></pre>
 
-						
+
 						<div class="row">
 							<div class="col-5">
 								<p>
@@ -1339,16 +1354,21 @@ draw_rect_color(data, tl, br, color);</code></pre>
 							</div>
 						</div>
 
+
 						<h4>Utilisation de textures</h4>
 
 						<p>
-							La dernière partie de ce guide va consister à donner des textures aux différentes orientation des murs.<br>
-							Il va premièrement falloir stocker nos textures au sein de notre programme. La solution est de créer une structure contenant toutes les informations relatives à une texture.
+							La dernière étape de ce guide consiste à remplacer les magnifiques couleurs de nos murs par des textures.<br>
+							Il est possible de convertir des images au format XPM, en données utilisables par notre programme.
 						</p>
 
 						<div class="row">
 							<div class="col-5">
-								<pre><code>typedef struct s_text
+								<p>Voici la structure utilisée pour stocker une texture au sein de notre programme.</p>
+								<p>Essayons maintenant de créer une fonction capable d'initialiser une texture à partir d'un fichier de notre PC.</p>
+							</div>
+							<div class="col-5">
+								<pre><code>typedef s_text
 {
 	void *text;
 	char *text_adr;
@@ -1357,14 +1377,171 @@ draw_rect_color(data, tl, br, color);</code></pre>
 	int endian;
 	int width_img;
 	int height_img;
-}</code></pre>
-							</div>
-							<div class="col-5">
-								<p><b>INIT TAB TEXTURE</b></p>
+} t_text;</code></pre>
 							</div>
 						</div>
 
-						
+						<p>Nous utiliserons les fonction de la MiniLibX <i>mlx_xpm_file_to_image</i> et <i>mlx_get_data_addr</i>.</p>
+
+						<pre><code>int load_texture(t_data *data, t_texture *texture, char *texture_path)
+{
+	texture->text = mlx_xpm_file_to_image(data->mlx, texture_path, &texture->width_image, &texture->height_img);
+	if (texture->text == NULL) // Check conversion error
+		return (1);
+
+	texture->text_adr = mlx_get_data_addr(texture->text, &texture->bits_per_pixel, &texture->line_length, &texture->endian);
+	if (texture->text_adr == NULL)
+		return (1);
+
+	return (0);
+}</code></pre>
+
+						<p>
+							Le paramètre <i>texture</i> correspond à l'addresse de la variable qui va stocker notre texture.<br>
+							Ici nous voulons une texture pour toutes les face d'une cellule. Dans notre structure <i>data</i> se trouvera donc un tableau
+							de textures (de taille 4), que nous itialiserons avec les textures que nous voulons charger .<br>
+						</p>
+
+						<p>
+							Pour fidèlement projeter une image sur un mur, il est essentiel de pouvoir prévéler les pixels à une certaine position de notre texture.<br>
+							La manière de faire est on ne peut plus similaire à la fonction <i>my_mlx_pixel_put</i> présentée au début.
+						</p>
+
+						<pre><code>int get_text_pixel(t_text *texture, int x, int y)
+{
+	int color;
+
+	// Check out of texture coordinate
+	if (x < 0 || x >= text->width_img)
+		return (0); // Returning black color
+	if (y < 0 || y >= text->height_img)
+		return (0);
+
+	color = (*(int *)text->text_adr + (y * text->line_length) + (x * text->bits_per_pixel / 8))
+	return (color);
+}</code></pre>
+
+						<p><b>Récuperer pos x de la texture à partir du hit</b></p>
+
+						<p>
+							De la même manière que pour afficher une couleur sur un mur, c'est a partir d'une tranche de l'écran que nous déposerons les pixels de haut en bas.<br>
+							La difficulté cette fois-ci est de savoir où sur la texture, préveler nos pixels pour les replacer sur notre mur.
+						</p>
+
+						<p>
+							Commençons par trouver la coordonnée horizontale de la texture à partir de l'impact d'un rayon.<br>
+							Il faut premièrement trouver la position exacte du hit. Jusqu'à présent avoir la position du hit au pixel pret était suffisant.
+							Cependant si une texture fait 100 pixels de large et que <i>cell_size</i> ne fait que 50 pixels, la moitié de la texture (une colonne sur deux) passera à la trappe.
+							<b>SCHEMA</b>
+						</p>
+
+						<p>Voici le bout de code permettant de calculer la position exacte de l'impact :</p>
+						<pre><code>double perp_angle = PI_2 - ray->angle + get_angle_f(data->player.pos, vector_d_to_f(data->player.view_dst_pos));
+double	hit_length = ray->perp_length * 0.5f * data->cell_size / sin(perp_angle);
+
+t_vector2_f wall_x = create_vect_f_from_origin(data->player.pos, ray->angle, hit_length);</code></pre>
+						<b>SCHEMA</b>
+
+						<p>
+							Il peut être nécessaire de rajouter un coefficient à <i>perp_length</i> comme il a été fait ici avec le "* 0.5f".<br>
+							Ce coefficient est nécessaire car la valeur de <i>perp_length</i> change en fonction de <i>cell_size</i> et de <i>view_dst</i>.<br>
+							Le code présenté utilise une <i>cell_size</i> de 40 ainsi qu'une <i>view_dst</i> de 800 pixels.
+						</p>
+
+						<p>
+							A partir de cette position, il est possible de trouver la coordonnée horizontale de la texture.<br>
+							Il faut pour cela trouver où notre rayon entre en collision sur la cellule.<br>
+							Exemple (avec <i>cell_size</i> égal à 40): 
+						</p>
+
+						<p>
+							Notre rayon touche le bas de la première cellule à la coordonnée 20 sur l'axe X.<br>
+							20 étant le milieu de <i>cell_size</i> on sait qu'il faudra afficher le milieu de la texture à cet endroit là.<br>
+							Il faut ensuite convertir cette valeur (en pixel) en ratio entre 0 et 1 et enfin l'adapter à la taille de la texture.
+						</p>
+
+						<pre><code>int get_tex_x(t_data *data, t_ray *ray, t_texture *texture)
+{
+	// Calculating exact hit position
+	double perp_angle = PI_2 - ray->angle + get_angle_f(data->player.pos, vector_d_to_f(data->player.view_dst_pos));
+	double	hit_length = ray->perp_length * 0.5f * data->cell_size / sin(perp_angle);
+	t_vector2_f wall_x = create_vect_f_from_origin(data->player.pos, ray->angle, hit_length);
+
+	float cell_pos; 
+	// Getting hit position relative to the cell
+	if (ray->side_hit == 1 || ray->side_hit == 3) // Horizontal hit
+		cell_pos = wall_x.y - (int)(wall_x.y / data->cell_size) * data->cell_size;
+	else // Vertical hit 
+		cell_pos = wall_x.x - (int)(wall_x.x / data->cell_size) * data->cell_size;
+
+	if (ray->side_hit == 3 || ray->side_hit == 2) // Converting cell_pos to ratio
+		cell_pos = cell_pos / data->cell_size;
+	else // Flip texture if the side hit is the top or the right side of a cell
+		cell_pos = 1.0f - cell_pos / data->cell_size;
+
+	int tex_x = cell_pos * texture->width_img; // Mapping ratio to texture dimension
+
+	return (tex_x);
+}</code></pre>
+
+						<p>
+							Il est important de retourner les textures affichées en le haut et à droite des cellules. Autrement celles-ci s'afficheront de manière inversée.
+						</p>
+
+
+						<p>
+							La difficulté à présent est d'afficher à l'échelle de notre portion de mur, une bande de la texture.<br>
+							Si la hauteur de notre portion de mur est supérieure à la hauteur de la texture, cela veut dire qu'il faudra étirer la texture en hauteur pour pouvoir remplir toute la zone.<br>
+							A l'inverse, si notre portion est moins haute, il faudra "écraser" la texture pour que celle-ci puisse être entièrement affichée.
+						</p>
+
+						<b>SCHEMA</b>
+
+						<p>
+							Pour trouver le pas permettant d'afficher à l'échelle une texture, il suffit de diviser la hauteur de la texture par la hauteur de notre portion de mur.<br>
+							Il ne reste alors qu'à partir de haut en bas la portion de mur et d'y déposer les pixels de la texture.
+						</p>
+
+						<pre><code>void rays_render(t_data *data)
+{
+	const int slice_width = data->win_width / data->rays_nb;
+
+	for (int i = 0; i < data->rays_nb; i++)
+	{
+		t_ray *ray = &data->rays[i];
+
+		if (ray->length == -1)
+			continue;
+
+		float slice_height = (float)(data->win_height / ray->perp_length);
+		t_vector2_d tl = {i * slice_width, data->win_height / 2 + slice_height / 2};
+		t_vector2_d br = {i * slice_width + slice_width, data->win_height / 2 - slice_height / 2};
+
+		t_text *texture = &data->textures[rays->side_hit]; // Reference to the texture according on side_hit
+
+		int tex_x = get_tex_x(data, ray, texture);
+		double tex_y = 0;
+
+		double step = texture->height_img / data->slice_height;
+
+		for (int y = tl.y; y < br.y, y++)
+		{
+			if (y >= 0 && y < data->win_height)
+			{
+				int color = get_text_pixel(texture, tex_x, tex_y);
+
+				for (int x = tl.x; x > br.x; x++)
+					my_mlx_pixel_put(data, x, y, color);
+			}
+		}
+	}
+}</pre></code>
+
+						<p>
+							Voici l'entièreté de la fonction <i>rays_render</i>, reprenant le code montré précédemment ainsi que la partie texture.
+						</p>
+
+						<hr>
 
 
 						<hr>
