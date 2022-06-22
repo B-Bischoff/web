@@ -59,10 +59,21 @@ Free for personal and commercial use under the CCA 3.0 license (html5up.net/lice
 				<div id="main">
 					<div class="inner">
 						<h1>Cube3d</h1>
-						<span class="image main"><img src="images/cube3d/background-1.png" alt="" /></span>
+						<span class="image main"><img src="images/cube3d/background.png" alt="" /></span>
 
 						<h2>Contexte</h2>
-						<b>Sujet 42<br>Objectifs</b>
+
+						<p>
+							Ce projet de groupe proposé par l'école 42, offre la possibilité de créer un jeu vidéo en vue première personne en langage C.<br>
+							L'objectif est de pouvoir se déplacer dans un environnement en pseudo 3D.
+						</p>
+						<p>
+							Cube3d est un excellent projet pour découvrir les applications concrètes des mathématiques, mais également pour comprendre l'organisation, qui se trouve derrière le code des jeux vidéos.
+						</p>
+						<p>
+							C'est avec <a href="https://github.com/azanane">Anas Zanane</a> que nous réaliserons ce projet.
+						</p>
+
 						<hr>
 
 						<h2>Réalisation</h2>
@@ -72,7 +83,6 @@ Free for personal and commercial use under the CCA 3.0 license (html5up.net/lice
 						<h3>Librairie graphique</h3>
 						<p>
 							Le sujet impose l'utilisation de la librairie graphique : MiniLibX.<br>
-							<b>PRECISER OS<br></b>
 							Cette librairie offre la possibilité de créer une fenêtre, gérer différents types d'évènements ou encore dessiner sur des images.<br>
 						</p>
 
@@ -82,7 +92,7 @@ Free for personal and commercial use under the CCA 3.0 license (html5up.net/lice
 							La fonction <i>mlx_init</i> renvoie un pointeur qui indique où se trouve l'instance de la mlx dans la mémoire. Le rôle de cette instance, est d'établir une connexion entre notre programme et l'environnement graphique de l'ordinateur.<br>
 							La fonction <i>mlx_new_window</i> permet de définir la taille de la fenêtre ainsi que le titre de celle-ci.
 						</p>
-						<pre><code>int main(void)
+						<pre><code class="tip" markdown="1">int main(void)
 {
 	void *mlx;
 	void *mlx_win;
@@ -1595,10 +1605,27 @@ t_vector2_f wall_x = create_vect_f_from_origin(data->player.pos, ray->angle, hit
 						</div>
 
 						<hr>
-
-
-						<hr>
 						<h2>Conclusion</h2>
+
+
+
+						<div class="row">
+							<div class="col-5">
+								<p>
+									La base établie, permet de rajouter différents modules à notre projet.<br>
+									Ceux-ci ne sont pas expliqués dans ce guide mais voici la version finale du projet contenant des portes, des ombres, des ennemies (sprites), une minimap ainsi que la vue du joueur, controlée par la souris.
+								</p>	
+							</div>
+							<div class="col-5">
+								<span class="image fit">
+									<video controls width="100%">
+										<source src="images/cube3d/final.mp4" type="video/webm">
+									</video>
+									<center><sup><i>démonstration du projet à l'état final</i></sup></center>
+								</span>
+							</div>
+						</div>
+
 						<hr>
 
 						<h2 id="sources">Sources</h2>
