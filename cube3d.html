@@ -50,7 +50,7 @@ Free for personal and commercial use under the CCA 3.0 license (html5up.net/lice
 					<h2>Menu</h2>
 					<ul>
 						<li><a href="index.html">Projets</a></li>
-						<li><a href="a-propos.html">A propos</a></li>
+						<li><a href="a-propos.html">À propos</a></li>
 						<li><a href="contact.html">Contact</a></li>
 					</ul>
 				</nav>
@@ -73,14 +73,14 @@ Free for personal and commercial use under the CCA 3.0 license (html5up.net/lice
 						<p>
 							Le sujet impose l'utilisation de la librairie graphique : MiniLibX.<br>
 							<b>PRECISER OS<br></b>
-							Cette librairie offre la possibilité de créer une fenêtre, gérer différents types d'évènements ou encore dessiner sur des images.<br>
+							Cette librairie offre la possibilité de créer une fenêtre, gérer différents types d'événements ou encore dessiner sur des images.<br>
 						</p>
 
 						<h4>Création d'une fenêtre</h4>
 						<p>
 							Voici la manière la plus simple de créer une fenêtre à partir de la MiniLibX.<br>
-							La fonction <i>mlx_init</i> renvoie un pointeur qui indique où se trouve l'instance de la mlx dans la mémoire. Le rôle de cette instance, est d'établir une connexion entre notre programme et l'environnement graphique de l'ordinateur.<br>
-							La fonction <i>mlx_new_window</i> permet de définir la taille de la fenêtre ainsi que le titre de celle-ci.
+							La fonction <code>mlx_init</code> renvoie un pointeur qui indique où se trouve l'instance de la <code>mlx</code> dans la mémoire. Le rôle de cette instance, est d'établir une connexion entre notre programme et l'environnement graphique de l'ordinateur.<br>
+							La fonction <code>mlx_new_window</code> permet de définir la taille de la fenêtre ainsi son titre.
 						</p>
 						<pre><code>int main(void)
 {
@@ -93,13 +93,13 @@ Free for personal and commercial use under the CCA 3.0 license (html5up.net/lice
 }</pre></code>
 
 						<p>
-							C'est <i>mlx_loop</i> qui va s'occuper d'actualiser et d'afficher la fenêtre sur notre écran.<br>
-							Nous allons dès à présent rendre cette fenêtre un peu plus intéressante en dessinant dessus.
+							C'est la fonction <code>mlx_loop</code> qui s'occupe d'actualiser et d'afficher la fenêtre sur notre écran.<br>
+							Nous allons à présent rendre cette fenêtre un peu plus intéressante en dessinant dessus.
 						</p>
 
 						<h4>Utilisation des images</h4>
 						<p>
-							Il existe la fonction <i>mlx_pixel_put</i> qui permet de placer des pixels sur notre fenêtre, cependant cette fonction extrêmement lente car elle place le pixel et actualise directement l'affichage.<br>
+							Il existe la fonction <code>mlx_pixel_put</code> qui permet de placer des pixels sur notre fenêtre, cependant cette fonction est extrêmement lente car elle place le pixel puis actualise directement l'affichage.<br>
  							Par conséquent, j’ai opté pour un moyen plus optimisé, celui de stocker tous les pixels que l'on souhaite placer (à l'aide d'un buffer), et seulement lorsque tous les pixels sont stockés, la fenêtre met à jour son contenu.
 						</p>
 						<p>
@@ -132,33 +132,33 @@ int main(void)
 	img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, &img.line_length, &img.endian);
 }</code></pre>
 						<p>
-							Notre image (ici de dimension 1920 par 1080 pixels) est créée grâçe à la fonction <i>mlx_new_image</i><br>
-							Les informations supplémentaires décrites précédemment sont assignées par la fonction <i>mlx_get_data_addr</i>.
+							Notre image (ici de dimension 1920 par 1080 pixels) est créée grâçe à la fonction <code>mlx_new_image</code><br>
+							Les informations supplémentaires décrites précédemment sont assignées par la fonction <code>mlx_get_data_addr</code>.
 						</p>
 
 						<h4>Écriture sur une image</h4>
 						<p>
 							Le dernier élément manquant est un moyen de placer des pixels sur notre image.<br>
-							La fonction suivante permet, à partir d'une coordonnée (x et y), d'écrire une certaine valeur (représentant une couleur) à l'endroit correspondant dans la mémoire de l'image.
+							La fonction suivante permet, à partir d'une position dans l'image (une paire de coordonnées x et y), d'écrire une certaine valeur (représentant une couleur) à l'endroit correspondant dans la mémoire de l'image.
 						</p>
 						<pre><code>void my_mlx_pixel_put(t_data *data, int x, int y, int color)
 {
 	char *dst;
 
-	ddt = data->addr + (y * data->line_length + x * (data->bits_per_pixel / 8));
+	dst = data-&#62addr + (y * data-&#62line_length + x * (data-&#62bits_per_pixel / 8));
 	*(unsigned int*)dst = color;
 }</code></pre>
 						<p>
 							Les informations de l'image sont ici extrêmement utiles, elles nous permettent de trouver le décalage entre la position de chaque pixel et son emplacement dans la mémoire.<br>
 						</p>
 						<p>
-							Il peut également être utile de vérifier la cohérence des coordonnées en début de fonction. Il se peut autrement que le programme aille chercher des données dans un espacement mémoire ne lui appartenant pas, causant ainsi l'arrêt du programme.
+							Il peut également être utile de vérifier la cohérence des coordonnées en début de fonction. Il se peut autrement que le programme aille chercher des données dans un espace mémoire ne lui appartenant pas, ce qui causerait l'arrêt du programme.
 						</p>
 
 						<h4>Affichage de l'image</h4>
 						<p>
 							Le moment tant attendu arrive, celui où nous allons voir des couleurs sur notre fenêtre !
-							A l'aide des notions expliquées jusqu'ici (initialisation d'une fenêtre et d'une image ainsi que la structure <i>data</i>) nous allons appeler <i>my_mlx_pixel_put</i> et afficher le contenu de l'image sur notre fenêtre.
+							A l'aide des notions expliquées jusqu'ici (initialisation d'une fenêtre et d'une image ainsi que la structure <code>data</code>) nous allons appeler <code>my_mlx_pixel_put</code> et afficher le contenu de l'image sur notre fenêtre.
 						</p>
 
 						<pre><code>int main(void)
@@ -177,15 +177,15 @@ int main(void)
 }</code></pre>
 
 						<p>
-							Ce petit code a pour effet de placer un pixel rouge (<b>LIEN MLX COLORS</b>) à la coordonnée (en pixels) 100, 100 de notre fenêtre.<br>
-							C'est ensuite <i>mlx_put_image_to_window</i> qui va mettre a jour la fenêtre en affichant le contenu de notre image.
+							Ce petit code a pour effet de placer un pixel rouge (<b>LIEN MLX COLORS</b>) à la position (en pixels) (100, 100) de notre fenêtre.<br>
+							C'est ensuite <code>mlx_put_image_to_window</code> qui met à jour la fenêtre en affichant le contenu de notre image.
 						</p>
 
 						<h4>Boucles</h4>
 						<p>
-							Pour créer un jeu vidéo avec lequel il est possible d'interagir, il est nécessaire d'implémenter ce qu'on appel une "game loop".<br>
+							Pour créer un jeu vidéo avec lequel il est possible d'interagir, il est nécessaire d'implémenter ce qu'on appelle une "game loop".<br>
 							<b>ILLUSTRATION GAME LOOP<br></b>
-							Une game loop tourne en continue pendant l'éxécution du jeu. À chaque tour de boucle, le programme lit les entrées de l'utilisateur, met à jour le contenu du jeu puis actualise l'affichage.
+							Une game loop tourne en continu pendant l'exécution du jeu. À chaque tour de boucle, le programme lit les entrées de l'utilisateur, met à jour le contenu du jeu puis actualise l'affichage.
 						</p>
 						<p>Voyons comment implémenter cette boucle a l'aide de la MiniLibX.</p>
 
@@ -200,24 +200,24 @@ int main(void)
 	mlx_loop_hook(mlx, render_next_frame, &program_struct);
 	mlx_loop(mlx);
 }</code></pre>
-						<p>À chaque frame, la fonction <i>render_next_frame</i> sera appelée avec pour paramètre <i>program_struct</i>.</p>
+						<p>À chaque frame, la fonction <code>render_next_frame</code> sera appelée avec pour paramètre <code>program_struct</code>.</p>
 
 						<h4>Entrées utilisateur</h4>
 						<p>Un jeu vidéo ne serait pas très intéressant sans possibilités d'interaction.</p>
 						<p>
-							La MiniLibX fournit la possibilité d'intercepter différents type d'évènements.<br>
-							Ces évènements (par exemple liés à la souris ou au clavier) ne font qu'appeler une fonction quand ils se déclenchent.<br>
-							Plus concrètement, il faut au début du programme, indiquer à la MiniLibX quelles sont les évenèments à écouter, et quelles fonctions vont-ils appeller en conséquence.
+							La MiniLibX fournit la possibilité d'intercepter différents types d'événements.<br>
+							Ces événements (par exemple liés à la souris ou au clavier) ne font qu'appeler une fonction quand ils se déclenchent.<br>
+							Plus concrètement, au début du programme, il faut indiquer à la MiniLibX quels sont les événements à écouter, et quelles fonctions seront appelées à leur déclenchement.
 						</p>
 						<p>
-							Les évènements sont représentés par des nombres, voici une liste (minime) des évènements qui nous seront utiles :
+							Les événements sont représentés par des nombres ; voici une liste (minime) des événements qui nous seront utiles :
 							<ul>
 								<li>02 : Touche du clavier pressée</li>
 								<li>03 : Touche du clavier relâchée</li>
-								<li>04 : Clique de souris pressé</li>
-								<li>05 : Clique de souris relâché</li>
+								<li>04 : Bouton de la souris pressé</li>
+								<li>05 : Bouton de la souris relâché</li>
 								<li>06 : Mouvement de la souris</li>
-								<li>17 : Appui sur la croix rouge de la fenêtre</li>
+								<li>17 : Clic sur la croix rouge de la fenêtre</li>
 							</ul>
 						</p>
 
@@ -240,12 +240,12 @@ int main(void)
 }</code></pre>
 						<p>
 							Rappelons que les actions effectuées en fonction des entrées utilisateur (par exemple déplacer le personnage du joueur) se font dans la game loop précédemment implémentée.<br>
-							Les évènements ne vont donc pas effectuer d'actions sur les données de notre jeu (personnage, carte, interface ou autre), mais uniquement mettre à jour les informations liées a nos contrôles (état des touches du clavier, position du curseur, état des cliques de la souris).
+							Les événements ne vont donc pas agir sur les données du jeu (personnage, carte, interface ou autre), mais uniquement mettre à jour les informations liées aux commandes (état des touches du clavier, position du curseur, état des cliques de la souris).
 						</p>
 						<p>
-							Cela implique pour notre programme d'avoir un moyen de stocker les données de nos périphériques.<br>
-							Pour le clavier, il est possible de créer un tableau de booléens (du nombre de touches du clavier) et dès qu'une touche est pressée, la case du tableau correspondant à la touche est passée à vrai.<br>
-							Voici le code permettant de gérer un tableau (d'une taile de 200 booléens) à l'aide des hooks 02 et 03.
+							Cela implique pour notre programme d'avoir un moyen de stocker les données des périphériques.<br>
+							Pour le clavier, il est possible de créer un tableau de booléens (de longueur le nombre de touches du clavier) qui contient pour chaque touche, <code>true</code> si elle est enfoncée, et <code>false</code> sinon.<br>
+							Voici le code permettant de gérer un tel tableau (d'une taille de 200 booléens) à l'aide des hooks 02 et 03.
 						</p>
 
 						<pre><code>int	key_press(int keycode, t_struct *prg_struct)
@@ -265,13 +265,15 @@ int	key_release(int keycode, t_struct *prg_struct)
 }</code></pre>
 
 
-						<p>Ainsi, dans notre game loop il ne reste qu'à vérifier si une touche (à une case précise du tableau) est appuyée pour effectuer une action.</p>
+						<p>Ainsi, dans le game loop il ne reste qu'à vérifier si une touche est enfoncée à l'aide de la case correspondante du tableau pour effectuer une action.</p>
 
 						<h3>Définition de raycasting</h3>
 						<p>
-							Notamment connu pour les célèbres Doom et Wolfenstein 3D (dans les années 1990), le raycasting 2D est une technique de calcul d'images permettant de représenter en 3D un univers en 2D.<br>
-							Cette technique est extrêmement efficace car elle ne nécessite qu'un calcul par bande vertical de l'écran.<br>
-							Le principe consiste à tirer une multitude de rayons (depuis la position du joueur), et d'afficher les murs et ennemies, en fonction de la distance d'impacte des rayons lancées.
+						  Notamment connu pour les célèbres <i>Doom</i> et <i>Wolfenstein 3D</i> (dans les années 1990), le raycasting 2D est une technique de calcul d'images permettant de représenter en 3D un univers en 2D.
+<!-- rob: peut-être bien de détailler cette phrase car j'ai pas trop su si t'avais inversé ou non avant de lire la suite. Genre dire que tu veux pouvoir évoluer en vue fps dans un monde en 3D à partir d'une map en 2D composée de vides et de murs, par exemple. -->
+						  <br> 
+						  Cette technique est extrêmement efficace car elle ne nécessite qu'un calcul par bande verticale de l'écran.<!--Edit rob: Define "bande verticale"? --><br>
+							Le principe consiste à tirer une multitude de rayons (depuis la position du joueur), et d'afficher les murs et ennemis, en fonction de la distance d'impact des rayons lancés.
 						</p>
 
 						<h3>Fondamentaux</h3>
@@ -283,12 +285,12 @@ int	key_release(int keycode, t_struct *prg_struct)
 						</p>
 
 						<p>
-							Le moyen le plus simple est d'utiliser un tableau a deux dimensions. Chacune de ses cellules aura une valeur que nous pourrons utiliser pour afficher notre monde (par exemple 1 pour un mur ou 0 pour un espace vide).
-							Un des désavantage de ce choix est que nous sommes contraint d'avoir un résultat où toutes les surfaces seront quadrillées.
+							Le moyen le plus simple est d'utiliser un tableau a deux dimensions. Chacune de ses cellules aura une valeur que nous pourrons utiliser pour afficher notre monde (par exemple 1 pour un mur et 0 pour un espace vide).
+							Un désavantage majeur de ce choix est que nous sommes contraints d'avoir un résultat où toutes les surfaces seront quadrillées.
 						</p>
 
 						<p>
-							Pour faciliter l'accès à nos données, nous utiliserons une structure nommée <i>data</i>. Pour l'instant, elle ne contient que les éléments de la MiniLibX et les données utiles à notre tableau.
+							Pour faciliter l'accès à nos données, nous utiliserons une structure nommée <code>data</code>. Pour l'instant, elle ne contient que les éléments de la MiniLibX et les données utiles à notre tableau.
 						</p>
 						<pre><code>typedef struct s_data {
 	// MiniLibX
@@ -308,35 +310,35 @@ int	key_release(int keycode, t_struct *prg_struct)
 	int	tab_height;
 }	t_data;</pre></code>
 						<p>
-							Il est important de dissocier les dimensions de la fenêtre (<i>win_height</i> et <i>win_width</i> qui sont en pixels) des dimensions de notre tableau (<i>tab_height</i> et <i>tab_width</i> qui indiquent la hauteur et largeur de notre tableau en nombre de cellule).
+						  Il est important de dissocier les dimensions de la fenêtre (<code>win_height</code> et <code>win_width</code> qui sont en pixels) des dimensions du tableau (<code>tab_height</code> et <code>tab_width</code> qui indiquent la hauteur et largeur du tableau <u>en nombre de cellules</u>).
 						</p>
 
-						<p>Voyons maintenant comment créer notre tableau deux dimensions.</p>
+						<p>Voyons maintenant comment créer notre tableau à deux dimensions.</p>
 
 						<p>
-							Par la suite, pour visualiser le contenu du tableau, nous allons mettre un mur toutes les deux cellules (un mur étant la valeur 1).
+						  Par la suite, pour visualiser le contenu du tableau, nous allons mettre un mur toutes les deux cellules (un mur étant la valeur 1).
 						</p>
 						<pre><code>int init_tab(t_data *data)
 {
 	// Setting initial tab dimensions
-	data->tab_height = 15;
-	data->tab_width = 20;
+	data-&#62tab_height = 15;
+	data-&#62tab_width = 20;
 
 	// Allocating tab
-	data->tab = malloc(sizeof(int *) * data->tab_height);
-	if (data->tab == NULL) // Checking malloc error
+	data-&#62tab = malloc(sizeof(int *) * data-&#62tab_height);
+	if (data-&#62tab == NULL) // Checking malloc error
 		return (1);
 
-	for (int y = 0; y < data->tab_height; y++)
+	for (int y = 0; y &#60 data-&#62tab_height; y++)
 	{
-		data->tab[y] = malloc(sizeof(int) * data->tab_width);
-		if (data->tab[y] == NULL) // Checking malloc error
+		data-&#62tab[y] = malloc(sizeof(int) * data-&#62tab_width);
+		if (data-&#62tab[y] == NULL) // Checking malloc error
 			return (1);
 
 		// Putting values in tab
-		for (int x = 0; x < tab_width; x++)
+		for (int x = 0; x &#60 tab_width; x++)
 		{
-			data->tab[y][x] = (y % 2 + x) % 2;
+			data-&#62tab[y][x] = (y % 2 + x) % 2;
 		}
 	}
 	return (0);
@@ -345,29 +347,30 @@ int	key_release(int keycode, t_struct *prg_struct)
 						<h4>Affichage de la carte</h4>
 						<p>
 							L'objectif est désormais d'afficher sur notre fenêtre le contenu du tableau tout juste créé.<br>
-							Ici la difficulté est de passer du format de tableau (coordonnée de cellule) à une coordonnée en pixel de la fenêtre.
-							La première chose à faire est de définir la taille (en pixel) que prendront nos cellules sur l'écran. Cette variable, ici nommée <i>cell_size</i>, est stockée dans notre structure <i>data</i>.<br>
-							Dans tous les exemples se trouvant sur cette page, <i>cell_size</i> est égal à 40.
+							Ici la difficulté est de passer des coordonnées dans le tableau aux coordonnées en pixels dans la fenêtre.
+							<!-- Difficulté difficulté, c'est juste une fonction linéaire d'un plan sur un autre hein mais enfin bon... -->
+							La première chose à faire est de définir la taille (en pixel) que prendront nos cellules sur l'écran. Cette variable, ici nommée <code>cell_size</code>, est stockée dans notre structure <code>data</code>.<br>
+							Dans tous les exemples se trouvant sur cette page, <code>cell_size</code> est prise égale à 40.
 						</p>
 
 						<pre><code>void	print_grid(t_data *data)
 {
-	for (int y = 0; y < tab_height; y++)
+	for (int y = 0; y &#60 tab_height; y++)
 	{
-		for (int x = 0; x < tab_width; x++)
+		for (int x = 0; x &#60 tab_width; x++)
 		{
 			// Calculating square coordinates
 			t_vector2_d top_left = {
-				x * data->cell_size, // x
-				y * data->cell_size // y
+				x * data-&#62cell_size, // x
+				y * data-&#62cell_size // y
 			};
 			t_vector2_d bottom_right = {
-				top_left.x + data->cell_size,
-				top_left.y + data->cell_size
+				top_left.x + data-&#62cell_size,
+				top_left.y + data-&#62cell_size
 			};
 
 			// Drawing square
-			if (data->tab[y][x] == 1) // If the cell is a wall
+			if (data-&#62tab[y][x] == 1) // If the cell is a wall
 			{
 				draw_rect_color(data, top_left, bottom_right, PINK);
 			}
@@ -379,41 +382,42 @@ int	key_release(int keycode, t_struct *prg_struct)
 							<div class="col-5">
 								<span class="image fit">
 									<div class="col-3"><span class="image fit"><img src="images/cube3d/basic_grid.png" alt="" /></span></div>
-									<center><sup><i>Tableau de 20 x 15</i></sup></center>
+									<center><sup><i>tableau de 20 x 15</i></sup></center>
 								</span>
 							</div>
 							<div class="col-5">
-								<p>Voici le résultat obtenu lorsque l'on affiche le tableau précédemment généré. Le damier provient de la formule <i>(y % 2 + x) % 2</i> utilisé lors de la création du tableau. Je vous invite cependant à la modifier pour créer différents motifs.
+							  <p>Voici le résultat obtenu lorsque l'on affiche le tableau précédemment généré. Le damier provient de la formule <i>b = (y % 2 + x) % 2</i> appliquée à chaque cellule (où <i>b</i> est la valeur donnée à la cellule de coordonnées (<i>x</i>, <i>y</i>)), utilisée lors de la création du tableau. Je vous invite cependant à utiliser d'autres formules d'initialisation pour créer différents motifs.
+<!-- J'ai détaillé un peu la formule parce que j'ai failli mourir, oui je suis un grand rageux, mais une formule ça contient un '=' et surtout j'ai trop souffert avec des formules qui contiennent l'alphabet entier sans détailler la signification d'un seul symbole, à être obligé de lire des polys de mécanique des milieux continus de 500 pages et de retracer toute la théorie pas à pas pour déduire la signification de chaque PUTAIN de symbole au secours (rob) -->
 								</p>
 							</div>
 						</div>
 
 						<h4>Modification de la carte</h4>
 						<p>
-							Maintenant que nous avons la possibilité de visualiser notre tableau, nous pouvons essayer de le modifier pendant l'exécution du programme.<br>
-							À la fin, nous pourrons placer des murs à l'aide du clique gauche, et les supprimer avec le clique droit de la souris.
+							Maintenant que nous avons la possibilité de visualiser le tableau, nous pouvons essayer de le modifier pendant l'exécution du programme.<br>
+							À la fin, nous pourrons placer des murs à l'aide du clic gauche, et les supprimer avec le clic droit de la souris.
 						</p>
 
-						<p>Cette fois-ci, le problème est de convertir la position de la souris sur la fenêtre (qui est en pixel) en coordonnées de cellules.</p>
-						<p>Encore une fois, c'est <i>cell_size</i> qui va nous nous aider à résoudre ce problème.</p>
+						<p>Cette fois-ci, le problème est de convertir la position de la souris sur la fenêtre (qui est en pixels) en coordonnées de cellules.</p>
+						<p>Encore une fois, c'est <code>cell_size</code> qui va nous nous aider à résoudre ce problème.</p>
 
 						<pre><code>void	set_grid_cell(t_data *data, int x, int y)
 {
-	// Converting pixel coordinates to tab coordinates
+	// Converting pixel coordinates into tab coordinates
 	t_vector2_d tab_pos = {
-		x / data->cell_size, // x
-		y / data->cell_size // y
+		x / data-&#62cell_size, // x
+		y / data-&#62cell_size // y
 	};
 
 	// Checking out of range coordinates
-	if (x < 0 || x >= data->tab_width || y < 0 || y >= data->tab_height)
+	if (x &#60 0 || x &#62= data-&#62tab_width || y &#60 0 || y &#62= data-&#62tab_height)
 		return;
 
 	// Changing cell value according to mouse button
-	if (data->mouse_button == LMB)
-		data->tab[tab_pos.y][tab_pos.x] = 1;
-	else if (data->mouse_button == RMB)
-		data->tab[tab_pos.y][tab_pos.x] = 0;
+	if (data-&#62mouse_button == LMB)
+		data-&#62tab[tab_pos.y][tab_pos.x] = 1;
+	else if (data-&#62mouse_button == RMB)
+		data-&#62tab[tab_pos.y][tab_pos.x] = 0;
 }</code></pre>
 
 
@@ -421,7 +425,7 @@ int	key_release(int keycode, t_struct *prg_struct)
 							<div class="col-5">
 								<p>
 									Cette fonctionnalité nous sera très utile pour tester l'implémentation de notre premier lancer de rayons.<br>
-									Il va consister à analyser la collision entre un mur et un segment (défini par un point d'origine et une direction).
+									Il va consister à analyser la collision entre un mur et un rayon (défini par une droite tracée depuis la position du joueur et suivant une direction, elle-même définie par un autre point sur la carte).
 								</p>
 							</div>
 							<div class="col-5">
@@ -429,7 +433,7 @@ int	key_release(int keycode, t_struct *prg_struct)
 									<video controls width="100%">
 										<source src="images/cube3d/set_grid.mp4" type="video/webm">
 									</video>
-									<center><sup><i>Démonstration ajout / suppression de murs</i></sup></center>
+									<center><sup><i>démonstration de l'ajout et de la suppression de murs</i></sup></center>
 								</span>
 							</div>
 						</div>
@@ -439,8 +443,8 @@ int	key_release(int keycode, t_struct *prg_struct)
 						<div class="row">
 							<div class="col-5">
 								<p>
-									Pour aborder les choses simplement, commençons par créer un rayon du centre de la fenêtre à la position du curseur.<br>
-									Rien de plus simple, à l'aide d'une fonction de tracer de segment (Bresenham dans l'exemple), on relie le centre de l'écran et la souris.
+									Pour aborder les choses simplement, commençons par créer un rayon allant du centre de la fenêtre à la position du curseur.<br>
+									Rien de plus simple, à l'aide d'une fonction de tracé de segments (l'algorithme de Bresenham dans l'exemple), on relie le centre de l'écran et la souris.
 								</p>
 							</div>
 							<div class="col-5">
@@ -448,52 +452,52 @@ int	key_release(int keycode, t_struct *prg_struct)
 									<video controls width="100%">
 										<source src="images/cube3d/mouse_segment.mp4" type="video/webm">
 									</video>
-									<center><sup><i>Démonstration tracé de segment</i></sup></center>
+									<center><sup><i>démonstration du tracé de segment</i></sup></center>
 								</span>
 							</div>
 						</div>
 
 						<p>
-							L'idée ici est d'afficher l'endroit où le segment entre en collision avec un mur.</p>
+							L'idée ici est d'afficher l'endroit où le rayon entre en collision avec un mur.</p>
 						<p>
-							Il existe de nombreux moyens de faire ceci. Le moyen le plus simple serait de vérifier pour chaque pixel sur lequel passe le segment, si celui-ci appartient à un mur.<br>
-							Cependant, dès que le nombre de segment augmente, cette option devient extrêmement couteuse et devient rapidement inutilisable.
+							Il existe de nombreux moyens de faire ceci. Le moyen le plus simple serait de vérifier pour chaque pixel sur lequel passe le rayon, si celui-ci appartient à un mur.<br>
+							Cependant, dès que le nombre de rayons augmente, cette option devient extrêmement coûteuse et inutilisable en pratique.
 						</p>
 						<p>
 							Une méthode un peu plus élégante et adaptée à notre situation est l'analayseur différentiel numérique (plus connu sous son acronyme anglais : DDA).<br>
-							Cet algorithme est utilisé pour faire varier des données depuis un point de départ, jusqu'à un point d'arrivé.
+							Cet algorithme est utilisé pour faire varier des données depuis un point de départ, suivant une direction donnée par un point d'arrivée sur la carte.
 						</p>
 
 						<h4>Explications détaillées de la DDA</h4>
 
 						<p>
-							L'objectif est de parcourir toutes les cellules séparant le point de départ et d'arrivée.<br>
-							Grace à ces deux éléments, nous pouvons déterminer la direction à emprunter, la difficulté est de pouvoir passer d'une cellule
+							L'objectif est de parcourir toutes les cellules sur une droite partant de la position du joueur, selon une direction définie par un autre point sur la carte. Le rayon s'arrête lors d'une collision avec un mur détectée par la DDA<br>
+							Grace à ces deux points, nous pouvons déterminer le chemin à emprunter ; la difficulté est de pouvoir passer d'une cellule
 							à l'autre de manière optimisée (ne pas scruter deux fois le même endroit ou ne pas rater de cellules).
 						</p>
 						<p>
-							Nous voulons également être le plus précis possible étant donné que la position du joueur sera définie par des nombres à virgules.
+							Nous voulons également être le plus précis possible étant donné que la position du joueur sera définie par des nombres à virgule.
 						</p>
 
 						<p>
-						 	Afin de nous déplacer vers le point d'arrivée, il faut alterner entre avancer (de 1 pixel à chaque fois)
-							sur l'axe horizontal et vertical.
+						        Comme on évolue sur une grille carrée, on se déplace sur un rayon depuis la position du joueur par pas de 1 pixel, selon la verticale ou l'horizontale.
 						</p>
 
 						<p>
-							Pour ne rater aucune cellule, il faut progresser sur l'axe le moins avancé.<br>
-							Mesurer l'avancement d'un axe se fait en utilisant les propriétés du triangle rectangle.<br>
-							Il est possible de calculer la longueur de l'hypténuse pour un avancement de 1 (pour l'axe horizontal ET vertical) en utilisant la pente de la droite.<br>
-							La dernière étape est d'avancer sur l'axe qui possède la plus petite longueur d'hypoténuse, jusqu'à rencontrer une collision.
+							Pour ne rater aucune des cellules sur lesquelles passe notre rayon, il faut avancer à chaque pas suivant l'axe qui occasionne le plus petit avancement sur le rayon.<br>
+							Mesurer l'avancement sur un segment se fait en utilisant les propriétés du triangle rectangle.<!-- QUICK MAFFS --><br>
+							Il est possible de calculer la longueur parcourue sur une droite avec une direction quelconque pour un avancement de 1 pixel (selon l'axe horizontal ou selon l'axe vertical) en utilisant la pente de la droite, connue.<br>
+							<!-- J'ai changé pas mal parce que je trouvais pas ça très clair, à toi de voir si ça te va comme ça (rob). -->
+							La dernière étape est d'avancer selon l'axe qui fait parcourir la plus petite distance sur la droite, et réitérer jusqu'à rencontrer une collision.
 						</p>
 
 						<p>
-							Comme indiqué précédemment, la position de notre joueur ne sera pas forcément des nombres entiers. Il faut donc initialement calculer l'écart entre
-							la position de départ et la coordonée entière la plus proche.
+							Comme indiqué précédemment, la position de notre joueur n'aura pas forcément des coordonnées entières. Il faut donc initialement calculer l'écart entre
+							la position de départ et les coordonnées entières les plus proches.
 						</p>
 
 						<p>
-							Les deux morceaux de code qui suivront proviennent de la page <a href="https://lodev.org/cgtutor/raycasting.html"><i>Lode's Computer Graphics Tutorial</i></a> ainsi que du tutoriel de <a href="https://www.youtube.com/watch?v=NbSee-XM7WA"><i>javidx9</i></a>
+							Les deux morceaux de code qui suivent proviennent de la page <a href="https://lodev.org/cgtutor/raycasting.html"><i>Lode's Computer Graphics Tutorial</i></a> ainsi que du tutoriel de <a href="https://www.youtube.com/watch?v=NbSee-XM7WA"><i>javidx9</i></a>
 							sur le raycasting que vous pouvez consulter pour avoir les détails des calculs.
 						</p>
 
@@ -515,7 +519,7 @@ int	key_release(int keycode, t_struct *prg_struct)
 	delta_dist.y = (dir.y == 0) ? 1e30 : ft_abs(1.0f / dir.y);
 
 	t_vector2_d step;
-	if (dir.x < 0)
+	if (dir.x &#60 0)
 	{
 		step.x = -1; // Calculating X step (depending on the direction)
 		side_dist.x = (origin.x - map.x) * delta_dist.x; // Calculating X gap to the nearest integer coordinate
@@ -526,7 +530,7 @@ int	key_release(int keycode, t_struct *prg_struct)
 		side_dist.x = (map.x + 1.0f - origin.x) * delta_dist.x;
 	}
 
-	if (dir.y < 0)
+	if (dir.y &#60 0)
 	{
 		step.y = -1; // Calculating Y step (depending on the direction)
 		side_dist.y = (origin.y - map.y) * delta_dist.y; // Calculating Y gap to the nearest integer coordinate
@@ -540,14 +544,14 @@ int	key_release(int keycode, t_struct *prg_struct)
 }</code></pre>
 
 						<p>
-							Maintenant que nous savons dans quelle direction nous diriger, il est temps de partir à la recherche d'une collision.<br>
+							Maintenant que nous savons comment parcourir un rayon, il est temps de partir à la recherche d'une collision.<br>
 							Voici une version extrêmement simple de la DDA.
 						</p>
 						<p><i>Le code suivant est la suite de la fonction DDA</i></p>
 
 						<pre><code>while (1)
 {
-	if (side_dist.x < side_dist.y)
+	if (side_dist.x &#60 side_dist.y)
 	{
 		side_dist.x += delta_dist.x;
 		map.x += step.x;
@@ -560,11 +564,11 @@ int	key_release(int keycode, t_struct *prg_struct)
 
 	// Converting pixel coordinates to tab coordinates
 	t_vector2_d cell = {
-		map.x / data->cell_size,
-		map.y / data->cell_size
+		map.x / data-&#62cell_size,
+		map.y / data-&#62cell_size
 	};
 
-	if (data->tab[cell.y][cell.x] == 1) // Is a wall
+	if (data-&#62tab[cell.y][cell.x] == 1) // Is a wall
 	{
 		return (vector_d_to_f(map));
 	}
@@ -577,7 +581,7 @@ int	key_release(int keycode, t_struct *prg_struct)
 									<video controls width="100%">
 										<source src="images/cube3d/ray_collision.mp4" type="video/webm">
 									</video>
-									<center><sup><i>Démonstration détection de collision</i></sup></center>
+									<center><sup><i>démonstration de la détection de collision</i></sup></center>
 								</span>
 							</div>
 							<div class="col-5">
@@ -594,24 +598,24 @@ int	key_release(int keycode, t_struct *prg_struct)
 						</p>
 						<ul>
 							<li>Imposer une distance maximale de recherche de collision</li>
-							<li>Vérifier que la coordonnée (en pixel) soit dans la portée de notre tableau (sous peine de créer une erreur de segmentation)</li>
+							<li>Vérifier que les coordonnées (en pixels) soient dans la portée du tableau (sous peine de créer une erreur de segmentation)</li>
 						</ul>
 						<p>
-							Dans le cas où la DDA ne rencontre pas de collision, il faut définir quelle valeur celle-ci retournera.<br>
+							Dans le cas où la DDA ne rencontre pas de collision, il faut définir quelle valeur celle-ci retourne.<br>
 							Étant donné que les coordonnées de notre tableau sont exclusivement positives, la valeur retournée par une "non-collision" sera un vecteur de (-1, -1).
 						</p>
 
 						<p>
 							Voici donc une version améliorée de la DDA. La recherche de collision est désormais limitée par une distance maximale, et l'accès au tableau est sécurisé.<br>
-							L'utilisation de l'instruction <i>continue</i> permet de détecter des collisions malgré le fait que le joueur soit hors de la carte.
+							L'utilisation de l'instruction <code>continue</code> permet de détecter des collisions malgré le fait que le joueur soit hors de la carte.
 						</p>
 
 						<pre><code>// Using squared values is faster than using square root function
 float ray_length = get_vector_d_length_squared(origin, map);
 
-while (ray_length < data->view_dst * data->view_dst)
+while (ray_length &#60 data-&#62view_dst * data-&#62view_dst)
 {
-	if (side_dist.x < side_dist.y)
+	if (side_dist.x &#60 side_dist.y)
 	{
 		side_dist.x += delta_dist.x;
 		map.x += step.x;
@@ -626,16 +630,16 @@ while (ray_length < data->view_dst * data->view_dst)
 
 	// Converting pixel coordinates to tab coordinates
 	t_vector2_d cell = {
-		map.x / data->cell_size,
-		map.y / data->cell_size
+		map.x / data-&#62cell_size,
+		map.y / data-&#62cell_size
 	};
 
-	if (cell.x < 0 || cell.x >= data->win_width)
+	if (cell.x &#60 0 || cell.x &#62= data-&#62win_width)
 		continue;
-	if (cell.y < 0 || cell.y >= data->win_height)
+	if (cell.y &#60 0 || cell.y &#62= data-&#62win_height)
 		continue;
 
-	if (data->tab[cell.y][cell.x] == 1) // Is a wall
+	if (data-&#62tab[cell.y][cell.x] == 1) // Is a wall
 	{
 		return (vector_d_to_f(map));
 	}
@@ -644,14 +648,14 @@ while (ray_length < data->view_dst * data->view_dst)
 						<h4>Utilisation d'une structure "rayon"</h4>
 
 						<p>Tout le concept du raycasting gravite autour de "rayons". Ils permettent à partir de notre monde 2D, d'afficher un résultat semblable à de la 3D.</p>
-						<p>Le champs de vision du joueur ne sera ni plus ni moins qu'un ensemble de rayons, ayant pour but de représenter à l'écran le monde environnant à partir des informations qu'ils contiennent.</p>
+						<p>Le champs de vision du joueur ne sera ni plus ni moins qu'un ensemble de rayons, ayant pour but de représenter à l'écran le monde environnant à partir des informations qu'il contient.</p>
 
 						<p>
 							La dernière vidéo illustre une version extrêmement basique d'un rayon.<br>
-							Cependant, comme il est nécessaire de stocker plusieurs informations pour un seul rayon, ceci seront représentées par une structure.
+							Cependant, comme il est nécessaire de stocker plusieurs informations pour un seul rayon, ils seront représentés par une structure.
 						</p>
 
-						<p>Pour le moment, les informations dont nous aurons besoin sont les suivantes :</p>
+						<p>Pour le moment, les informations dont nous avons besoin sont les suivantes :</p>
 
 						<div class="row">
 							<div class="col-4">
@@ -666,20 +670,20 @@ while (ray_length < data->view_dst * data->view_dst)
 							<div class="col-7">
 								<ul>
 									<li>
-										<i>hit_point</i> : Cette valeur va premièrement indiquer dans quelle direction chercher une collision (de la même manière que la souris dans l'exemple précédent).
-										Sa valeur sera alors mise à jour si une collision a été trouvée.
+										<code>hit_point</code> : Cette variable va premièrement indiquer dans quelle direction chercher une collision (de la même manière que la souris dans l'exemple précédent).
+										Sa valeur sera mise à jour si une collision a été trouvée.
 									</li>
 									<li>
-										<i>cell</i> : La position de la cellule sur laquelle à eu lieu l'impact est conservée dans le vecteur <i>cell</i> en coordonée de cellules.
+										<code>cell</code> : La position de la cellule sur laquelle a eu lieu l'impact est conservée dans le vecteur <code>cell</code> en coordonées de cellules.
 									</li>
 									<li>
-										<i>length</i> : Pour par la suite afficher une portion de mur dans la phase de rendu, il est important de connaître la longueur du rayon (entre le joueur et le point d'impact du rayon).
+										<code>length</code> : Pour afficher par la suite une portion de mur dans la phase de rendu, il est important de connaître la longueur du rayon (entre le joueur et le point d'impact du rayon).
 									</li>
 									<li>
-										<i>side_hit</i> : Le côté du mur a été touché, cette valeur allant de 0 à 3 va nous permettre d'afficher une couleur différente pour chaque orientation du mur.
+										<code>side_hit</code> : Le côté du mur a été touché, cette valeur allant de 0 à 3 va nous permettre d'afficher une couleur différente pour chaque orientation du mur.
 									</li>
 									<li>
-										<i>angle</i> : Le degré en radian du rayon.
+										<code>angle</code> : L'angle en radians du rayon, par rapport à une direction fixe (en l'occurence l'horizontale).
 									</li>
 								</ul>
 							</div>
@@ -687,42 +691,42 @@ while (ray_length < data->view_dst * data->view_dst)
 
 
 						<p>
-							L'usage de cette structure permet de garder en mémoire ces données pour plus tard les réutiliser.
-Cela nécessite d'allouer un tableau de N rayons (stocké dans data) à l'initilisation de notre programme.
+							L'utilisation de cette structure permet de garder en mémoire ces données pour les réutiliser plus tard.
+							Cela nécessite d'allouer un tableau de N rayons (stocké dans <code>data</code>) à l'initilisation de notre programme.
 						</p>
 
 
 						<p>
-							Certaines valeurs (comme <i>side_hit</i> ou <i>cell</i>) peuvent dores et déjà être obtenues depuis la fonction DDA.<br>
+							Certaines valeurs (comme <code>side_hit</code> ou <code>cell</code>) peuvent d'ores et déjà être obtenues depuis la fonction DDA.<br>
 							Pour mettre à jour les données d'un rayon au sein même de cette fonction, il faut modifier ses paramètres pour lui passer une référence à un rayon.
 						</p>
 
-						<p>Voici à quoi ressemble désormais le prototype de la fonction <i>DDA</i></p>
+						<p>Voici à quoi ressemble désormais le prototype de la fonction <code>DDA</code></p>
 						<pre><code>t_vector2_f dda(t_data *data, t_ray *ray)</code></pre>
 						<p>
-							Il ne reste qu'à assigner <i>ray->cell</i> et <i>ray->side_hit</i> (ce dernier pouvant être determiné grâce à <i>side_dist</i>).
-							Mais surtout ! Remplacer <i>dest</i> par <i>ray->hit_point</i> qui est calculé dans la partie suivante.
+							Il ne reste qu'à assigner <code>ray-&#62cell</code> et <code>ray-&#62side_hit</code> (ce dernier pouvant être determiné grâce à <code>side_dist</code>).
+							Mais surtout ! Remplacer <code>dest</code> par <code>ray-&#62hit_point</code> qui est calculé dans la partie suivante.
 						</p>
 
 						<h4>Création d'un cône de vision</h4>
 						<p>
-							Ce champ visuel sera constitué d'une multitude de rayons. On souhaite pouvoir modifier le nombre de rayons, la largeur, mais également la distance maximale de ce champ de vision.<br>
+							Ce champ de vision du joueur sera constitué d'une multitude de rayons. On souhaite pouvoir modifier le nombre de rayons, la largeur, mais également la distance maximale de ce champ de vision.<br>
 							L'astuce est d'utiliser un segment afin de savoir où seront placés nos rayons. La position et la dimension de ce segment seront définies par la distance de vision ainsi que la largeur du champ de vision.
 						</p>
 
-						<p>Nous allons commencer par limiter la longueur du segment [centre de l'écran | curseur] par une distance maximale, <i>view_dst</i> stockée dans dans notre structure <i>data</i></p>
+						<p>Nous allons commencer par limiter la longueur du segment [centre de l'écran ; curseur] par une distance maximale, <code>view_dst</code> stockée dans dans notre structure <code>data</code></p>
 
 						<pre><code>void	create_rays(t_data *data)
 {
 	t_vector2_d origin = {
-		data->win_width / 2,
-		data->win_height / 2
+		data-&#62win_width / 2,
+		data-&#62win_height / 2
 	};
 
 	// Getting the angle (in radian) of mouse position according to the origin
-	double angle = get_angle(origin, data->mouse_pos);
+	double angle = get_angle(origin, data-&#62mouse_pos);
 
-	t_vector2_d view_dst_pos = create_vector_d_from_origin(origin, angle, data->view_dst);
+	t_vector2_d view_dst_pos = create_vector_d_from_origin(origin, angle, data-&#62view_dst);
 	draw_circle_color(data, direction, GREEN);
 }</code></pre>
 
@@ -732,56 +736,57 @@ Cela nécessite d'allouer un tableau de N rayons (stocké dans data) à l'initil
 									<video controls width="100%">
 										<source src="images/cube3d/ray_max_length.mp4" type="video/webm">
 									</video>
-									<center><sup><i>Affichage de view_dst_pos</i></sup></center>
+									<center><sup><i>affichage de </i><code>view_dst_pos</code></sup></center>
 								</span>
 							</div>
 							<div class="col-5">
 								<p>
-									L'utilisation d'une distance maximum de vision permet de rendre les capacités visuelles du joueur adaptable à différents scénarios.<br>
+									L'utilisation d'une distance maximale de vision permet de rendre les capacités visuelles du joueur adaptables à différents scénarios.<br>
 									Elle permet également de ne pas tirer un rayon à l'infini si aucun obstacle ne se trouve sur son chemin.
 								</p>
 							</div>
 						</div>
 
 						<p>
-							La fonction <i>create_vector_d_from_origin</i> permet depuis une position de départ, de créer un vecteur dans une direction spécifique (indiquée par un angle en radian) pour une longueur donnée (en pixel).
+							La fonction <code>create_vector_d_from_origin</code> permet depuis une position de départ, de créer un vecteur dans une direction spécifique (donnée par un angle en radians) et d'une longueur donnée (en pixels).
 						</p>
 
 						<div class="row">
 							<div class="col-7">
 								<p>
-									Nous voila avec le centre de la base du cône de vision. Pour trouver la longueur de la base du cône, le plus simple est de considérer que nous travaillons sur 2 triangles rectangles.
+									Nous voilà avec le centre de la base du cône de vision. Pour trouver la longueur de la base du cône, le plus simple est de considérer que nous travaillons sur 2 triangles rectangles.
 								</p>
 								<p>
-									Ici nous voulons à partir d'un angle, définir la largeur de notre champ de vision. Rien de plus facile, il suffit d'utiliser la formule (tout droit tiré de SOH-CAH-TOA) qui dit : <br>
+									Ici nous voulons définir la largeur de notre champ de vision à partir d'un angle. Rien de plus facile, il suffit d'utiliser la formule (tout droit tirée de SOH-CAH-TOA) qui dit : <br>
 									Le côté opposé d'un triangle rectangle est égal à la tangente de l'angle multiplié par son côté adjacent.<br>
 									Attention cependant, dans notre cas, l'angle est divisé par deux car nous avons séparé notre cône en deux triangles rectangles.
 								</p>
 							</div>
 							<div class="col-4">
 								<span class="image fit">
-									<span class="image fit"><img src="images/cube3d/schema-cone.png" alt="" /></span>
+								  <span class="image fit"><img src="images/cube3d/schema-cone.png" alt="" /></span>
+								  <!-- Ce schéma mériterait plus d'annotations (rob) -->
 								</span>
 							</div>
 						</div>
 
 						<p>
 							Il ne reste qu'à placer les deux points à la base de notre cône.<br>
-							Le plus pratique est de réutiliser la fonction <i>create_vect_d_from_origin</i>, et depuis <i>view_dst_pos</i> créer un vecteur de la longueur du côté opposé.<br>
-							L'angle du premier point sera la direction du joueur +90° et -90° pour le second.
+							Le plus pratique est de réutiliser la fonction <code>create_vect_d_from_origin</code>, et depuis <code>view_dst_pos</code> créer un vecteur de la longueur du côté opposé.<br>
+							L'angle du premier point sera la direction du joueur +45° et -45° pour le second (soit + ou - &#960 / 4 en radians).
 						</p>
 
 						<pre><code>void	create_rays(t_data *data)
 {
-	t_vector2_d origin = {data->win_width / 2, data->win_height / 2};
+	t_vector2_d origin = {data-&#62win_width / 2, data-&#62win_height / 2};
 
 	// Getting the angle (in radian) of mouse position according to the origin
-	double angle = get_angle(origin, data->mouse_pos);
+	double angle = get_angle(origin, data-&#62mouse_pos);
 
-	t_vector2_d view_dst_pos = create_vector_d_from_origin(origin, angle, data->view_dst);
+	t_vector2_d view_dst_pos = create_vector_d_from_origin(origin, angle, data-&#62view_dst);
 	draw_circle_color(data, view_dst_pos, GREEN);
 
-	int opposite_length = tan(degree_to_radian(data->fov / 2)) * data->view_dst;
+	int opposite_length = tan(degree_to_radian(data-&#62fov / 2)) * data-&#62view_dst;
 
 	t_vector2_f opposite_vect[2] = {
 		create_vector_f_from_origin(vector_d_to_f(view_dst_pos), angle + PI / 2, opposite_length),
@@ -796,8 +801,8 @@ Cela nécessite d'allouer un tableau de N rayons (stocké dans data) à l'initil
 						<div class="row">
 							<div class="col-5">
 								<p>
-									Il est important de noter que le degré du champ de vision ne pourra jamais atteindre (et donc ne peut pas dépasser) les 180°.<br>
-									Plus la base du cône est longue plus le champs de vision sera large. A 180°, la longueur de la base du cône tendra donc vers l'infini (ce qui déplaira certainement à votre ordinateur).
+									Il est important de noter que l'angle total du champ de vision ne pourra jamais atteindre (ni dépasser dépasser) les 180°.<br>
+									En effet, dans ce cas la base du cône serait plus longue que le champ de vision ne serait large. À 180°, la longueur de la base du cône est analytiquement infinie (ce qui déplaira certainement à votre ordinateur).
 								</p>
 							</div>
 							<div class="col-5">
@@ -805,35 +810,35 @@ Cela nécessite d'allouer un tableau de N rayons (stocké dans data) à l'initil
 									<video controls width="100%">
 										<source src="images/cube3d/cone_base.mp4" type="video/webm">
 									</video>
-									<center><sup><i>démonstration avec view_dst = 100 pixels et fov = 90°</i></sup></center>
+									<center><sup><i>démonstration avec </i><code>view_dst</code> <i>= 100 pixels et </i><code>fov</code><i> = 90°</i></sup></center>
 								</span>
 							</div>
 						</div>
 
-						<p>La dernière étape est de générer les coordonnées de N rayons entre les deux vecteurs de la base du cône.</p>
+						<p>La dernière étape est de générer les directions de N rayons entre les deux vecteurs de la base du cône.</p>
 						<p>
 							La méthode de l'interpolation linéaire permet de résoudre ce problème.<br>
 							Son utilité est de pouvoir trouver les valeurs entre un minimum et un maximum.<br>
 							Cette fonction prend trois paramètres : un minimum, un maximum et une valeur d'interpolation (entre 0 et 1).
 						</p>
 						<p>
-							Si la valeur d'interpolation est égale à 0, la valeur minimum sera retournée, à l'inverse, si elle est égale à 1, la valeur maximum sera renvoyée. Enfin, si la valeur d'interpolation est égale à 0,5 la valeur retournée sera l'exact milieu entre le minimum et le maximum.
+							Si la valeur d'interpolation est égale à 0, la valeur minimale sera retournée, à l'inverse, si elle est égale à 1, la valeur maximale sera renvoyée. Enfin, si la valeur d'interpolation est égale à 0,5 la valeur retournée sera l'exact milieu entre le minimum et le maximum, et il en est de même de manière proportionnelle pour toute les valeurs entre 0 et 1.
 						</p>
 						<p>
 							Pour appliquer ce concept à des vecteurs il faut simplement faire une interpolation linéaire par composante du vecteur (une pour X et une autre pour Y).<br>
 						</p>
 
-						<p>Il suffit simplement de calculer l'incrémentation de l'interpolation linéaire en fonction du nombre de rayons et le tour est joué.</p>
+						<p>Il suffit de calculer l'espacement des points à interpoler en fonction du nombre de rayons et le tour est joué.</p>
 
-						<p>Le code suivant est la suite de la fonction <i>create_rays</i></p>
-						<pre><code>double increment = 1.0f / (data->rays_nb - 1.0f);
+						<p>Le code suivant est la suite de la fonction <code>create_rays</code></p>
+						<pre><code>double increment = 1.0f / (data-&#62rays_nb - 1.0f);
 
-for (int i = 0; i < data->rays_nb; i++)
+for (int i = 0; i &#60 data-&#62rays_nb; i++)
 {
 	t_vector2_f vector = vector_f_lerp(opposite_vect[0], opposite_vect[1], increment * i);
 	bresenham(data, origin, vector, YELLOW);
-	data->rays[i].angle = get_angle_f(origin, vector); // Set ray angle
-	data->rays[i].hit_point = vector; // Set ray direction
+	data-&#62rays[i].angle = get_angle_f(origin, vector); // Set ray angle
+	data-&#62rays[i].hit_point = vector; // Set ray direction
 }</code></pre>
 						<div class="row">
 							<div class="col-5">
@@ -841,41 +846,41 @@ for (int i = 0; i < data->rays_nb; i++)
 									<video controls width="100%">
 										<source src="images/cube3d/rays_interpolation.mp4" type="video/webm">
 									</video>
-									<center><sup><i>démonstration avec view_dst = 250 pixels, fov = 90° et 5 rayons</i></sup></center>
+									<center><sup><i>démonstration avec </i><code>view_dst</code><i> = 250 pixels, </i><code>fov</code><i> = 90° et 5 rayons</i></sup></center>
 								</span>
 							</div>
 							<div class="col-5">
 								<p>
-									Nous possédons maintenant plusieurs rayons simulant notre champs de vision. Cependant, si vous essayez de placer des murs devant eux, tous passerons au travers.<br>
+									Nous possédons maintenant plusieurs rayons simulant notre champ de vision. Cependant, si vous essayez de placer des murs devant eux, tous passeront au travers.<br>
 									Fort heureusement nous possédons déja l'algorithme de DDA permettant de détecter une collision à partir d'une position de départ et d'un rayon.
 								</p>
 							</div>
 						</div>
 
 						<p>
-							Nous aurons plus tard besoin de connaitre la longueur des rayons ayant touché un mur, il faut donc un moyen d'indiquer quand les rayons n'ont pas heurté de mur.<br>
+							Nous aurons plus tard besoin de connaître la longueur des rayons ayant touché un mur, il faut donc un moyen d'indiquer quand les rayons n'ont pas heurté de mur.<br>
 							De la même manière que pour la DDA, nous symboliserons une "non-collision" par une longueur de -1.
 						</p>
 
 						<pre><code>void calculate_collisions(t_data *data)
 {
-	t_vector2_d origin = {data->win_width / 2, data->win_height / 2};
+	t_vector2_d origin = {data-&#62win_width / 2, data-&#62win_height / 2};
 
-	for (int i = 0; i < data->rays_nb; i++)
+	for (int i = 0; i &#60 data-&#62rays_nb; i++)
 	{
-		t_vector2_f res = dda(data, &data->rays[i]); // Passing ray reference
+		t_vector2_f res = dda(data, &data-&#62rays[i]); // Passing ray reference
 
 		if (res.x != -1 && res.y != -1) // Hit
 		{
-			data->rays[i].hit_point = res; // Update ray hit point
-			data->rays[i].length = get_vector_f_length(origin, res);
+			data-&#62rays[i].hit_point = res; // Update ray hit point
+			data-&#62rays[i].length = get_vector_f_length(origin, res);
 		}
 		else
 		{
-			data->rays[i].length = -1;
+			data-&#62rays[i].length = -1;
 		}
 
-		bresenham(data, origin, data->rays[i].hit_point, YELLOW);
+		bresenham(data, origin, data-&#62rays[i].hit_point, YELLOW);
 	}
 }</code></pre>
 
@@ -885,13 +890,13 @@ for (int i = 0; i < data->rays_nb; i++)
 									<video controls width="100%">
 										<source src="images/cube3d/calculate_collisions.mp4" type="video/webm">
 									</video>
-									<center><sup><i>démonstration collisions avec 100 rayons et distance max de 1000 pixels</i></sup></center>
+									<center><sup><i>démonstration des collisions avec 100 rayons et une distance maximale de 1000 pixels</i></sup></center>
 								</span>
 							</div>
 							<div class="col-5">
 								<p>
 									Voici le résultat obtenu une fois tous les rayons passés dans la DDA.<br>
-									N'oubliez pas d'uniquement afficher le résultat à partir de cette fonction, ou bien de tracer les traits d'une couleur différentes que dans la fonction <i>create_rays</i>.
+									N'oubliez pas d'afficher uniquement le résultat à partir de cette fonction, ou bien de tracer les traits d'une couleur différentes de ceux de la fonction <code>create_rays</code>.
 								</p>
 							</div>
 						</div>
@@ -901,13 +906,13 @@ for (int i = 0; i < data->rays_nb; i++)
 							On constate alors les rayons aux bords du cône de vision traversent parfois les murs.
 						</p>
 						<p>
-							Ce phénomène provient du fait que la DDA cesse de détecter les collisions à partir de la distance maximale de vision.
+							Ce phénomène provient du fait que la DDA cesse de chercher les collisions à partir de la distance maximale de vision.
 							Cependant, la manière dont nous avons généré nos rayons fait que la distance des rayons aux extremités du cône, est supérieure à cette distance maximale.
 						</p>
 
 						<p>
-							Pour régler cette imprécision visuelle, il faut normaliser le vecteur que reçois le rayon à la longeur maximale de vision.<br>
-							Le cône de vision possède désormais des bords arrondis rendant le résutat juste et précis.
+							Pour régler cette imprécision visuelle, il faut normaliser le vecteur que reçoit le rayon à la longeur maximale de vision.<br>
+							Le cône de vision est désormais une portion de disque, ce qui rend le résutat juste et précis.
 						</p>
 
 						<div class="row">
@@ -916,7 +921,7 @@ for (int i = 0; i < data->rays_nb; i++)
 									<video controls width="100%">
 										<source src="images/cube3d/bug_collision.mp4" type="video/webm">
 									</video>
-									<center><sup><i>démonstration cône de vision imprécis sur les bords</i></sup></center>
+									<center><sup><i>démonstration du cône de vision imprécis sur les bords</i></sup></center>
 								</span>
 							</div>
 							<div class="col-5">
@@ -924,29 +929,29 @@ for (int i = 0; i < data->rays_nb; i++)
 									<video controls width="100%">
 										<source src="images/cube3d/bug_collision_fixed.mp4" type="video/webm">
 									</video>
-									<center><sup><i>démonstration cône de vision avec des bords arrondis</i></sup></center>
+									<center><sup><i>démonstration du cône de vision circulaire</i></sup></center>
 								</span>
 							</div>
 						</div>
 
-						<i>partie de code provenant de la fonction "calculate_collisions"</i>
+						<i>partie de code provenant de la fonction </i><code>calculate_collisions</code>
 						<pre><code>if (res.x != -1 && res.y != -1) // Hit
 {
-	data->rays[i].hit_point = res; // Update ray hit point
-	data->rays[i].length = get_vector_f_length(data->player.pos, res);
+	data-&#62rays[i].hit_point = res; // Update ray hit point
+	data-&#62rays[i].length = get_vector_f_length(data-&#62player.pos, res);
 }
 else
 {
-	data->rays[i].length = -1;
-	data->rays[i].hit_point = create_vector_f_from_origin(origin, get_angle_f(origin, vector), data->view_dst);
+	data-&#62rays[i].length = -1;
+	data-&#62rays[i].hit_point = create_vector_f_from_origin(origin, get_angle_f(origin, vector), data-&#62view_dst);
 }</code></pre>
 
 						<h4>Déplacements</h4>
-						<p>Pour rendre notre programme un peu plus interactif essayons de controler notre joueur avec le clavier.</p>
+						<p>Pour rendre notre programme un peu plus interactif essayons de controler la position du joueur avec le clavier.</p>
 
 						<p>
-							Pour ordonner nos données, le joueur possèdera sa propre structure contenant ses informations.<br>
-							Une variable player (de type <i>t_player</i> sera donc ajoutée à notre structure data).
+							Pour ordonner les données, le joueur possèdera sa propre structure contenant ses informations.<br>
+							Une variable <code>player</code> (de type <code>t_player</code> sera donc ajoutée à la structure <code>data</code>).
 						</p>
 
 						<pre><code>typedef struct s_player {
@@ -957,29 +962,29 @@ else
 
 <p></p>
 						<p>
-							La position du joueur est définie par un vecteur utilisant des nombres flottants. Ce n'est pas obligatoire mais cela permet de rajouter un peu de précision et de fluidité à nos déplacements.<br>
-							Nous avons précédemment utilisé <i>view_dst_pos</i> pour générer nos rayons. Il fait sens de rattacher cette variable au joueur étant donnée que seul lui l'utilise et que nous en aurons besoin à différents endroits du programme.<br>
-							Enfin, <i>dir</i> permet de stocker en radian, la direction vers laquelle regarde le joueur.
+							La position du joueur est définie par un vecteur utilisant des nombres flottants. Ce n'est pas obligatoire mais cela permet de rajouter un peu de précision et de fluidité aux déplacements.<br>
+							Nous avons précédemment utilisé <code>view_dst_pos</code> pour générer les rayons. Il fait sens de rattacher cette variable au joueur étant donné que lui seul l'utilise et que nous en aurons besoin à différents endroits du programme.<br>
+							Enfin, <code>dir</code> permet de stocker en radians, la direction dans laquelle regarde le joueur (par rapport à l'axe horizontal).
 						</p>
 
 						<p>
-							Pour détecter et exécuter les entrées utilisateurs, nous allons comme indiqué par le concept de <i>gameloop</i>, créer une fonction en début <i>d'update</i> à cet effet.
+							Pour détecter et exécuter les entrées utilisateur, nous allons comme indiqué par le concept de <i>gameloop</i>, créer une fonction en début d'<i>update</i> à cet effet.
 						</p>
 
 						<pre><code>int player_input(t_data *data)
 {
-	if (data->keyboard[KEY_A] == 1)
+	if (data-&#62keyboard[KEY_A] == 1)
 		rotate_left(data);
-	if (data->keyboard[KEY_E] == 1)
+	if (data-&#62keyboard[KEY_E] == 1)
 		rotate_right(data);
 	return (0);
 }</code></pre>
 						<p>
-							Le format de cette fonction permet d'aisément rajouter des possibilités d'interaction à notre jeu. Pour l'instant il n'y a que la rotation mais plus tard nous ajouterons les déplacements du personnage.
+							Le format de cette fonction permet d'ajouter aisément des possibilités d'interaction avec le jeu. Pour l'instant il n'y a que la rotation mais plus tard nous ajouterons les déplacements du personnage.
 						</p>
 
 						<p>
-							Pour effectuer la rotation de notre personnage nous utiliserons la variables <i>dir</i>. C'est d'ailleurs cette variable qui va nous permettre de calculer <i>view_dst_pos</i>.
+							Pour effectuer la rotation de notre personnage nous utiliserons la variable <code>dir</code>. C'est d'ailleurs cette variable qui va nous permettre de calculer <code>view_dst_pos</code>.
 						</p>
 
 						<p>
@@ -996,16 +1001,16 @@ else
 						<pre><code>void rotate_right(t_data *data)
 {
 	double rot_speed = 1.5f;
-	double old_dir_x = data->player.dir.x;
-	data->player.dir.x = data->player.dir.x * cos(rot_speed) - data->player.dir.y * sin(rot_speed);
-	data->player.dir.y = old_dir_x * sin(rot_speed) + data->player.dir.y * cos(rot_speed);
+	double old_dir_x = data-&#62player.dir.x;
+	data-&#62player.dir.x = data-&#62player.dir.x * cos(rot_speed) - data-&#62player.dir.y * sin(rot_speed);
+	data-&#62player.dir.y = old_dir_x * sin(rot_speed) + data-&#62player.dir.y * cos(rot_speed);
 }
 </code></pre>
 
 						<div class="row">
 							<div class="col-5">
 								<p>
-									Pour tourner à gauche il suffit simplement de donner une valeur négative à <i>rot_speed</i> (libre à vous de factoriser ces fonctions de rotation).
+									Pour tourner à gauche il suffit simplement de donner une valeur négative à <code>rot_speed</code> (libre à vous de factoriser ces fonctions de rotation).
 								</p>
 							</div>
 							<div class="col-5">
@@ -1013,18 +1018,18 @@ else
 									<video controls width="100%">
 										<source src="images/cube3d/player_rotate.mp4" type="video/webm">
 									</video>
-									<center><sup><i>démonstration rotation du joueur avec le clavier</i></sup></center>
+									<center><sup><i>démonstration de la rotation du joueur avec le clavier</i></sup></center>
 								</span>
 							</div>
-						</div
+						</div>
 
 						<p>
-							La direction va nous être très utile pour les déplacements. La difficulté est de garder ses mouvements relatifs à sa direction.<br>
-							Par exemple, lorsque l'on veut se déplacer vers l'avant, le joueur doit avancer la où il regarde.
+							La direction va nous être très utile pour les déplacements. La difficulté est de garder les déplacements relatifs à la direction du joueur.<br>
+							Par exemple, lorsque l'on veut se déplacer vers l'avant, le joueur doit avancer dans la direction vers laquelle il regarde.
 						</p>
 
 						<p>
-							Etant donné que valeurs de <i>dir</i> sont comprises entre -1 et 1, il suffit de multiplier une vitesse par ces valeurs et d'ajouter le résultat à la position du joueur.
+							Étant donné que valeurs de <code>dir</code> sont comprises entre -1 et 1, il suffit de multiplier une vitesse par ces valeurs et d'ajouter le résultat à la position du joueur.
 						</p>
 
 						<pre><code>move_forward(t_data *data)
@@ -1033,24 +1038,24 @@ else
 
 	// Calculating relative position
 	t_vector2_f new_pos = {
-		data->player.dir.x * move_speed, // x
-		data->player.dir.y * move_speed  // y
+		data-&#62player.dir.x * move_speed, // x
+		data-&#62player.dir.y * move_speed  // y
 	};
 
 	// Adding that position to the player
-	data->player.x += new_pos.x;
-	data->player.y += new_pos.y;
+	data-&#62player.x += new_pos.x;
+	data-&#62player.y += new_pos.y;
 }</code></pre>
 
 						<p>
-							De nouveau, pour reculer il faut donner une valeur négative à move_speed.
-							Le fait de calculer de combien de combien le joueur va se déplacer (sans directement lui attribuer sa nouvelle position), va être très pratique pour vérifier les collisions.
+						  De nouveau, pour reculer il faut donner une valeur négative à <code>move_speed</code>.
+						  Le fait de calculer de combien de combien le joueur va se déplacer (sans directement lui attribuer sa nouvelle position), va être très pratique pour vérifier les collisions.
 						</p>
 
 
 						<p>
 							Voyons maintenant le dernier mouvemement possible de notre personnage, les déplacements latéraux.<br>
-							Celui-ci est en réalité une combinaison de la rotation et du déplacement.<br>
+							Il s'agit est en réalité d'une combinaison de la rotation et du déplacement.<br>
 							Il faut temporairement créer nouvelle direction à 90° à gauche ou à droite du personnage, et le faire avancer dans cette nouvelle direction.
 						</p>
 
@@ -1060,8 +1065,8 @@ else
 
 	// Caculating direction 90 degree to the left
 	t_vector2_f new_dir = {
-		data->player.dir.x * cos(-PI_2) - data->player.dir.y * sin(-PI_2), // PI / 2 = 90°
-		data->player.dir.x * sin(-PI_2) + data->player.dir.y * cos(-PI_2)
+		data-&#62player.dir.x * cos(-PI_2) - data-&#62player.dir.y * sin(-PI_2), // PI / 2 = 90°
+		data-&#62player.dir.x * sin(-PI_2) + data-&#62player.dir.y * cos(-PI_2)
 	};
 
 	t_vector2_f new_pos = {
@@ -1069,8 +1074,8 @@ else
 		new_dir.y * move_speed
 	};
 
-	data->player.x += new_pos.x;
-	data->player.y += new_pos.y;
+	data-&#62player.x += new_pos.x;
+	data-&#62player.y += new_pos.y;
 }</pre></code>
 						<div class="row">
 							<div class="col-5">
@@ -1078,26 +1083,26 @@ else
 									<video controls width="100%">
 										<source src="images/cube3d/player_move.mp4" type="video/webm">
 									</video>
-									<center><sup><i>démonstration déplacements du joueur avec le clavier</i></sup></center>
+									<center><sup><i>démonstration des déplacements du joueur avec le clavier</i></sup></center>
 								</span>
 							</div>
 							<div class="col-5">
 								<p>
-									Après avoir ajouté ces fonctions dans <i>player_input</i>, nous avons désormais la possibilité de déplacer notre joueur.<br>
-									Il faut cependant veiller à désormais <b>utiliser la position de notre personnage</b> dans les fonctions utilisant les rayons <b>et non plus le centre de l'écran</b>.<br>
-									De plus, il ne faut pas oublier de <b>mettre à jour <i>view_dst_pos</i></b> à la fin de la fonction <i>player_input</i>.
+									Après avoir ajouté ces fonctions dans <code>player_input</code>, nous avons désormais la possibilité de déplacer notre joueur.<br>
+									Il faut cependant veiller à désormais <b>utiliser la position du personnage</b> dans les fonctions utilisant les rayons <b>et non plus le centre de l'écran</b>.<br>
+									De plus, il ne faut pas oublier de <b>mettre à jour <code>view_dst_pos</code></b> à la fin de la fonction <code>player_input</code>.
 								</p>
 							</div>
 						</div>
 
-						<i>Mise à jour de view_dst_pos à la fin de la fonction "player_input"</i>
-						<pre><code>data->player.view_dst_pos.x = data->player.dir.x * data->view_dst + data->player.pos.x;
-data->player.view_dst_pos.y = data->player.dir.y * data->view_dst + data->player.pos.y;</code></pre>
+						<i>Mise à jour de </i><code>view_dst_pos</code><i> à la fin de la fonction </i><code>player_input</code>
+						<pre><code>data-&#62player.view_dst_pos.x = data-&#62player.dir.x * data-&#62view_dst + data-&#62player.pos.x;
+data-&#62player.view_dst_pos.y = data-&#62player.dir.y * data-&#62view_dst + data-&#62player.pos.y;</code></pre>
 
 
 						<p>
 							Comme mentionné plus haut, il serait un peu plus réaliste de pouvoir heurter un mur au lieu de passer au travers.<br>
-							Rien de bien compliqué tout est déja en place.
+							Rien de bien compliqué car tout est déja en place.
 						</p>
 						<p>
 							Avant de mettre à jour les coordonées du joueur lors d'un déplacement, il faut vérifier qu'il n'aille pas sur une cellule représentant un mur dans notre tableau.
@@ -1108,47 +1113,47 @@ data->player.view_dst_pos.y = data->player.dir.y * data->view_dst + data->player
 {
 	// Convert world coordinates to cell coordinates
 	t_vector2_d cell = {
-		x / data->cell_size,
-		y / data->cell_size
+		x / data-&#62cell_size,
+		y / data-&#62cell_size
 	};
 
 	// Check out of map coordinates
-	if (cell.x < 0 || cell.x > data->tab_width - 1)
+	if (cell.x &#60 0 || cell.x &#62 data-&#62tab_width - 1)
 		return (0);
-	if (cell.y < 0 || cell.y > data->tab_height - 1)
+	if (cell.y &#60 0 || cell.y &#62 data-&#62tab_height - 1)
 		return (0);
 
 	// Check cell value
-	if (data->tab[cell.y][cell.x] == 1) // Is a wall
+	if (data-&#62tab[cell.y][cell.x] == 1) // Is a wall
 		return (1);
 
 	return (0);
 }</pre></code>
 
-						<p>Si à l'avenir notre programme devait accueillir d'autres valeurs de cellules, nous pourrons ici définir si elles sont solides ou non.</p>
+						<p>Si à l'avenir notre programme devait accueillir d'autres valeurs de cellules, nous pourrions ici définir si elles sont solides ou non.</p>
 						<p>Vérifier une collision est maintenant on ne peut plus simple.</p>
 
-						<i>le code suivant est la suite de la fonction move_forward</i>
-						<pre><code>t_vector2_f *p_pos = &data->player_pos; // Reference to player pos
+						<i>le code suivant est la suite de la fonction </i><code>move_forward</code>
+						<pre><code>t_vector2_f *p_pos = &data-&#62player_pos; // Reference to player pos
 
 // Check collision on X coordinate
-if (!is_colliding_cell(data, p_pos->x + new_pos.x, p_pos->y))
-	p_pos->x += new_pos.x;
+if (!is_colliding_cell(data, p_pos-&#62x + new_pos.x, p_pos-&#62y))
+	p_pos-&#62x += new_pos.x;
 
 // Check collision on Y coordinate
-if (!is_colliding_cell(data, p_pos->x, p_pos->y + new_pos.y))
-	p_pos->y += new_pos.y;
+if (!is_colliding_cell(data, p_pos-&#62x, p_pos-&#62y + new_pos.y))
+	p_pos-&#62y += new_pos.y;
 </code></pre>
 						<div class="row">
 							<div class="col-5">
-								<p>Le fait de séparer la vérification des coordonées X et Y permet de ne pas être "bloqué" dès lors que le joueur se trouve près d'un mur. Au lieu de ca, le personnage va longer le mur.</p>
+								<p>Le fait de séparer la vérification des coordonées X et Y permet de ne pas être "bloqué" dès lors que le joueur se trouve près d'un mur. Au lieu de ça, le personnage va longer le mur.</p>
 							</div>
 							<div class="col-5">
 								<span class="image fit">
 									<video controls width="100%">
 										<source src="images/cube3d/player_collision.mp4" type="video/webm">
 									</video>
-									<center><sup><i>démonstration collisions</i></sup></center>
+									<center><sup><i>démonstration des collisions</i></sup></center>
 								</span>
 							</div>
 						</div>
@@ -1156,40 +1161,40 @@ if (!is_colliding_cell(data, p_pos->x, p_pos->y + new_pos.y))
 						<h4>Rendu en première personne</h4>
 
 						<p>
-							Aventurons nous maintenant vers le moment le plus récompensant de ce projet.<br>
+							Aventurons-nous maintenant vers le moment le plus gratifiant <!-- Attention, je crois que "récompensant" ça n'existe pas en français --> de ce projet.<br>
 							L'intégralité de ce que nous avons dessiné à l'écran jusqu'à présent, n'est en réalité utile que pour comprendre comment fonctionne le raycasting.<br>
-						 	L'affichage comme nous l'avons fait peut cependant être réutilisé pour créer une minimap, un éditeur de niveaux et une multitude d'autres ajouts.
+						 	L'affichage comme nous l'avons réalisé peut cependant être réutilisé pour créer une minimap, un éditeur de niveaux et une multitude d'autres ajouts.
 						</p>
 
 						<p>
 							C'est grâce aux données contenues dans les rayons que nous sommes en capacité de simuler un affichage en première personne.<br>
-							Notre écran sera constitué de plusieurs bandes vertcales (autant qu'il y a de rayons). Il faut dessiner sur chaque bande, un rectangle (représentant une portion de mur)
-							dont la hauteur va dépendre de la distance qu'à mis le rayon à une collision.
+							Notre écran sera constitué de plusieurs bandes verticales (autant qu'il y a de rayons). Il faut dessiner sur chaque bande, un rectangle (représentant une portion de mur)
+							dont la hauteur va dépendre de la distance entre le joueur et le point de collision du rayon, donnée par la DDA.
 						</p>
 
 						<p>
-							C'est donc après avoir calculé la position de l'impact des rayons (fonction <i>calculate_collisions</i>) que nous voulons afficher nos murs.<br>
-							Créons une fonction nommée <i>rays_render</i> qui se chargera de ceci.
+							C'est donc après avoir calculé la position de l'impact des rayons (fonction <code>calculate_collisions</code>) que nous voulons afficher nos murs.<br>
+							Créons une fonction nommée <code>rays_render</code> qui se chargera de cela.
 						</p>
 
-						<p>Après avoir calculé la largeur d'une tranche, il faut itérer sur tous les rayons et vérifier que ceux-ci ont belle et bien rencontré une collision.</p>
+						<p>Après avoir calculé la largeur d'une tranche, il faut itérer sur tous les rayons et vérifier que ceux-ci ont bel et bien rencontré une collision.</p>
 
 						<pre><code>void rays_render(t_data *data)
 {
-	const int slice_width = data->win_width / data->rays_nb;
+	const int slice_width = data-&#62win_width / data-&#62rays_nb;
 
-	for (int i = 0; i < data->rays_nb; i++)
+	for (int i = 0; i &#60 data-&#62rays_nb; i++)
 	{
 		// Reference to the current ray
-		t_ray *ray = &data->rays[i];
+		t_ray *ray = &data-&#62rays[i];
 
-		if (ray->length == -1) // Ray didn't hit
+		if (ray-&#62length == -1) // Ray didn't hit
 			continue;
 	}
 }</pre></code>
 
 						<p>
-							 Le coeur de cette fonction peut être divisée en 3 parties.<br>
+							 Le cœur de cette fonction peut être divisé en 3 parties.<br>
 							 <ul>
 								 <li>Calculer la hauteur de la tranche</li>
 								 <li>Choisir la couleur du mur</li>
@@ -1198,24 +1203,24 @@ if (!is_colliding_cell(data, p_pos->x, p_pos->y + new_pos.y))
 						</p>
 
 						<p>
-							La hauteur de la tranche se calcul en multipliant, l'inverse de la longueur du rayon par la hauteur de l'écran.<br>
-							Il est possible d'ajuster le résultat obtenu en ajoutant un coefficient comme 2 pour doubler la taille des tranches ou 0.5 pour au contraire, diviser la hauteur par 2.
+							La hauteur de la tranche se calcule en multipliant l'inverse de la longueur du rayon par la hauteur de l'écran.<br>
+							Il est possible d'ajuster le résultat obtenu en le multipliant par un coefficient comme 2 pour doubler la taille des tranches ou 0.5 pour au contraire, diviser la hauteur par 2.
 						</p>
 
-						<i>Le code suivant est la continuité de rays_render (dans la boucle for)</i>
+						<i>Le code suivant est la continuité de </i><code>rays_render</code><i> (dans la boucle for)</i>
 						<pre><code>// Calculating slice height
-float slice_height = 1.0f / ray->length;
-slice_height = slice_height * data->win_height;
+float slice_height = 1.0f / ray-&#62length;
+slice_height = slice_height * data-&#62win_height;
 slice_height = slice_height * 2; // Make the wall two times bigger
 </code></pre>
 
-						<p>Comme mentionné dans la description de la structure <i>t_ray</i>, la couleur à afficher va dépendre de l'orientation du mur.</p>
+						<p>Comme mentionné dans la description de la structure <code>t_ray</code>, la couleur à afficher va dépendre de l'orientation du mur.</p>
 						<pre><code>int color;
-if (ray->side_hit == 0)
+if (ray-&#62side_hit == 0)
 	color = RED;
-else if (ray->side_hit == 1)
+else if (ray-&#62side_hit == 1)
 	color = BLUE;
-else if (ray->side_hit == 2)
+else if (ray-&#62side_hit == 2)
 	color = YELLOW;
 else
 	color = GREEN;
@@ -1225,13 +1230,13 @@ else
 							<div class="col-6">
 								<p>
 									L'affichage de nos tranches, se fera depuis le milieu de l'écran. Si une tranche fait 500 pixels de hauteur, 250 pixels seront affichés vers le bas, et 250 vers le haut de l'écran.<br>
-									Pour ce qui est de l'espacement horizontal, nous avons calculé <i>slice_width</i> qui va nous permettre d'espacer correctement nos tranches.
+									Pour ce qui est de l'espacement horizontal, nous avons calculé <code>slice_width</code> qui va nous permettre d'espacer correctement nos tranches.
 								</p>
 							</div>
 							<div class="col-4">
 								<span class="image fit">
 									<img src="images/cube3d/rays_spacing.png" alt="" />
-									<center><sup><i>Schéma affichage des tranches (avec 5 rayons)</i></sup></center>
+									<center><sup><i>schéma de l'affichage des tranches (avec 5 rayons)</i></sup></center>
 								</span>
 							</div>
 						</div>
@@ -1240,13 +1245,13 @@ else
 						<pre><code>// Calculating top left corner position of the slice to draw
 t_vector2_d tl = {
 	i * slice_width, // X
-	data->win_height / 2 + slice_height / 2 // Y
+	data-&#62win_height / 2 + slice_height / 2 // Y
 };
 
 // Same for bottom right corner
 t_vector2_d br = {
 	i * slice_width + slice_width, // X
-	data->win_height / 2 - slice_height / 2 // Y
+	data-&#62win_height / 2 - slice_height / 2 // Y
 };
 
 draw_rect_color(data, tl, br, color);</code></pre>
@@ -1256,28 +1261,28 @@ draw_rect_color(data, tl, br, color);</code></pre>
 						<div class="row">
 							<div class="col-5">
 								<p>
-								Il est important que le nombre de rayons soit un multiple de la taille horizontale de la fenêtre. Etant donné qu'il n'est pas possible de dessiner sur des fractions de pixels,
-								si nous avions une fenêtre de 100 pixels (de largeur) et 30 rayons, la dernière tranche de pixels serait perdue et n'afficherait rien.
+								Il est important que la taille horizontale de la fenêtre soit un multiple du le nombre de rayons <!-- On est d'accord que c'était inversé hein ? il faut que le nombre de rayons divise la taille en pixels de la fenêtre pour que chaque rayon prenne le même nombre de pixels de large (rob) -->. Étant donné qu'il n'est pas possible de dessiner sur des fractions de pixels,
+								si nous avions une fenêtre de 100 pixels de large et 33 rayons, la dernière tranche de pixels serait perdue et n'afficherait rien.
 							</p>
-							<p>Cette possibilité d'utiliser un rayon pour plusieurs tranches, est cependant très utiles pour optimiser l'efficacité de notre programme (bien qu'au détriment d'une certaine précision).</p>
-							<p>Voici le résultat obtenu lorsque nous naviguons sur la carte en première personne cette fois-ci.</p>
+							<p>Cette possibilité <!-- 'Cette' ? laquelle ? je crois pas que tu en aies déjà parlé (rob) --> d'utiliser un rayon pour plusieurs tranches, est cependant très utile pour optimiser l'efficacité de notre programme (bien qu'au détriment d'une certaine précision).</p>
+							<p>Voici le résultat obtenu lorsque nous navigons sur la carte en première personne cette fois-ci.</p>
 							</div>
 							<div class="col-5">
 								<span class="image fit">
 									<video controls width="100%">
 										<source src="images/cube3d/fish_eye.mp4" type="video/webm">
 									</video>
-									<center><sup><i>démonstration rendu</i></sup></center>
+									<center><sup><i>démonstration du rendu</i></sup></center>
 								</span>
 							</div>
 						</div>
 
 						<p>
 							Sur cette vidéo, les deux moitiés de l'écran sont repeintes en bleu et gris pour donner une impression de sol et de ciel.<br>
-							Ceci est effectué dans une fonction nommée <i>floor_and_ceiling</i> (non presentée sur cette page).
+							Ceci est effectué dans une fonction nommée <code>floor_and_ceiling</code> (non reportée sur cette page).
 						</p>
 
-						<p>Maintenant que nous possédons tous les éléments importants du raycasting, voici à quoi ressemble notre fonction <i>update</i></p>
+						<p>Maintenant que nous possédons tous les éléments importants du raycasting, voici à quoi ressemble notre fonction <code>update</code></p>
 
 						<pre><code>int update(t_data *data)
 {
@@ -1296,45 +1301,43 @@ draw_rect_color(data, tl, br, color);</code></pre>
 						<div class="row">
 							<div class="col-5">
 								<p>
-									Si le rendu des murs parait étrange, c'est à cause du tant redouté "fish eye effect".<br>
-									En français, "l'effet oeil de poission", apparait lorsque l'on utilise la distance euclidienne des rayons.<br>
+								  Si le rendu des murs paraît étrange et arrondi, c'est à cause du tant redouté "<i>fish eye effect</i>".<br>
+									En français, "l'effet œil de poisson", apparaît lorsque l'on utilise la norme euclidienne des rayons.<br>
 									Le moyen de repérer cet effet, est de se mettre face à un mur. Les côtés du mur seront alors courbés d'une façon non-naturelle.
 								</p>
 							</div>
 							<div class="col-5">
 								<span class="image fit">
 									<img src="images/cube3d/fish_eye_wall.png" alt="" />
-									<center><sup><i>Rendu avec fish eye</i></sup></center>
+									<center><sup><i>rendu avec effet fish eye</i></sup></center>
 								</span>
 							</div>
 						</div>
 
 						<p>
-							Les rayons en bordure du champs de vision mettent une plus grande distance à atteindre le mur, c'est pourquoi leur hauteur est moins grande comparé à celle des rayons du centre.
+							Les rayons en bordure du champ de vision sont plus longs car ils ont un angle plus grand avec la direction de regard, c'est pourquoi la hauteur des tranches de murs correspondante est plus petite comparée à la hauteur des tranches correspondant aux rayons du centre.
 						</p>
 
 						<b>SCHEMA</b>
 
 						<p>
 							Un moyen d'uniformiser cette longueur est d'utiliser un plan de caméra.<br>
-							Ce plan sera perpendiculaire à la direction du joueur et se prolongera à l'infini
+							Ce plan sera perpendiculaire à la direction de regard du joueur et passera par la position du joueur.
 						</p>
 						<b>SCHEMA</b>
 
 						<p>
-							Pour avoir cette distance uniformisée, il nous faut un point en plus du joueur et du hit.<br>
-							Ces trois points formeront un triangle rectangle en ce nouveau point.<br>
-							C'est la distance entre le hit et ce nouveau point que nous utiliserons pour afficher notre portion de mur.<br>
-							Cette valeur sera stockée sous format de <i>double</i> <b>dans une nouvelle donnée de la structure t_ray, nommée <i>perp_length</i></b></p>
+						  On projette alors chaque point de collision perpendiculairement sur ce plan, et on utilise la distance entre chaque point de collision et son projeté pour calculer la hauteur des tranches de murs, à la place des longueurs de rayons. <!-- En fait, on aurait même pas besoin de dire qu'on projette les hits sur le plan, on peut directement parler de 'distance' entre le point de hit et le plan parce que c'est ça la définition de distance à un plan (projection orthogonale) mais c'est peut-être un peu trop breuss si on parle directement de distance à un plan ? -->
+						  Cette valeur sera stockée sous format de <code>double</code> <b>dans une nouvelle donnée de la structure <code>t_ray</code>, nommée <code>perp_length</code></b></p>
 						</p>
 						<b>SCHEMA</b>
 
 						<p>
-							Ce calcul se fera dans la DDA. La page Lode's Computer Graphics Tutorial offre un moyen très efficace pour directement calculer cette longueur.<br>
-							Si le dernier axe incrémenté est l'axe horizontal, <i>perp_length</i> sera égal à :<br>
-							<pre><code>ray->perp_length = (side_dist.x - delta_dist.x) * data->cell_size</code></pre>
+							Ce calcul se fera dans la DDA. La page Lode's Computer Graphics Tutorial offre un moyen très efficace pour directement calculer cette longueur. <!-- le mec a besoin d'un tuto pour faire de la projection orthogonale dans un plan avec un repère orthonormé mais bon bref.................... --><br>
+							Si le dernier axe incrémenté est l'axe horizontal, <code>perp_length</code> sera égal à :<br>
+							<pre><code>ray-&#62perp_length = (side_dist.x - delta_dist.x) * data-&#62cell_size</code></pre>
 							Autrement, perp_length prendra la valeur :<br>
-							<pre><code>ray->perp_length = (side_dist.y - delta_dist.y) * data->cell_size</code></pre>
+							<pre><code>ray-&#62perp_length = (side_dist.y - delta_dist.y) * data-&#62cell_size</code></pre>
 						</p>
 
 						<div class="row">
@@ -1343,13 +1346,13 @@ draw_rect_color(data, tl, br, color);</code></pre>
 									<video controls width="100%">
 										<source src="images/cube3d/fish_eye_corrected.mp4" type="video/webm">
 									</video>
-									<center><sup><i>démonstration rendu avec correction fish eye</i></sup></center>
+									<center><sup><i>démonstration du rendu avec correction de l'effet fish eye</i></sup></center>
 								</span>
 							</div>
 							<div class="col-5">
 								<p>
-									Voici le résultat quand <i>perp_length</i> est utilisé à la place de <i>length</i> dans la fonction <i>rays_render</i>.<br>
-									Le problème de fish eye est corrigé et les murs sont maintenant beaucoup plus lisses.
+									Voici le résultat quand <code>perp_length</code> est utilisé à la place de <code>length</code> dans la fonction <code>rays_render</code>.<br>
+									Le problème de <i>fish eye</i> est corrigé et les murs sont maintenant beaucoup plus lisses.
 								</p>
 							</div>
 						</div>
@@ -1381,191 +1384,193 @@ draw_rect_color(data, tl, br, color);</code></pre>
 							</div>
 						</div>
 
-						<p>Nous utiliserons les fonction de la MiniLibX <i>mlx_xpm_file_to_image</i> et <i>mlx_get_data_addr</i>.</p>
+						<p>Nous utiliserons les fonctions de la MiniLibX <code>mlx_xpm_file_to_image</code> et <code>mlx_get_data_addr</code>.</p>
 
 						<pre><code>int load_texture(t_data *data, t_texture *texture, char *texture_path)
 {
-	texture->text = mlx_xpm_file_to_image(data->mlx, texture_path, &texture->width_image, &texture->height_img);
-	if (texture->text == NULL) // Check conversion error
+	texture-&#62text = mlx_xpm_file_to_image(data-&#62mlx, texture_path, &texture-&#62width_image, &texture-&#62height_img);
+	if (texture-&#62text == NULL) // Check conversion error
 		return (1);
 
-	texture->text_adr = mlx_get_data_addr(texture->text, &texture->bits_per_pixel, &texture->line_length, &texture->endian);
-	if (texture->text_adr == NULL)
+	texture-&#62text_adr = mlx_get_data_addr(texture-&#62text, &texture-&#62bits_per_pixel, &texture-&#62line_length, &texture-&#62endian);
+	if (texture-&#62text_adr == NULL)
 		return (1);
 
 	return (0);
 }</code></pre>
 
 						<p>
-							Le paramètre <i>texture</i> correspond à l'addresse de la variable qui va stocker notre texture.<br>
-							Ici nous voulons une texture pour toutes les face d'une cellule. Dans notre structure <i>data</i> se trouvera donc un tableau
-							de textures (de taille 4), que nous itialiserons avec les textures que nous voulons charger .<br>
+							Le paramètre <code>texture</code> correspond à l'addresse de la variable qui va stocker notre texture.<br>
+							Ici nous voulons une texture pour toutes les face d'une cellule. Dans notre structure <code>data</code> se trouvera donc un tableau
+							de textures (de taille 4) <!-- un tableau à 4 éléments ? -->, que nous initialiserons avec les textures que nous voulons charger .<br>
 						</p>
 
 						<p>
-							Pour fidèlement projeter une image sur un mur, il est essentiel de pouvoir prévéler les pixels à une certaine position de notre texture.<br>
-							La manière de faire est on ne peut plus similaire à la fonction <i>my_mlx_pixel_put</i> présentée au début.
+							Pour fidèlement projeter une image sur un mur, il est essentiel de pouvoir prélever la couleur du pixel à une certaine position de notre texture.<br>
+							La manière de faire est on ne peut plus similaire à la fonction <code>my_mlx_pixel_put</code> présentée au début.
 						</p>
 
 						<pre><code>int get_text_pixel(t_text *texture, int x, int y)
 {
 	int color;
 
-	// Check out of texture coordinate
-	if (x < 0 || x >= text->width_img)
+	// Check out of texture coordinates
+	if (x &#60 0 || x &#62= text-&#62width_img)
 		return (0); // Returning black color
-	if (y < 0 || y >= text->height_img)
+	if (y &#60 0 || y &#62= text-&#62height_img)
 		return (0);
 
-	color = (*(int *)text->text_adr + (y * text->line_length) + (x * text->bits_per_pixel / 8))
+	color = (*(int *)text-&#62text_adr + (y * text-&#62line_length) + (x * text-&#62bits_per_pixel / 8))
 	return (color);
 }</code></pre>
 
 
 						<p>
-							De la même manière que pour afficher une couleur sur un mur, c'est a partir d'une tranche de l'écran que nous déposerons les pixels de haut en bas.<br>
-							La difficulté cette fois-ci est de savoir où sur la texture, préveler nos pixels pour les replacer sur notre mur.
+							De la même manière que pour afficher une couleur sur un mur, c'est à partir d'une tranche de l'écran que nous déposerons les pixels de haut en bas.<br>
+							La difficulté cette fois-ci est de savoir où prélever <!-- t'as du mal avec le verbe 'prélever' apparemment --> nos pixels sur la texture pour les replacer sur le mur.
 						</p>
 
 						<p>
 							Commençons par trouver la coordonnée horizontale de la texture à partir de l'impact d'un rayon.<br>
-							Il faut premièrement trouver la position exacte du hit. Jusqu'à présent avoir la position du hit au pixel pret était suffisant.
-							Cependant si une texture fait 100 pixels de large et que <i>cell_size</i> ne fait que 50 pixels, la moitié de la texture (une colonne sur deux) passera à la trappe.
+							Il faut premièrement trouver la position exacte du hit. Jusqu'à présent avoir la position du hit au pixel près était suffisant.
+							Cependant si une texture fait 100 pixels de large et que <code>cell_size</code> ne fait que 50 pixels, la moitié de la texture (une colonne sur deux) passera à la trappe.
 							<b>SCHEMA</b>
 						</p>
 
 						<p>Voici le bout de code permettant de calculer la position exacte de l'impact :</p>
-						<pre><code>double perp_angle = PI_2 - ray->angle + get_angle_f(data->player.pos, vector_d_to_f(data->player.view_dst_pos));
-double	hit_length = ray->perp_length * 0.5f * data->cell_size / sin(perp_angle);
+						<pre><code>double perp_angle = PI_2 - ray-&#62angle + get_angle_f(data-&#62player.pos, vector_d_to_f(data-&#62player.view_dst_pos));
+double	hit_length = ray-&#62perp_length * 0.5f * data-&#62cell_size / sin(perp_angle);
 
-t_vector2_f wall_x = create_vect_f_from_origin(data->player.pos, ray->angle, hit_length);</code></pre>
+t_vector2_f wall_x = create_vect_f_from_origin(data-&#62player.pos, ray-&#62angle, hit_length);</code></pre>
 						<b>SCHEMA</b>
 
 						<p>
-							Il peut être nécessaire de rajouter un coefficient à <i>perp_length</i> comme il a été fait ici avec le "* 0.5f".<br>
-							Ce coefficient est nécessaire car la valeur de <i>perp_length</i> change en fonction de <i>cell_size</i> et de <i>view_dst</i>.<br>
-							Le code présenté utilise une <i>cell_size</i> de 40 ainsi qu'une <i>view_dst</i> de 800 pixels.
+							Il peut être nécessaire de multiplier <code>perp_length</code> par un coefficient comme il a été fait ici avec le <code>* 0.5f</code>.<br>
+							Ce coefficient est nécessaire car la valeur de <code>perp_length</code> change en fonction de <code>cell_size</code> et de <code>view_dst</code>.<br>
+							<!-- ce qui n'est pas vraiment une justification :b -->
+							Le code présenté utilise une <code>cell_size</code> de 40 ainsi qu'une <code>view_dst</code> de 800 pixels.
 						</p>
 
 						<p>
 							A partir de cette position, il est possible de trouver la coordonnée horizontale de la texture.<br>
-							Il faut pour cela trouver où notre rayon entre en collision sur la cellule.<br>
-							Exemple (avec <i>cell_size</i> égal à 40):
+							Il faut pour cela trouver où le rayon entre en collision sur la cellule.<br>
+							Exemple (avec <code>cell_size</code> égal à 40):
 						</p>
 
 						<p>
 							Notre rayon touche le bas de la première cellule à la coordonnée 20 sur l'axe X.<br>
-							20 étant le milieu de <i>cell_size</i> on sait qu'il faudra afficher le milieu de la texture à cet endroit là.<br>
-							Il faut ensuite convertir cette valeur (en pixel) en ratio entre 0 et 1 et enfin l'adapter à la taille de la texture.
+							20 étant le milieu de <code>cell_size</code> on sait qu'il faudra afficher le milieu de la texture à cet endroit là.<br>
+							Il faut ensuite convertir cette valeur (en pixel) en ratio entre 0 et 1 et enfin l'adapter à la taille de la texture. <!-- ce qui est de l'interpolation linéaire, tu peux le dire vu que tu l'as expliquée plus haut -->
 						</p>
 
 						<pre><code>int get_tex_x(t_data *data, t_ray *ray, t_texture *texture)
 {
 	// Calculating exact hit position
-	double perp_angle = PI_2 - ray->angle + get_angle_f(data->player.pos, vector_d_to_f(data->player.view_dst_pos));
-	double	hit_length = ray->perp_length * 0.5f * data->cell_size / sin(perp_angle);
-	t_vector2_f wall_x = create_vect_f_from_origin(data->player.pos, ray->angle, hit_length);
+	double perp_angle = PI_2 - ray-&#62angle + get_angle_f(data-&#62player.pos, vector_d_to_f(data-&#62player.view_dst_pos));
+	double	hit_length = ray-&#62perp_length * 0.5f * data-&#62cell_size / sin(perp_angle);
+	t_vector2_f wall_x = create_vect_f_from_origin(data-&#62player.pos, ray-&#62angle, hit_length);
 
 	float cell_pos;
 	// Getting hit position relative to the cell
-	if (ray->side_hit == 1 || ray->side_hit == 3) // Horizontal hit
-		cell_pos = wall_x.y - (int)(wall_x.y / data->cell_size) * data->cell_size;
+	if (ray-&#62side_hit == 1 || ray-&#62side_hit == 3) // Horizontal hit
+		cell_pos = wall_x.y - (int)(wall_x.y / data-&#62cell_size) * data-&#62cell_size;
 	else // Vertical hit
-		cell_pos = wall_x.x - (int)(wall_x.x / data->cell_size) * data->cell_size;
+		cell_pos = wall_x.x - (int)(wall_x.x / data-&#62cell_size) * data-&#62cell_size;
 
-	if (ray->side_hit == 3 || ray->side_hit == 2) // Converting cell_pos to ratio
-		cell_pos = cell_pos / data->cell_size;
+	if (ray-&#62side_hit == 3 || ray-&#62side_hit == 2) // Converting cell_pos to ratio
+		cell_pos = cell_pos / data-&#62cell_size;
 	else // Flip texture if the side hit is the top or the right side of a cell
-		cell_pos = 1.0f - cell_pos / data->cell_size;
+		cell_pos = 1.0f - cell_pos / data-&#62cell_size;
 
-	int tex_x = cell_pos * texture->width_img; // Mapping ratio to texture dimension
+	int tex_x = cell_pos * texture-&#62width_img; // Mapping ratio to texture dimension
 
 	return (tex_x);
 }</code></pre>
 
 						<p>
-							Il est important de retourner les textures affichées en le haut et à droite des cellules. Autrement celles-ci s'afficheront de manière inversée.
+							Il est important de retourner les textures affichées en haut et à droite des cellules <!-- pas très clair -->. Autrement celles-ci s'afficheront en miroir. 
 						</p>
 
 
 						<p>
 							La difficulté à présent est d'afficher à l'échelle de notre portion de mur, une bande de la texture.<br>
 							Si la hauteur de notre portion de mur est supérieure à la hauteur de la texture, cela veut dire qu'il faudra étirer la texture en hauteur pour pouvoir remplir toute la zone.<br>
-							A l'inverse, si notre portion est moins haute, il faudra "écraser" la texture pour que celle-ci puisse être entièrement affichée.
+							À l'inverse, si notre portion est moins haute, il faudra "écraser" la texture pour qu'elle puisse être entièrement affichée.
 						</p>
 
 						<div class="row">
 							<div class="col-4">
 								<span class="image fit">
 									<img src="images/cube3d/stretch0.png" alt="" />
-									<center><sup><i>Texture de base</i></sup></center>
+									<center><sup><i>texture de base</i></sup></center>
 								</span>
 							</div>
 							<div class="col-4">
 								<span class="image fit">
 									<img src="images/cube3d/stretch1.png" alt="" />
-									<center><sup><i>Texture étirée</i></sup></center>
+									<center><sup><i>texture étirée</i></sup></center>
 								</span>
 							</div>
 							<div class="col-4">
 								<span class="image fit">
 									<img src="images/cube3d/stretch2.png" alt="" />
-									<center><sup><i>Texture écrasée</i></sup></center>
-								</span>
-							</div>
-						</div>
-
-						<p>Bien sûr ce changement d'échelle dépendra de l'orientation du joueur par rapport au mur. C'est d'ailleurs celui-ci qui va rendre l'incrustation de la texture naturelle.</p>
-
-						<div class="row">
-							<div class="col-6">
-								<span class="image fit">
-									<img src="images/cube3d/no_texture.png" alt="" />
-									<center><sup><i>Mur sans texture</i></sup></center>
-								</span>
-							</div>
-							<div class="col-6">
-								<span class="image fit">
-									<img src="images/cube3d/texture.png" alt="" />
-									<center><sup><i>Mur avec texture</i></sup></center>
+									<center><sup><i>texture écrasée</i></sup></center>
 								</span>
 							</div>
 						</div>
 
 						<p>
-							Pour trouver le pas permettant d'afficher à l'échelle une texture, il suffit de diviser la hauteur de la texture par la hauteur de notre portion de mur.<br>
-							Il ne reste alors qu'à partir de haut en bas la portion de mur et d'y déposer les pixels de la texture.
+						  Bien sûr ce changement d'échelle dépendra de l'orientation du joueur par rapport au mur<!-- tu pourrais détailler plus j'ai pas trop capté -->.
+						  C'est d'ailleurs ce qui va rendre l'incrustation de la texture naturelle.</p>
+						<div class="row">
+							<div class="col-6">
+								<span class="image fit">
+									<img src="images/cube3d/no_texture.png" alt="" />
+									<center><sup><i>mur sans texture</i></sup></center>
+								</span>
+							</div>
+							<div class="col-6">
+								<span class="image fit">
+									<img src="images/cube3d/texture.png" alt="" />
+									<center><sup><i>mur avec texture</i></sup></center>
+								</span>
+							</div>
+						</div>
+
+						<p>
+							Pour trouver le ratio permettant d'afficher à l'échelle une texture, il suffit de diviser la hauteur de la texture par la hauteur de notre portion de mur.<!-- Du coup tu mets à l'échelle en hauteur mais c'est comment en largeur ? --><br>
+							Il ne reste alors qu'à parcourir de haut en bas la portion de mur et y déposer les pixels de la texture.
 						</p>
 
 						<pre><code>void rays_render(t_data *data)
 {
-	const int slice_width = data->win_width / data->rays_nb;
+	const int slice_width = data-&#62win_width / data-&#62rays_nb;
 
-	for (int i = 0; i < data->rays_nb; i++)
+	for (int i = 0; i &#60 data-&#62rays_nb; i++)
 	{
-		t_ray *ray = &data->rays[i];
+		t_ray *ray = &data-&#62rays[i];
 
-		if (ray->length == -1)
+		if (ray-&#62length == -1)
 			continue;
 
-		float slice_height = (float)(data->win_height / ray->perp_length);
-		t_vector2_d tl = {i * slice_width, data->win_height / 2 + slice_height / 2};
-		t_vector2_d br = {i * slice_width + slice_width, data->win_height / 2 - slice_height / 2};
+		float slice_height = (float)(data-&#62win_height / ray-&#62perp_length);
+		t_vector2_d tl = {i * slice_width, data-&#62win_height / 2 + slice_height / 2};
+		t_vector2_d br = {i * slice_width + slice_width, data-&#62win_height / 2 - slice_height / 2};
 
-		t_text *texture = &data->textures[rays->side_hit]; // Reference to the texture according on side_hit
+		t_text *texture = &data-&#62textures[rays-&#62side_hit]; // Reference to the texture according on side_hit
 
 		int tex_x = get_tex_x(data, ray, texture);
 		double tex_y = 0;
 
-		double step = texture->height_img / data->slice_height;
+		double step = texture-&#62height_img / data-&#62slice_height;
 
-		for (int y = tl.y; y < br.y, y++)
+		for (int y = tl.y; y &#60 br.y, y++)
 		{
-			if (y >= 0 && y < data->win_height)
+			if (y &#62= 0 && y &#60 data-&#62win_height)
 			{
 				int color = get_text_pixel(texture, tex_x, tex_y);
 
-				for (int x = tl.x; x > br.x; x++)
+				for (int x = tl.x; x &#62 br.x; x++)
 					my_mlx_pixel_put(data, x, y, color);
 			}
 			tex_y += step;
@@ -1576,12 +1581,12 @@ t_vector2_f wall_x = create_vect_f_from_origin(data->player.pos, ray->angle, hit
 						<div class="row">
 							<div class="col-5">
 								<p>
-									Voici l'entièreté de la fonction <i>rays_render</i>, reprenant le code montré précédemment ainsi que la partie texture.<br>
-									La dernière boucle <i>for</i> permet de remplir dans la largeur de chaque portion de mur. Cette partie du code est essentielle
+									Voici l'intégralité de la fonction <code>rays_render</code>, reprenant le code montré précédemment ainsi que la partie texture.<br>
+									La dernière boucle <code>for</code> permet de remplir dans la largeur de chaque portion de mur<!-- "remplir dans la largeur de chaque portion de mur" ? pas compris ce que ça veut dire -->. Cette partie du code est essentielle
 									si il y a moins de rayons que de pixels en largeur sur la fenêtre.
 								</p>
 								<p>
-									Voici le résultat avec des textures provenant du jeu provenant du jeu Wolfenstein 3D.
+								  Voici le résultat avec des textures provenant du jeu <!--provenant du jeu provenant du jeu provenant du jeu provenant du jeu provenant du jeu provenant du jeu provenant du jeuprovenant du jeu --> <i>Wolfenstein 3D</i>.
 								</p>
 							</div>
 							<div class="col-5">
@@ -1603,9 +1608,9 @@ t_vector2_f wall_x = create_vect_f_from_origin(data->player.pos, ray->angle, hit
 
 						<h2 id="sources">Sources</h2>
 						<h2>Téléchargement</h2>
-						<!-- petite liste de 2 colonnes avec les icone de github et itch-->
+						<!-- petite liste de 2 colonnes avec les icones de github et itch-->
 						<ul class="actions">
-						<li><a href="https://github.com/B-Bischoff/Ecosystem" class="button icon brands fa-github">Code source</a></li>
+						<li><a href="https://github.com/B-Bischoff/Ecosystem" class="button icon brands fa-github">Code source</a></li> <!-- tu feras gaffe c'est pas le bon -->
 						<li><a href="https://b-bischoff.itch.io/ecosystem" class="button icon brands fa-itch-io">Exécutable</a></li>
 						</ul>
 					</div>
@@ -1631,3 +1636,53 @@ t_vector2_f wall_x = create_vect_f_from_origin(data->player.pos, ray->angle, hit
 
 	</body>
 </html>
+
+<!-- Petits commentaires sympa :
+     Tu feras gaffe, y a quelques petits trucs que tu utilises beaucoup et qui
+     je trouve font un peu bof dans un texte. :
+
+→ "notre", "nos", ... Exemple : Grâce à la fonction "mes_couilles_sur_ton_front", 
+  *nous* allons tracer *nos* rayons partout à l'écran
+  En fait j'ai l'impression qu'en général c'est de meilleur ton d'utiliser 
+  l'impersonnel ("on") (même si parfois c'est vla relou on est d'accord).
+  Après utiliser "nous" comme sujet pourquoi par, par contre ce que je trouve 
+  vraiment pas ouf c'est de mettre "*notre* programme", "*nos* rayons". En fait
+  je trouve que ça fait vraiment camionneur ou chef de chantier, ou prof de maths 
+  en prépa un peu insupportable, alors que tu peux très bien dire "le programme", 
+  "les rayons" ce qui rend le texte plus sobre et ne change pas du tout le sens
+
+→ "va + infinitif" Exemple : Un événement va déclencher une routine qui va appeler
+  une fonction blablabla...
+  En fait c'est un peu pareil, pour moi ça a la même vibe de chef de chantier. 
+  Si ton texte est au présent, tu peux très bien écrire "cette fonction *appelle* 
+  blablabla". 
+
+Après tu peux utiliser ces constructions mais pour moi c'est à éviter au maximum.
+
+Et aussi ce n'est que mon avis hein, je dis ça mais je suis personne pour te dire
+quoi faire, ni une référence de rédaction, c'est juste des impressions que j'ai
+
+Après j'ai quand même eu 19.5 / 20 à l'épreuve de français du concours Mines-Ponts
+qui est une dissertation mais je dis ça, je dis rien. Après bon c'est parmi les 
+concours les plus exigeants et difficiles quoi mais je veux pas faire le mec quoi,
+à un moment faut être objectif je veux dire je sais ce que je vaux, et ma réussite 
+aux concours fait de moi d'emblée un être humain supérieur, tu peux pas comprendre
+quoi. Enfin bon je sais pas pourquoi je dis tout ça, j'ai rien à prouver.
+
+⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
+⣿⣿⣿⣿⣿⣿⣿⢟⣛⣿⣿⡿⠿⠛⠻⠿⠿⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
+⣿⣿⣿⡿⢫⣵⣾⣿⢟⣫⣵⣾⣿⣿⣿⣿⣿⣿⣾⣝⡻⣿⣿⣿⣿⣿⣿⣿⣿⣿
+⣿⣿⣿⢰⣿⣿⣿⢡⣿⣿⣿⣿⣿⡿⢿⣿⡿⠯⠿⢿⣿⣮⡻⣿⣿⣿⣿⣿⣿⣿
+⣿⣿⠧⣿⣿⣿⡏⣿⣿⣿⣿⣿⣵⣿⣿⣿⣿⣖⡻⣽⣷⣶⣿⣹⣿⣿⣿⣿⣿⣿
+⢟⢻⢸⣿⣿⣿⢹⣿⣿⣿⣿⣿⣿⣿⡿⠿⣟⣫⣾⣾⣿⣿⣿⣇⢿⣿⣿⣿⣿⣿
+⣁⡉⣭⣭⣟⣋⢸⣿⣿⣿⣿⣿⣿⡷⠿⢿⣿⣹⣿⣿⢲⣶⣶⣮⢸⣿⣿⣿⣿⣿
+⣿⣿⣹⣿⣿⣿⡜⣿⣿⣿⣿⣿⣟⣣⣤⣴⣮⣿⣿⣿⣏⣀⣂⣿⣸⣿⣿⣿⣿⣿
+⣿⣿⣇⢿⣿⣿⡗⡙⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣧⡻⣿⣿⣿⡇⣿⣿⣿⣿⣿
+⣿⣿⣿⣧⢻⣿⡟⣿⣦⣝⢿⣿⣿⣯⡿⣛⣋⠽⠿⣿⠟⣼⣿⣿⣳⣿⣿⣿⣿⣿
+⣿⣿⣿⣿⢸⣿⣷⡹⣿⣿⡇⠝⢿⣿⣷⣤⣙⣿⠿⠿⢿⣛⣿⣳⣿⣿⣿⣿⣿⣿
+⣿⣿⣿⣿⢸⣿⣿⢸⣬⡻⢢⠸⠡⠩⠻⣿⣿⣿⣭⣽⣿⣿⣣⣿⣿⣿⣿⣿⣿⣿
+⣿⣿⣿⠇⣿⣿⣿⣾⣿⣿⣦⡁⠲⣶⣆⢮⡙⡛⢛⣛⣫⣵⣿⣿⣿⣿⣿⣿⣿⣿
+⣿⡿⢟⣼⣿⠟⣥⣾⣿⣿⣿⣿⣰⡺⣭⣄⢴⣶⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
+⣷⣶⣾⣿⣷⣾⣿⣿⣿⣿⣿⣿⣿⣷⣿⣿⣿⣶⣶⣶⣶⣿⣿⣿⣿⣿⣿⣿⣿⣿
+
+-->
