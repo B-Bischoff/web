@@ -194,11 +194,22 @@ int main(void)
 						</p>
 
 						<h4>Boucles</h4>
-						<p>
-							Pour créer un jeu vidéo avec lequel il est possible d'interagir, il est nécessaire d'implémenter ce qu'on appelle une "game loop".<br>
-							<b>ILLUSTRATION GAME LOOP<br></b>
-							Une game loop tourne en continu pendant l'exécution du jeu. À chaque tour de boucle, le programme lit les entrées de l'utilisateur, met à jour le contenu du jeu puis actualise l'affichage.
-						</p>
+
+						<div class="row">
+							<div class="col-6">
+								<p>
+									Pour créer un jeu vidéo avec lequel il est possible d'interagir, il est nécessaire d'implémenter ce qu'on appelle une "game loop".<br>
+									Une game loop tourne en continu pendant l'exécution du jeu. À chaque tour de boucle, le programme lit les entrées de l'utilisateur, met à jour le contenu du jeu puis actualise l'affichage.
+								</p>
+							</div>
+							<div class="col-2">
+								<span class="image fit">
+									<div class="col-3"><span class="image fit"><img src="images/cube3d/game-loop.png" alt="" /></span></div>
+									<center><sup><i>Schéma de game loop</i></sup></center>
+								</span>
+							</div>
+						</div>
+
 						<p>Voyons comment implémenter cette boucle a l'aide de la MiniLibX.</p>
 
 						<pre><code>int render_next_frame(void *program_struct);
@@ -283,7 +294,7 @@ int	key_release(int keycode, t_struct *prg_struct)
 						<p>
 						  Notamment connu pour les célèbres <i>Doom</i> et <i>Wolfenstein 3D</i> (dans les années 1990), le raycasting 2D est une technique de calcul d'images permettant de représenter en 3D un univers en 2D.
 <!-- rob: peut-être bien de détailler cette phrase car j'ai pas trop su si t'avais inversé ou non avant de lire la suite. Genre dire que tu veux pouvoir évoluer en vue fps dans un monde en 3D à partir d'une map en 2D composée de vides et de murs, par exemple. -->
-						  <br> 
+						  <br>
 						  Cette technique est extrêmement efficace car elle ne nécessite qu'un calcul par bande verticale de l'écran.<!--Edit rob: Define "bande verticale"? --><br>
 							Le principe consiste à tirer une multitude de rayons (depuis la position du joueur), et d'afficher les murs et ennemis, en fonction de la distance d'impact des rayons lancés.
 						</p>
@@ -1497,7 +1508,7 @@ t_vector2_f wall_x = create_vect_f_from_origin(data-&#62player.pos, ray-&#62angl
 }</code></pre>
 
 						<p>
-							Il est important de retourner les textures affichées en haut et à droite des cellules <!-- pas très clair -->. Autrement celles-ci s'afficheront en miroir. 
+							Il est important de retourner les textures affichées en haut et à droite des cellules <!-- pas très clair -->. Autrement celles-ci s'afficheront en miroir.
 						</p>
 
 
@@ -1618,7 +1629,7 @@ t_vector2_f wall_x = create_vect_f_from_origin(data-&#62player.pos, ray-&#62angl
 								<p>
 									La base établie, permet de rajouter différents modules à notre projet.<br>
 									Ceux-ci ne sont pas expliqués dans ce guide mais voici la version finale du projet contenant des portes, des ombres, des ennemies (sprites), une minimap ainsi que la vue du joueur, controlée par la souris.
-								</p>	
+								</p>
 							</div>
 							<div class="col-5">
 								<span class="image fit">
@@ -1629,6 +1640,19 @@ t_vector2_f wall_x = create_vect_f_from_origin(data-&#62player.pos, ray-&#62angl
 								</span>
 							</div>
 						</div>
+
+						<p>Au total, il nous aura fallu 1 mois et demi pour terminer ce projet.</p>
+
+						<p>
+							Nous sommes satisfait du résultat et de la manière dont nous y sommes arrivés.<br>
+							Il y a des points améliorables comme normer la génération des rayons (pour ne pas avoir de problème avec l'affichage des textures) ou bien, pré-calculer
+							certaines données pour booster les performances.
+						</p>
+
+						<p>
+							La structure du projet étant modulable, il aurait été faisable de rajouter de nouvelles fonctionnalités comme une interace utilisateur, des ennemies pouvant
+							se déplacer et attaquer le joueur ou bien des objets collectibles.
+						</p>
 
 						<hr>
 
@@ -1662,4 +1686,3 @@ t_vector2_f wall_x = create_vect_f_from_origin(data-&#62player.pos, ray-&#62angl
 
 	</body>
 </html>
-
