@@ -15,11 +15,11 @@ Free for personal and commercial use under the CCA 3.0 license (html5up.net/lice
 	<!-- Global site tag (gtag.js) - Google Analytics -->
 	<script async src="https://www.googletagmanager.com/gtag/js?id=G-CP7YYY7WEF"></script>
 	<script>
-	  window.dataLayer = window.dataLayer || [];
-	  function gtag(){dataLayer.push(arguments);}
-	  gtag('js', new Date());
+		window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
 
-	  gtag('config', 'G-CP7YYY7WEF');
+		gtag('config', 'G-CP7YYY7WEF');
 	</script>
 </head>
 <body class="is-preload">
@@ -112,7 +112,7 @@ Free for personal and commercial use under the CCA 3.0 license (html5up.net/lice
 						<h4>Utilisation des images</h4>
 						<p>
 							Il existe la fonction <code>mlx_pixel_put</code> qui permet de placer des pixels sur notre fenêtre, cependant cette fonction est extrêmement lente car elle place le pixel puis actualise directement l'affichage.<br>
- 							Par conséquent, j’ai opté pour un moyen plus optimisé, celui de stocker tous les pixels que l'on souhaite placer (à l'aide d'un buffer), et <b>seulement lorsque tous les pixels sont stockés</b>, la fenêtre met à jour son contenu.
+							Par conséquent, j’ai opté pour un moyen plus optimisé, celui de stocker tous les pixels que l'on souhaite placer (à l'aide d'un buffer), et <b>seulement lorsque tous les pixels sont stockés</b>, la fenêtre met à jour son contenu.
 						</p>
 						<p>
 							Le moyen de stocker les pixels est d'utiliser une <b>image</b>.<br>
@@ -334,14 +334,14 @@ int	key_release(int keycode, t_struct *prg_struct)
 	int	tab_height;
 }	t_data;</pre></code>
 						<p>
-						  Il est important de dissocier les dimensions de la fenêtre (<code>win_height</code> et <code>win_width</code> qui sont en pixels) des dimensions du tableau
-						  (<code>tab_height</code> et <code>tab_width</code> qui indiquent la hauteur et largeur du tableau <b>en nombre de cellules</b>).
+							Il est important de dissocier les dimensions de la fenêtre (<code>win_height</code> et <code>win_width</code> qui sont en pixels) des dimensions du tableau
+							(<code>tab_height</code> et <code>tab_width</code> qui indiquent la hauteur et largeur du tableau <b>en nombre de cellules</b>).
 						</p>
 
 						<p>Voyons maintenant comment créer notre tableau à deux dimensions.</p>
 
 						<p>
-						  Par la suite, pour visualiser le contenu du tableau, nous allons mettre <b>un mur toutes les deux cellules</b> (un mur étant la valeur 1).
+							Par la suite, pour visualiser le contenu du tableau, nous allons mettre <b>un mur toutes les deux cellules</b> (un mur étant la valeur 1).
 						</p>
 						<pre><code>int init_tab(t_data *data)
 {
@@ -410,7 +410,7 @@ int	key_release(int keycode, t_struct *prg_struct)
 								</span>
 							</div>
 							<div class="col-5">
-							  <p>Voici le résultat obtenu lorsque l'on affiche le tableau précédemment généré. Le damier provient de la formule <i>b = (y % 2 + x) % 2</i> appliquée à chaque cellule (où <i>b</i> est la valeur donnée à la cellule de coordonnées (<i>x</i>, <i>y</i>)), utilisée lors de la création du tableau. Je vous invite cependant à utiliser d'autres formules d'initialisation pour créer différents motifs.
+								<p>Voici le résultat obtenu lorsque l'on affiche le tableau précédemment généré. Le damier provient de la formule <i>b = (y % 2 + x) % 2</i> appliquée à chaque cellule (où <i>b</i> est la valeur donnée à la cellule de coordonnées (<i>x</i>, <i>y</i>)), utilisée lors de la création du tableau. Je vous invite cependant à utiliser d'autres formules d'initialisation pour créer différents motifs.
 								</p>
 							</div>
 						</div>
@@ -527,14 +527,14 @@ int	key_release(int keycode, t_struct *prg_struct)
 {
 	t_vector2_d origin = {win_width / 2, win_height / 2};
 
-	t_vector2_d map = vector_f_to_d(origin); // Position used to check tab value
+	t_vector2_d map = origin; // Position used to check tab value
 	t_vector2_f dir = {dest.x - origin.x, dest.y - origin.y};
 
 	t_vector2_f side_dist; // Origin point offset to the nearest int positon
 	t_vector2_f delta_dist; // Length of the hyptenuse
 
-	delta_dist.x = (dir.x == 0) ? 1e30 : ft_abs(1.0f / dir.x); // 1e30 is a large value
-	delta_dist.y = (dir.y == 0) ? 1e30 : ft_abs(1.0f / dir.y);
+	delta_dist.x = (dir.x == 0) ? 1e30 : fabs(1.0f / dir.x); // 1e30 is a large value
+	delta_dist.y = (dir.y == 0) ? 1e30 : fabs(1.0f / dir.y);
 
 	t_vector2_d step;
 	if (dir.x &#60 0)
@@ -782,8 +782,7 @@ while (ray_length &#60 data-&#62view_dst * data-&#62view_dst)
 							</div>
 							<div class="col-4">
 								<span class="image fit">
-								  <span class="image fit"><img src="images/cube3d/schema-cone.png" alt="" /></span>
-								  <!-- Ce schéma mériterait plus d'annotations (rob) -->
+									<span class="image fit"><img src="images/cube3d/schema-cone.png" alt="" /></span>
 								</span>
 							</div>
 						</div>
@@ -1067,8 +1066,8 @@ else
 }</code></pre>
 
 						<p>
-						  De nouveau, pour reculer il faut donner une valeur négative à <code>move_speed</code>.
-						  Le fait de calculer de combien de combien le joueur va se déplacer (sans directement lui attribuer sa nouvelle position), va être très pratique pour <b>vérifier les collisions</b>.
+							De nouveau, pour reculer il faut donner une valeur négative à <code>move_speed</code>.
+							Le fait de calculer de combien de combien le joueur va se déplacer (sans directement lui attribuer sa nouvelle position), va être très pratique pour <b>vérifier les collisions</b>.
 						</p>
 
 
@@ -1185,7 +1184,7 @@ if (!is_colliding_cell(data, p_pos-&#62x, p_pos-&#62y + new_pos.y))
 						<p>
 							Aventurons-nous maintenant vers le moment le plus gratifiant de ce projet.<br>
 							L'intégralité de ce que nous avons dessiné à l'écran jusqu'à présent, n'est en réalité utile que pour comprendre comment fonctionne le raycasting.<br>
-						 	L'affichage comme nous l'avons réalisé peut cependant être réutilisé pour créer une minimap, un éditeur de niveaux et une multitude d'autres ajouts.
+							L'affichage comme nous l'avons réalisé peut cependant être réutilisé pour créer une minimap, un éditeur de niveaux et une multitude d'autres ajouts.
 						</p>
 
 						<p>
@@ -1216,12 +1215,12 @@ if (!is_colliding_cell(data, p_pos-&#62x, p_pos-&#62y + new_pos.y))
 }</pre></code>
 
 						<p>
-							 Le cœur de cette fonction peut être divisé en 3 parties.<br>
-							 <ul>
-								 <li>Calculer la hauteur de la tranche</li>
-								 <li>Choisir la couleur du mur</li>
-								 <li>Déterminer la position du rectangle à afficher</li>
-							 </ul>
+							Le cœur de cette fonction peut être divisé en 3 parties.<br>
+							<ul>
+								<li>Calculer la hauteur de la tranche</li>
+								<li>Choisir la couleur du mur</li>
+								<li>Déterminer la position du rectangle à afficher</li>
+							</ul>
 						</p>
 
 						<p>
@@ -1323,7 +1322,7 @@ draw_rect_color(data, tl, br, color);</code></pre>
 						<div class="row">
 							<div class="col-5">
 								<p>
-								  Si le rendu des murs paraît <b>étrange et arrondi</b>, c'est à cause du tant redouté "<i>fish eye effect</i>".<br>
+									Si le rendu des murs paraît <b>étrange et arrondi</b>, c'est à cause du tant redouté "<i>fish eye effect</i>".<br>
 									En français, "l'effet œil de poisson", apparaît lorsque l'on utilise <b>la norme euclidienne des rayons</b>.<br>
 									Le moyen de repérer cet effet, est de se mettre face à un mur. Les côtés du mur seront alors <b>courbés</b> d'une façon non-naturelle.
 								</p>
@@ -1642,7 +1641,7 @@ t_vector2_f wall_x = create_vect_f_from_origin(data-&#62player.pos, ray-&#62angl
 									la dernièr boucle <code>for</code>.
 								</p>
 								<p>
-								  Voici le résultat avec des textures provenant du jeu <i>Wolfenstein 3D</i>.
+									Voici le résultat avec des textures provenant du jeu <i>Wolfenstein 3D</i>.
 								</p>
 							</div>
 							<div class="col-5">
@@ -1718,6 +1717,7 @@ t_vector2_f wall_x = create_vect_f_from_origin(data-&#62player.pos, ray-&#62angl
 					<div class="inner">
 						<ul class="copyright">
 							<li>Design adapté depuis une création : <a href="http://html5up.net">HTML5 UP</a></li>
+							<li>Ce site utilise Google Analytics</li>
 						</ul>
 					</div>
 				</footer>
