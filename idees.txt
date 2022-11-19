@@ -1,0 +1,34 @@
+---- Falling elements ----
+
+sommaire :
+	Grille - OpenGl
+
+	Cellules
+		Proprietes (couleur, ...)
+
+	Behaviors
+		Movement
+			Filter
+			Sand
+			Water
+			Steam
+		Thermic
+			Filter
+			Spread
+			Cycle through element
+			Lava
+			Stone
+	UI (meh)
+		Brush, filter, elements
+		Simulation speed
+
+	Conclusion
+		Vu ce que je voulais
+		Base simple, can go crazy, blabla
+		Ameliorations possibles
+			Render, utiliser textures
+			Behavior (ptr sur fonction)
+			Threads
+
+	Sources
+
