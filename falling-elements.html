@@ -6,7 +6,7 @@ Free for personal and commercial use under the CCA 3.0 license (html5up.net/lice
 -->
 <html>
 <head>
-	<title>Cube3d</title>
+	<title>Falling-elements</title>
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 	<link rel="stylesheet" href="assets/css/main.css" />
@@ -59,13 +59,26 @@ Free for personal and commercial use under the CCA 3.0 license (html5up.net/lice
 				<div id="main">
 					<div class="inner">
 						<h1>Falling elements</h1>
-						<span class="image main"><img src="images/cube3d/background.png" alt="" /></span>
+						<span class="image main"><img src="images/photo-tile-4.png" alt="" /></span>
 
 						<h2>Contexte</h2>
+						<p>
+							Le but de ce projet personnel est de refaire un des jeux de type "Falling-sand" que l'on peut retrouver en ligne.<br>
+							Ces jeux laissent l'utilisateur interagir avec différents éléments, qui peuvent produire de nombreuses réactions entre eux.
+							Comme le jeu ne possède pas de but à proprement parler, on appelle ce genre "bac à sable", car il permet au joueur de faire tout ce qu'il souhaite, sans aucune contrainte.
+						</p>
+						<p>
+							Ce type de jeu se base généralement sur un moteur utilisant des particules dans un tableau en deux dimensions.<br>
+							Le plus connu de ce genre étant le Jeu de la vie de John Horton Conway.<br>
+							On retrouve cependant des versions bien plus récentes et poussées comme avec le jeu Noita, sorti en 2019.
+						</p>
+						<p>
+							Pour réaliser ce projet j'utiliserai le langage C++ couplé à OpenGL pour la partie graphique.
+						</p>
 						<hr>
 						<h2>Sommaire</h2>
 						<ul>
-							<li>Faire une grille avec OpenGl</li>
+							<li>Afficher une grille avec OpenGL</li>
 							<li>Concevoir les cellules et leurs caractéristiques</li>
 							<li>Créer différents comportements</li>
 							<li>Interface utilisateur</li>
@@ -74,6 +87,38 @@ Free for personal and commercial use under the CCA 3.0 license (html5up.net/lice
 						</ul>
 
 						<h2>Réalisation</h2>
+						<h3>Afficher une grille avec OpenGL</h3>
+						<p>
+							L'avantage de ne pas utiliser un moteur de jeu préfait comme dans de précédents projets avec Unity, est de pouvoir faire une application sur mesure.
+							Seul les éléments nécessaires au projet seront présents, ce qui permet d'améliorer la taille du projet et ses performances.<br>
+							En revanche, toutes les fonctionnalités pouvant se trouver dans un moteur préfait sont à reprogrammer, augmentant le travail à fournir.
+						</p>
+						<p>
+							Comme ici la seule chose que nous voulons est un moyen d'afficher des couleurs sur une grille, il est acceptable de se passer d'un moteur de jeu existant.
+						</p>
+						<p>
+							OpenGL utilise des triangles pour afficher des couleurs sur notre écran.
+							C'est à nous de lui fournir les trois points qui constituent chaque triangle, ainsi que leurs couleurs.<br>
+							On va alors parler de "vertex". Chaque vertex, va contenir une position ainsi qu'une couleur.
+						</p>
+						<p>
+							Une fois les vertex définies, il faut indiquer quels vertex relier entre eux en précisant leurs indices.<br>
+							Voici un schéma illustrant comment afficher un carré.
+							<br><b>SCHEMA VERTEX 1, 2, 3, 4 ET INDICES (1,2,3) (3,4,1)</b>
+						</p>
+						<p>
+							C'est en appliquant ce principe pour plusieurs carrés que nous pouvons refaire à la main, une grille où chaque carré peut changer de couleur.<br>
+						</p>
+						<br><b>IMAGES/VIDEOS RESULTATS</b>
+						<p>
+							Cependant, plus le nombre d'éléments dans la grille est grand, plus l'affichage mettra du temps à s'effectuer.
+							Pour pallier à ce soucis, il est possible d'utiliser la technique du "batch rendering".<br>
+							Au lieu d'afficher chaque triangle un par un, le batch rendering va regrouper un grand nombre de surface à afficher et toutes les traiter en même temps.<br>
+							Bien sûr, cette technique n'est pas magique est ne fonctionne pas pour une infinité de surfaces.
+							Elle permet cependant de rendre fluide l'affiche d'une centaine de millier de carrés, ce qui est difficilement réalisable sans cette technique.
+						</p>
+
+
 						<hr>
 						<h2>Conclusion</h2>
 

@@ -18,9 +18,6 @@ sommaire :
 			Cycle through element
 			Lava
 			Stone
-	UI (meh)
-		Brush, filter, elements
-		Simulation speed
 
 	Conclusion
 		Vu ce que je voulais
@@ -31,4 +28,62 @@ sommaire :
 			Threads
 
 	Sources
+
+---------------------- INTRO ----------------------------
+
+	Parler d'automates cellulaires (jeu de la vie)
+	Objectifs: Creer un jeu 'sandbox' 2d (grid / tile) particle game engine
+		Avoir la possibilite d'interagir avec plusieurs elements et
+		voir les reactions emergentes des elements entre eux.
+
+	Noita as example ?
+
+	Projet fait avec C++ et openGL (expliquer ce qu'est OpenGL)
+
+---------------------- REALISATION ----------------------------
+
+Grille
+	Definition vertex (contient une position est une couleur)
+	Batch rendering
+	Generer les vertex pour X et Y cellules
+		Demo with random colors
+	Ameliorations (perfs) possible en utilisant une texture (?)
+
+Cellules
+	Definition cellule
+	Choix d'utiliser des interfaces plutot que de l'heritage
+	movement behavior -> Sand
+	Demo (sand instantly fall on the ground)
+	Update des cellules
+		Intro variable hasMoved
+			check hasMoved before update and update will all cells did not moved
+			reset all hasMoved cell after update
+		Erase sand (see it fall from the left)
+			talk about horizontal random update
+			use random seeds (generated at init)
+	Demo with nice falling sand
+
+	Movement behavior water
+	Intro CellType (solid, liquid, gaz)
+	Amelioration water (creation de "courants")
+	Amelioration sand (speed incr in free fall, rebond au sol)
+	Utilisation du filtre de velocite
+
+	Temperature introduction (boite fermee)
+	methode de propagation de la temperature (temp & nextTemp)
+	Creation cycle vapeur eau
+	Ajout lave et stone
+
+	montrer les elements ajoutees (sans forcement detailler)
+		steel
+		feu -> co2
+		petrole
+
+---------------------- CONCLUSION ----------------------------
+Vu ce que je voulais
+Base simple, can go crazy, blabla
+Ameliorations possibles
+	Render, utiliser textures
+	Behavior (ptr sur fonction)
+	Threads
 
