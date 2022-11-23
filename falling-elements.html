@@ -78,27 +78,26 @@ Free for personal and commercial use under the CCA 3.0 license (html5up.net/lice
 						<hr>
 						<h2>Sommaire</h2>
 						<ul>
-							<li>Afficher une grille avec OpenGL</li>
-							<li>Concevoir les cellules et leurs caractéristiques</li>
-							<li>Créer différents comportements</li>
-							<li>Interface utilisateur</li>
-							<li>Conclusion</li>
-							<li>Sources</li>
+							<li><a href="#grille">Afficher une grille avec OpenGL</a></li>
+							<li><a href="#cellules">Concevoir les cellules et leurs caractéristiques</a></li>
+							<li><a href="#comportements">Créer différents comportements</a></li>
+							<li><a href="#conclusion">Conclusion</a></li>
+							<li><a href="#sources">Sources</a></li>
 						</ul>
 
 						<h2>Réalisation</h2>
-						<h3>Afficher une grille avec OpenGL</h3>
+						<h3 id="grille">Afficher une grille avec OpenGL</h3>
 						<p>
 							L'avantage de ne pas utiliser un moteur de jeu préfait comme dans de précédents projets avec Unity, est de pouvoir faire une application sur mesure.
 							Seul les éléments nécessaires au projet seront présents, ce qui permet d'améliorer la taille du projet et ses performances.<br>
 							En revanche, toutes les fonctionnalités pouvant se trouver dans un moteur préfait sont à reprogrammer, augmentant le travail à fournir.
 						</p>
 						<p>
-							Comme ici la seule chose que nous voulons est un moyen d'afficher des couleurs sur une grille, il est acceptable de se passer d'un moteur de jeu existant.
+							Comme ici le seul objectif est de pouvoir afficher des couleurs sur une grille, il est acceptable de se passer d'un moteur de jeu existant.
 						</p>
 						<p>
 							OpenGL utilise des triangles pour afficher des couleurs sur notre écran.
-							C'est à nous de lui fournir les trois points qui constituent chaque triangle, ainsi que leurs couleurs.<br>
+							Il faut donc lui fournir les trois points qui constituent chaque triangle, ainsi que leurs couleurs.<br>
 							On va alors parler de "vertex". Chaque vertex, va contenir une position ainsi qu'une couleur.
 						</p>
 						<p>
@@ -107,7 +106,7 @@ Free for personal and commercial use under the CCA 3.0 license (html5up.net/lice
 							<br><b>SCHEMA VERTEX 1, 2, 3, 4 ET INDICES (1,2,3) (3,4,1)</b>
 						</p>
 						<p>
-							C'est en appliquant ce principe pour plusieurs carrés que nous pouvons refaire à la main, une grille où chaque carré peut changer de couleur.<br>
+							C'est en appliquant ce principe pour plusieurs carrés qu'il est possible de refaire à la main, une grille où chaque carré peut changer de couleur.<br>
 						</p>
 						<br><b>IMAGES/VIDEOS RESULTATS</b>
 						<p>
@@ -117,6 +116,47 @@ Free for personal and commercial use under the CCA 3.0 license (html5up.net/lice
 							Bien sûr, cette technique n'est pas magique est ne fonctionne pas pour une infinité de surfaces.
 							Elle permet cependant de rendre fluide l'affiche d'une centaine de millier de carrés, ce qui est difficilement réalisable sans cette technique.
 						</p>
+						<p>
+							Actuellement les couleurs affichées par la grille sont définies à la main.
+							La prochaine étape est de créer la base qui va permettre de donner vie à cette grille de couleurs.
+						</p>
+
+						<h3 id="cellules">Concevoir les cellules et leurs caractéristiques</h3>
+						<p>
+							Il est donc temps de créer ces fameux "éléments".
+							Chaque élément possèdera un ensemble de règles leurs permettant permettant de reproduire un comportement désiré.
+						</p>
+						<p>
+							Commençons par définir de quoi seront composées ces cellules.<br>
+							Etant donné que la grille vient d'être réalisée, il parait essentiel que chaque cellule possède une couleur.<br>
+							Il est également primordial d'avoir une position. Cette position sera utile pour savoir où se situe la cellule dans la grille en deux dimensions.<br>
+						</p>
+						<p>
+							Viens, ensuite la question de comment définir ces fameux comportements ?<br>
+							Une solution serait d'utiliser le système d'héritage du langage C++, afin de créer différents types de cellules (solides, liquides, gazeuses).
+							Et à partir de ces grands groupes, il serait ensuite possible de sous-diviser ces grands types pour créer des éléments de manière plus précise.
+							Par exemple dans les solides, d'avoir des cellules, roches, sable, terre, etc...<br>
+							La deuxième solution se sert du principe de composition.
+							En programmation orientée objet, la composition est le fait d'avoir une instance d'une classe dans une autre.
+							Chaque cellules possèderaient alors un objet, correspondant à un des différents comportements programmé.
+						</p>
+						<p>
+							Dans l'optique de généraliser au maximum les cellules, il est préférable d'opter pour la composition.<br>
+							Celles-ci devraient être définies par ce qui les composent, et non pas par une hiérarchisation entre différentes classes.<br>
+							Cela permet d'avoir de nouveaux types de cellules, tirants leurs propriétés de différents types existant, favorisant ainsi la création de comportements émergeant.
+						</p>
+						<p>
+							Les cellules ne possèdent pour l'instant que peu de caractéristiques.
+							De nouvelles en seront rajoutées au fur et à mesure que le projet avance.
+						</p>
+						<p>
+							Pour débuter, reproduire les mouvements du sable 
+						</p>
+
+
+						<h3 id="comportements">Créer différents comportements</h3>
+						<h3 id="conclusion">Conclusion</h3>
+						<h3 id="sources">Sources</h3>
 
 
 						<hr>
@@ -124,7 +164,6 @@ Free for personal and commercial use under the CCA 3.0 license (html5up.net/lice
 
 						<h2 id="sources">Sources</h2>
 						<h2>Téléchargement</h2>
-						<!-- petite liste de 2 colonnes avec les icones de github et itch-->
 						<ul class="actions">
 						<li><a href="https://github.com/B-Bischoff/cube3d" class="button icon brands fa-github">Code source + éxécutable</a></li>
 						</ul>

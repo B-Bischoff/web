@@ -6,18 +6,21 @@ sommaire :
 	Cellules
 		Proprietes (couleur, ...)
 
-	Behaviors
-		Movement
-			Filter
-			Sand
-			Water
-			Steam
-		Thermic
-			Filter
-			Spread
-			Cycle through element
-			Lava
-			Stone
+	Sand behavior
+	
+	Mise a jour des cellules (update)
+
+	More movement behaviors
+		Filter
+		Sand
+		Water
+		Steam
+	Thermic behaviors
+		Filter
+		Spread
+		Cycle through element
+		Lava
+		Stone
 
 	Conclusion
 		Vu ce que je voulais
@@ -52,7 +55,9 @@ Grille
 Cellules
 	Definition cellule
 	Choix d'utiliser des interfaces plutot que de l'heritage
-	movement behavior -> Sand
+	movement behavior interface
+		static behavior (default)
+		sand behavior
 	Demo (sand instantly fall on the ground)
 	Update des cellules
 		Intro variable hasMoved
