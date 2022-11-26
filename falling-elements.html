@@ -130,6 +130,7 @@ Free for personal and commercial use under the CCA 3.0 license (html5up.net/lice
 							Commençons par définir de quoi seront composées ces cellules.<br>
 							Etant donné que la grille vient d'être réalisée, il parait essentiel que chaque cellule possède une couleur.<br>
 							Il est également primordial d'avoir une position. Cette position sera utile pour savoir où se situe la cellule dans la grille en deux dimensions.<br>
+							Pour différencier les différents états de matières, les cellules possèderont un type correspondant à "solide", "liquid" ou "gazeux".
 						</p>
 						<p>
 							Viens, ensuite la question de comment définir ces fameux comportements ?<br>
@@ -146,12 +147,118 @@ Free for personal and commercial use under the CCA 3.0 license (html5up.net/lice
 							Cela permet d'avoir de nouveaux types de cellules, tirants leurs propriétés de différents types existant, favorisant ainsi la création de comportements émergeant.
 						</p>
 						<p>
-							Les cellules ne possèdent pour l'instant que peu de caractéristiques.
-							De nouvelles en seront rajoutées au fur et à mesure que le projet avance.
+							Il est à noter que les cellules ne possèdent pour l'instant que peu de caractéristiques, mais de nouvelles en seront rajoutées au fur et à mesure que le projet avance.
 						</p>
 						<p>
-							Pour débuter, reproduire les mouvements du sable 
+							Pour utiliser son comportement, il faut qu'une cellule sache quelle méthode appeller et ce, quel que soit le comportement qu'elle possède.<br>
+							Autrement dit, le nom de la méthode doit rester le même malgré ses différentes implémentations possibles.
 						</p>
+						<p>
+							Utiliser le système d'interface du langage C++ est donc très pratique pour créer différents types de comportements.<br>
+							Une interface permet de désigner un ensemble de fonctionnalités sans implémentation.
+							Ces fonctionnalités seront uniquement définies par les classes dérivées.
+						</p>
+
+						<b>MONTRER HEADER IMOVEMENT BEHAVIOR (?)</b>
+
+						<p>
+							Toutes les cellules doivent posséder un membre <i>IThermicBehavior</i></p>.
+							La méthode<code>update</code>permet à chaque cellule d'utiliser sa fonction de mouvement implémentée par une classe héritant de <i>IMovementBehavior</i>.
+						</p>
+						<p>
+							Pour commencer à implémenter un premier comportement de déplacement, le sable est idéal car son fonctionnement est simple.<br>
+							En grande quantité, le sable doit former des dunes.
+							Pour cela il doit non seulement subir l'effet de la gravité mais également celui du glissement lorsqu'il est en pente.<br>
+							Ces conditions appliquées à notre grille en deux-dimensions se résument avec ce schéma.
+						</p>
+
+						<b>SCHEMA ALGO SABLE</b>
+
+						<blockquote>
+							<p><b>Précisions techniques</b></p>
+							<p>
+								Pour que le comportement d'une cellule puisse modifier les informations de celle-ci (par exemple sa position),
+								il est nécessaire de lui fournir une référence de la cellule à sa création.<br>
+								Il en est de même pour le tableau de cellules.
+								Pour que le comportement puisse analyser les cellules voisines, il faut qu'il ait un accès au tableau et à ses dimensions.
+							</p>
+						</blockquote>
+
+						<p>
+							Voici le code correspondant au comportement du sable.
+						</p>
+
+						<pre>
+							<code>
+void SandMovement::update()
+{
+	_target = nullptr; // Cell pointer
+	_x = _cell->getPosition().x;
+	_y = _cell->getPosition().y;
+
+	if (_y < _cell->getHeight() - 1) // Don't check out of arrays bounds
+	{
+		checkBelowCell();
+
+		if (targetFound() == false)
+		{
+			_random = (rand() % 2) * 2 - 1; // Randomly generate +1 or -1
+			checkAdjacentBelowCells();
+		}
+
+		if (targetFound() == true)
+			_cell->swapCell(*_target);
+	}
+}
+							</code>
+						</pre>
+
+						<p>
+							La première étape sert à récupérer la position de la cellule actuelle mais également à initialiser la cellule "cible" comme non-trouvée.<br>
+							Après avoir fait attention à ce que la cellule ne soit pas déjà tout en bas de la grille, le comportement vérifie si la cellule juste en dessous peut servir de cible.
+							Si ce n'est pas le cas, il vérifie ensuite les cellules en bas à droite et gauche (dans un autre aléatoire).<br>
+							Enfin, si une des cellules scrutée remplie toutes les conditions, celle-ci sera intervertie avec la cellule actuelle.
+						</p>
+						<p>
+							Voici la définition des méthodes utilisées par le code précédent.
+						</p>
+						<pre>
+							<code>
+void SandMovement::checkBelowCell()
+{
+	if (_cells[_y + 1][_x].getType() < CellType:::Solid)
+		_target = &(_cells[_y + 1][_x]);
+}
+
+void SandMovement::checkAdjacentBelowCells()
+{
+	int x1 = _x + _random;
+	int x2 = _x - _random;
+
+	if (x1 >= 0 && x < _cell->getWidth() && _cells[_y + 1][x1].getType() < CellType::Solid)
+		_target = &(_cells[_y + 1][x1]);
+	else if (x2 >= 0 && x2 < _cell->getWidth() && _cells[_y + 1][x2].getType() < CellType::Solid)
+		_target = &(_cells[_y + 1][x2]);
+} const bool SandMovement::targetFound()
+{
+	return _target != nullptr;
+}
+							</code>
+						</pre>
+
+						<p>
+							Pour qu'une cellule soit une cible valide, il faut que son type soit "inférieur" à celui de la cellule actuelle, autrement dit, inférieur au type "solide".<br>
+							C'est l'utilisation des énumérations de C++ qui rend l'opération inférieur possible.
+							La première valeur a avoir été déclarée dans l'énumération est l'état "gazeux", cette valeur est donc associée à la valeur numérique 0.
+							Suivant le même principe, l'état "liquide"  est associée à un et l'état "solide" à deux.
+						</p>
+
+						<p>
+							Au lancement de l'application, toutes les cellules seront par défaut de type "gazeuse" et auront un mouvement les rendant statiques.<br>
+							Voici une démonstration vidéo du comportement de mouvement implémenté à l'instant.
+						</p>
+
+						<b>VIDEO SABLE AVEC MAUVAIS UPDATE<br></b>
 
 
 						<h3 id="comportements">Créer différents comportements</h3>

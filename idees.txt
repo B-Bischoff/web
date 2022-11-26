@@ -56,8 +56,11 @@ Cellules
 	Definition cellule
 	Choix d'utiliser des interfaces plutot que de l'heritage
 	movement behavior interface
-		static behavior (default)
 		sand behavior
+			Reference to the cell (modify properties)
+			Reference to tab array (check other cells)
+			Movement
+		static behavior (default) [NOT PRESENTED IN THE TUTO]
 	Demo (sand instantly fall on the ground)
 	Update des cellules
 		Intro variable hasMoved
