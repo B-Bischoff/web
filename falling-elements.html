@@ -258,13 +258,90 @@ void SandMovement::checkAdjacentBelowCells()
 							Voici une démonstration vidéo du comportement de mouvement implémenté à l'instant.
 						</p>
 
-						<b>VIDEO SABLE AVEC MAUVAIS UPDATE<br></b>
+						<b>VIDEO SABLE AVEC MAUVAISE UPDATE<br></b>
 
+						<p>
+							Le sable possède le comportement attendu mais il y a quelque chose de surprenant dans cette démonstration.<br>
+							Impossible de le voir tomber, dès que celui-ci est placé, il tombe instantanément au sol.
+						</p>
+						<p>
+							Ce problème vient de la manière dont les cellules sont actualisée.<br>
+							Actuellement, pour chaque actualisation le programme va parcourir toutes les cellules et déclencher leur méthode <code>update</code>.
+							Pour parcourir les cellules, le programme commence par la position (0, 0) qui est en haut à gauche et va se diriger vers la fin de la ligne avant de passer à la suivante.<br>
+							Cependant si une cellule se déplace, elle risque de se faire actualiser plus d'une fois par le programme.
+						</p>
+
+						<b>VIDEO (SCHEMA) CELLULE ACTU PLUSIEURS FOIS<br></b>
+
+						<p>
+							Il y a plusieurs solutions pour pallier à ce soucis<br>
+							La première consiste à mettre à jour les cellules en commençant par le bas.
+							Impossible pour les cellules qui tombent de se faire mettre à jour plusieurs fois.
+							En revanche le problème sera le même pour des mouvements faisant aller les cellules vers le haut.
+						</p>
+						<p>
+							Une deuxième solution serait de ne pas effectuer de changement sur le tableau en cours avant d'avoir mis à jour toutes les cellules.
+							Cette technique requiert un second tableau, (doublant la taille de notre programme à son éxécution).
+							De plus, il y a des risques de conflits dans le cas où deux cellules devraient se déplacer au meme endroit.<b>PHOTO CONFLIT</b>
+						</p>
+						<p>
+							La dernière possibilité consiste à vérifier si la cellule à déjà été actualisée et de continuer à itérer sur le tableau,
+							tant que toutes les cellules n'ont pas été mises à jour.<br>
+							Loin d'être la plus optimisée l'avantage de cette technique est sa simplicité de mise en place.
+							Il suffit de rajouter un booléen aux cellules qui est vérifiée avant de mettre à jour la cellule.
+							Une fois toutes les cellules actualisées, leur booléen est remis à zéro.
+						</p>
+
+						<b>VIDEO CELLULE NICE ACTU SAUF HORIZONTAL (SABLE TOMBE DU MEME COTE)<br></b>
+
+						<p>
+							Le résultat est bien mieux que précédemment.
+							Il y a cependant un comportement étrange lorsque le sable est remplacé par du vide.<br>
+							Le sable plus en hauteur s'affaisse toujours du même côté.
+							A savoir le côté gauche.
+						</p>
+						<p>
+							Le problème vient encore une fois de la manière dont sont mises à jour les cellules.
+							Malgré le fait qu'il n'y ait plus de multiples actualisation pour une même cellule, le programme actualise toujours les cellules de gauche à droite et ligne par ligne.<br>
+							Ainsi, pour obtenir un résultat un peu plus chaotique, il faut actualiser toutes les cellules de la même ligne dans un ordre aléatoire.<br>
+						</p>
+						<p>
+							Plutôt que de générer une séquence aléatoire à chaque mise à jour de l'application (ce qui serait très couteuk), il est possible d'en créer une multitude au lancement du programme,
+							et d'alterner entre ces différentes séquences à chaque mise à jour.
+						</p>
+
+						<p>
+							Chaque séquence sera contenue dand un tableau dynamique (vecteur de C++) et toutes les séquences seront stockées dans un tableau.<br>
+							Voici le code pour générer un nombre N de séquences contenant des nombres allant de 0 à la largeur de la grille.
+						</p>
+
+						<pre>
+							<code>
+void Application::generateRandomSets(const int& N)
+{
+	_randomSets = new std::vector<int>[N];
+
+	for (int i = 0; i < N; i++) // For each set
+		for (int j = 0; j < CELL_WIDTH; j++) // Fill with numbers from 0 to CELL_WIDTH
+			_randomSets[i].push_back(j);
+
+	// Shuffle numbers in sets
+	auto rng = std::default_random_engine {};
+	for (int i = 0; i < N; i++)
+		std::shuffle(_randomSets[i].begin(), _randomSets[i].end(), rng);
+}
+							</code>
+						</pre>
+
+						<p>
+							Cette méthode va d'abord remplir tous les vecteurs avec les nombres dans l'ordre.
+							Puis avec l'usage de la librairie standard, elle va ensuite mélanger le contenu afin d'avoir une multitude de séquences aléatoires.<br>
+							Ainsi au lieu de parcourir les cellules de gauche à droite, il faut maintenant utiliser les nombres de la séquence actuelle en tant qu'indice.
+						</p>
 
 						<h3 id="comportements">Créer différents comportements</h3>
 						<h3 id="conclusion">Conclusion</h3>
 						<h3 id="sources">Sources</h3>
-
 
 						<hr>
 						<h2>Conclusion</h2>

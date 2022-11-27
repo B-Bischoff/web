@@ -7,7 +7,7 @@ sommaire :
 		Proprietes (couleur, ...)
 
 	Sand behavior
-	
+
 	Mise a jour des cellules (update)
 
 	More movement behaviors
@@ -66,6 +66,7 @@ Cellules
 		Intro variable hasMoved
 			check hasMoved before update and update will all cells did not moved
 			reset all hasMoved cell after update
+		Rand on x updaates
 		Erase sand (see it fall from the left)
 			talk about horizontal random update
 			use random seeds (generated at init)
