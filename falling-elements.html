@@ -80,6 +80,7 @@ Free for personal and commercial use under the CCA 3.0 license (html5up.net/lice
 						<ul>
 							<li><a href="#grille">Afficher une grille avec OpenGL</a></li>
 							<li><a href="#cellules">Concevoir les cellules et leurs caractéristiques</a></li>
+							<li><a href="#mise-a-jour">Actualiser les cellules</a></li>
 							<li><a href="#comportements">Créer différents comportements</a></li>
 							<li><a href="#conclusion">Conclusion</a></li>
 							<li><a href="#sources">Sources</a></li>
@@ -264,6 +265,9 @@ void SandMovement::checkAdjacentBelowCells()
 							Le sable possède le comportement attendu mais il y a quelque chose de surprenant dans cette démonstration.<br>
 							Impossible de le voir tomber, dès que celui-ci est placé, il tombe instantanément au sol.
 						</p>
+
+						<h3 id="mise-a-jour">Actualiser les cellules</h3>
+
 						<p>
 							Ce problème vient de la manière dont les cellules sont actualisée.<br>
 							Actuellement, pour chaque actualisation le programme va parcourir toutes les cellules et déclencher leur méthode <code>update</code>.
@@ -338,8 +342,83 @@ void Application::generateRandomSets(const int& N)
 							Puis avec l'usage de la librairie standard, elle va ensuite mélanger le contenu afin d'avoir une multitude de séquences aléatoires.<br>
 							Ainsi au lieu de parcourir les cellules de gauche à droite, il faut maintenant utiliser les nombres de la séquence actuelle en tant qu'indice.
 						</p>
+						<p>
+							Voici maintenant le morceau de code permettant de mettre à jour toutes les cellules.
+						</f>
+
+						<pre>
+							<code>
+size_t cellsUpdated = 0;
+while (cellsUpdated < CELL_HEIGHT * CELL_WIDTH)
+{
+	for (int y = 0; y < CELL_HEIGHT; y++)
+	{
+		for (int x = 0; x < CELL_WIDTH; x++)
+		{
+			// Retrieve x position from current set
+			int xPos = _randomSets[_currentRandomSet].at(x);
+
+			// If cell was not already updated
+			if (_cells[y][xPos].update())
+				cellsUpdated += 1;
+		}
+		// Update set
+		_currentRandomSet = (_currentRandomSet + 1) % RANDOM_SETS_NB;
+	}
+}
+							</code>
+						</pre>
+
+						<p>
+							Au lieu de prendre comme position la variable<code>x</code>allant de zéro à CELL_WIDTH,
+							on récupère la valeur stockée à l'indice<code>x</code> dans la séquence de nombres aléatoires.<br>
+						</p>
+
+						<b>VIDEO SABLE BON ERASE</b>
+
+						<p>
+							Comme voulu, le résultat est plus chaotique, rendant le comportement du sable un peu plus intéressant.
+						</p>
+						<p>
+							Jusqu'à présent il y a eu beaucoup de mise en place du "moteur".<br>
+							Le résultat actuel n'est certes, pas le plus optimisé, néanmoins il est pleinement fonctionnel et ne subira plus de modifications majeures .<br>
+							Le champ est maintenant libre pour se concentrer profondeur sur les différents matériaux ainsi que leurs comportement.
+						</p>
 
 						<h3 id="comportements">Créer différents comportements</h3>
+
+						<p>
+							Pour créer le premier liquide, quoi de mieux que de commencer par l'eau.<br>
+							Il est important de rappeler ici que le but n'est pas de reproduire le plus fidèlement possible des comportements mais de les simuler de manière simple et amusante.
+							Autrement, à lui seul, le domaine de la dynamique des fluides aurait pu être un projet.
+						</p>
+						<p>
+							Les mouvements de l'eau reprennent ceux du sable.
+							On souhaite qu'elle puisse subir la gravité et couler en pente.
+							Cependant, elle doit en plus former une surface plane lorsqu'elle à fini de s'écouler.<br>
+							Ansi, en plus de pouvoir de se déplacer vers les trois cellules sous elle, elle doit être capable de bouger sur les cellules à sa gauche et à sa droite.
+						</p>
+
+						<b>SCHEMA MOUVEMEMT EAU (BAS + GAUCHE & DROITE)<br></b>
+
+						<p>
+							Voici une vidéo du résultat avec l'eau conçue telle que décrite au dessus.
+						</p>
+
+						<b>VIDEO EAU SIMPLE<br></b>
+
+						<p>
+							L'eau tend bien vers un niveau plat, cependant elle met beaucoup de temps à s'étaler.<br>
+							Une solution assez simple pour accélérer ce phénomène consiste à vérifier ses déplacements horizontaux sur plusieurs cellules.
+							Si il y a plusieurs espaces vides (des cellules de types gazeuses),
+							elle échangerait sa position avec une cellule plus loin, permettant de se déplacer plus vite pour le même nombre d'actualisation.
+						</p>
+
+						<p>
+							<b>CODE EAU PLUS HAUT??? + CODE EAU MODIFIED SIDE CHECK</b>
+							Pour se faire l'utilisation d'une boucle 
+						</p>
+
 						<h3 id="conclusion">Conclusion</h3>
 						<h3 id="sources">Sources</h3>
 
@@ -367,11 +446,11 @@ void Application::generateRandomSets(const int& N)
 		</div>
 
 	<!-- Scripts -->
-		<script src="assets/js/jquery.min.js"></script>
-		<script src="assets/js/browser.min.js"></script>
-		<script src="assets/js/breakpoints.min.js"></script>
-		<script src="assets/js/util.js"></script>
-		<script src="assets/js/main.js"></script>
+	<script src="assets/js/jquery.min.js"></script>
+	<script src="assets/js/browser.min.js"></script>
+	<script src="assets/js/breakpoints.min.js"></script>
+	<script src="assets/js/util.js"></script>
+	<script src="assets/js/main.js"></script>
 
 	</body>
 </html>
