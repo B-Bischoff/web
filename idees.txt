@@ -73,15 +73,22 @@ Cellules
 	Demo with nice falling sand
 
 	Movement behavior water
-	Intro CellType (solid, liquid, gaz)
 	Amelioration water (creation de "courants")
+
 	Amelioration sand (speed incr in free fall, rebond au sol)
+		intro velocite
+		free falling
+		rebond au sol
+			particles
+
+	Courant - eau (?)
+	Creation roche
 	Utilisation du filtre de velocite
 
 	Temperature introduction (boite fermee)
 	methode de propagation de la temperature (temp & nextTemp)
 	Creation cycle vapeur eau
-	Ajout lave et stone
+	Ajout lave
 
 	montrer les elements ajoutees (sans forcement detailler)
 		steel
@@ -94,5 +101,6 @@ Base simple, can go crazy, blabla
 Ameliorations possibles
 	Render, utiliser textures
 	Behavior (ptr sur fonction)
+	Particles
 	Threads
 

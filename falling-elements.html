@@ -227,7 +227,7 @@ void SandMovement::update()
 							<code>
 void SandMovement::checkBelowCell()
 {
-	if (_cells[_y + 1][_x].getType() < CellType:::Solid)
+	if (_cells[_y + 1][_x].getType() < CellType::Solid)
 		_target = &(_cells[_y + 1][_x]);
 }
 
@@ -401,22 +401,192 @@ while (cellsUpdated < CELL_HEIGHT * CELL_WIDTH)
 
 						<b>SCHEMA MOUVEMEMT EAU (BAS + GAUCHE & DROITE)<br></b>
 
+						<pre>
+							<code>
+void WaterMovement::update()
+{
+	_target = nullptr; // Cell pointer
+	_x = _cell->getPosition().x;
+	_y = _cell->getPosition().y;
+
+	if (_y < _cell->getHeight() - 1) // Don't check out of arrays bounds
+	{
+		checkBelowCell();
+
+		_random = (rand() % 2) * 2 - 1; // Randomly generate +1 or -1
+
+		if (targetFound() == false)
+			checkAdjacentBelowCells();
+	}
+
+	if (targetFound() == false)
+		checkAdjacentCells();
+
+	if (targetFound() == true)
+		_cell->swapCell(*_target);
+}
+							</code>
+						</pre>
+
 						<p>
-							Voici une vidéo du résultat avec l'eau conçue telle que décrite au dessus.
+							Le code est très similaire à celui des mouvements du sable vu précémment, si ce n'est pour l'appel de la nouvelle méthode<code>checkAdjacentCells</code>.<br>
+						</p>
+						<pre>
+							<code>
+void WaterMovement::checkAdjacentCells()
+{
+	int x1 = _x + _random;
+	int x2 = _x - _random;
+
+	if (x1 >= 0 && x < _cell->getWidth() && _cells[_y][x1].getType() < CellType::Liquid)
+		_target = &(_cells[_y][x1]);
+	else if (x2 >= 0 && x2 < _cell->getWidth() && _cells[_y][x2].getType() < CellType::Liquid)
+		_target = &(_cells[_y][x2]);
+}
+							</code>
+						</pre>
+						<p>
+							Afin d'éviter de dupliquer du code, il est possible de créer plusieurs fonctions appartenants à l'interface<code>IMovementBehavior</code>.
+							Ces fonctions pourront ainsi être réutilisée par toutes les classes qui vont hériter de l'interface.
+						</p>
+						<p>
+							Voici une vidéo du résultat avec l'eau conçue telle que décrite ci-dessus.
 						</p>
 
 						<b>VIDEO EAU SIMPLE<br></b>
 
 						<p>
 							L'eau tend bien vers un niveau plat, cependant elle met beaucoup de temps à s'étaler.<br>
-							Une solution assez simple pour accélérer ce phénomène consiste à vérifier ses déplacements horizontaux sur plusieurs cellules.
-							Si il y a plusieurs espaces vides (des cellules de types gazeuses),
-							elle échangerait sa position avec une cellule plus loin, permettant de se déplacer plus vite pour le même nombre d'actualisation.
+							Une solution assez simple pour accélérer ce phénomène consiste à vérifier ses possibilités de déplacements horizontaux sur plusieurs cellules.
+							Si il y a plusieurs espaces vides (autrement dit, des cellules de types gazeuses),
+							elle échangerait sa position avec une cellule plus loin, permettant ainsi de se déplacer plus vite pour le même nombre d'actualisation.
 						</p>
 
 						<p>
-							<b>CODE EAU PLUS HAUT??? + CODE EAU MODIFIED SIDE CHECK</b>
-							Pour se faire l'utilisation d'une boucle 
+							La simple utilisation d'une boucle permet d'implémenter cette idée.<br>
+							Dans le code suivant, l'eau ira chercher à se déplacer horizontalement sur cinq cellules.
+						</p>
+
+						<pre>
+							<code>
+void WaterMovement::checkAdjacentCells()
+{
+	const int CHECK_LENGTH = 5;
+
+	for (int i = 1; i < CHECK_LENGTH; i++)
+	{
+		int x1 = _x + i * _random;
+		if (x1 >= 0 && x < _cell->getWidth() && _cells[_y][x1].getType() < CellType::Liquid)
+			_target = &(_cells[_y][x1]);
+		else
+			break;
+	}
+
+	if (targetFound())
+		return;
+
+	for (int i = 1; i < CHECK_LENGTH; i++)
+	{
+		int x2 = _x - i * _random;
+		if (x2 >= 0 && x2 < _cell->getWidth() && _cells[_y][x2].getType() < CellType::Liquid)
+			_target = &(_cells[_y][x2]);
+		else
+			break;
+	}
+}
+							</code>
+						</pre>
+
+						<p>
+							Pour ne pas traverser de cellules, il est important de sortir de la boucle (instruction<code>break</code>dans le programme)
+							dès qu'une cellule ne remplie pas les conditions pour être une cible.
+						</p>
+						<p>
+							On constate sur la vidéo ci-dessous qu'une différence est notable, d'une part à cause le vitesse d'écoulement,
+							mais également à l'aide de ces petites "éclaboussures" qui apparaissent quand l'eau s'équilibre.
+						</p>
+
+						<b>VIDEO EAU AVEC HORIZONTAL LOOP CHECK<br></b>
+
+						<p>
+							Le comportement de l'eau commence à devenir complet et intéressant, en revanche, celui du sable paraît un peu plus léger.<br>
+							Pourquoi ne pas essayer de le compléter en ajoutant un semblant de vitesse ?
+						</p>
+						<p>
+							Une première application de vélocité serait pendant la chute d'une cellule.
+							En chute libre, une cellule accumulerait une certaine viteses puis la dépenserait à l'impacte.<br>
+							Pour symboliser une vitesse, il est nécessaire de rajouter une caractéristique aux cellules.
+							Le choix a été de fait prendre un vecteur en deux dimensions (provenant de la <i><a href="https://github.com/g-truc/glm">librairie mathématiques GLM</a></i>).<br>
+							L'utilisation d'un vecteur en deux dimensions permet de représenter la vitesse et la direction en même temps.<br>
+							La composante x du vecteur sera utilisée pour la vitesse sur l'axe horizontal et y, pour l'axe vertical.
+							Un vecteur de valeur x: 1 et y: -1 signifie que la cellule se dirigera vers la droite et également vers le haut (car la coordonnée 0, 0 du tableau se trouve en haut à gauche de l'écran)
+							L'usage de vitesse négative signifie donc que la cellule se déplace dans le sens contraire de l'axe.
+						</p>
+						<p>
+							Plus concrètement, la vitesse d'une cellule va impacter son comportement lors de la recherche d'un possible mouvement.<br>
+							A la manière dont l'eau cherchait à se déplacer horizontalement sur cinq cellules, le sable va chercher à se déplacer sur plusieurs cellules sous lui.
+							Cependant, la distance de recherche sera determinée par sa vitesse verticale.
+						</p>
+
+						<pre>
+							<code>
+void SandMovement::checkBelowCell()
+{
+	for (int i = 0; i < _cell->getVelocity().y; i++)
+	{
+		if (_y + 1 + i < _cell->getHeight() && _cells[_y + 1 + i][_x].getType() < CellType::Solid)
+			_target = &(_cells[_y + 1 + i][_x]);
+		else
+			break;
+	}
+}
+							</code>
+						</pre>
+
+						<p>
+							A chaque unité de vélocité supplémentaire, la distance de vérification augmentera de un.<br>
+							Dans la méthode<code>update</code>se trouve une nouvelle méthode, <code>udpateVelocity</code>ayant pour rôle de modifier la vitesse
+							de la cellule actuelle, dépendant du type de la cellule avec laquelle celle-ci va changer de place.<br>
+							Dans l'exemple suivant, la vitesse de chaque cellule va augmenter de 0.2 unité en chute libre mais va en perdre 0.8 en coulant dans un liquide.
+						</p>
+
+						<pre>
+							<code>
+void SandMovement::update()
+{
+		// ... (previous code did not change)
+
+		if (targetFound() == true)
+		{
+			updateVelocity();
+			_cell->swapCell(*_target);
+		}
+	}
+}
+
+void SandMovement::updateVelocity()
+{
+	if (_target->getType() == CellType::Gazeous) // Accelerate in free falling
+		_cell->setVelocity(_cell->getVelocity() + glm::vec2(0.0f, 0.20f));
+	else if (_target->getType() == CellType::Liquid && _cell->getVelocity().y >= 0.80f) // Get slow done by liquid
+		_cell->setVelocity(_cell->getVelocity() + glm::vec2(0.0f, -0.80f));
+}
+							</code>
+						</pre>
+
+						<p>
+							La prochaine vidéo présente les effets du code montré.
+						</p>
+
+						<b>VIDEO SABLE FREE FALLING + SLOW DOWN WATER</b>
+
+						<p>
+							Le sable prend bien de la vitesse en chute libre et se fait bel et bien ralentir par l'eau lorsqu'il entre en collision avec.<br>
+							La question qui se pose alors, est, que faire de la vitesse accumulée une fois que la cellule est au sol ?
+							La réponse va alors dépendre de jusqu'où veut-on pousser la simulation.<br>
+							Il est possible de transmettre sa vitesse aux cellules voisines à l'impacte.
+							C'est d'ailleurs ce qui a été brièvement fait (sans franc succès) dans l'application finale, cependant ce sujet ne sera pas couvert sur cette page.<br>
+							<b>INTRO RELACHEMENT ENERGIE ACCUMULEE --> PARTICULES</b>
 						</p>
 
 						<h3 id="conclusion">Conclusion</h3>
