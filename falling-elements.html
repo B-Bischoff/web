@@ -582,11 +582,59 @@ void SandMovement::updateVelocity()
 
 						<p>
 							Le sable prend bien de la vitesse en chute libre et se fait bel et bien ralentir par l'eau lorsqu'il entre en collision avec.<br>
-							La question qui se pose alors, est, que faire de la vitesse accumulée une fois que la cellule est au sol ?
+							La question qui se pose alors, est, que faire de la vitesse accumulée, une fois que la cellule est au sol ?
 							La réponse va alors dépendre de jusqu'où veut-on pousser la simulation.<br>
 							Il est possible de transmettre sa vitesse aux cellules voisines à l'impacte.
 							C'est d'ailleurs ce qui a été brièvement fait (sans franc succès) dans l'application finale, cependant ce sujet ne sera pas couvert sur cette page.<br>
 							<b>INTRO RELACHEMENT ENERGIE ACCUMULEE --> PARTICULES</b>
+						</p>
+						<p>
+							La vitesse accumulée pendant la chute, va permettre à la cellule de rebondir plus ou moins haut une fois en collision avec le sol.<br>
+							Pour ce faire, il faut premièrement identifier quand la cellule entre en collision avec le sol.
+							Puis trouver un moyen de convertir la vitesse accumulée en un "nouveau saut".
+						</p>
+						<p>
+							La première partie est plutôt simple.
+							Si une cellule ne peut plus se déplacer (autrement dit, si elle ne trouve pas de cible), et qu'elle possède encore de la vitesse.
+							Cela veut dire que la cellule vient d'entrer en collision avec le sol.<br>
+							Ce qui peut se traduire par le code suivant.
+						</p>
+						<pre>
+							<code>
+void SandMovement::update()
+{
+		// ... (previous code did not change)
+
+		if (targetFound() == true)
+		{
+			updateVelocity();
+			_cell->swapCell(*_target);
+		}
+	}
+
+	if (targetFound() == false && cellHasVelocity() == true)
+	{
+		// Release velocity
+	}
+}
+
+const bool SandMovement::cellHasVelocity() const
+{
+	_cell->getVelocity() != glm::vec2(0.0f, 0.0f);
+}
+							</code>
+						</pre>
+
+						<p>
+							INTRO PARTICULES
+							FOCALISE SUR LA VITESSE
+							EXTRAIRE LA CELLULE DE LA GRILLE
+							LA REINTEGRER UNE FOIS LA VITESSE DEPENSEE
+							DOIT FONCTIONNER AVEC N'IMPORTE QUELLE CELLULE
+						</p>
+						<p>
+							Pour libérer la vitesse accumulée, la cellule va temporairement adopter un nouveau comportement.<br>
+							Ce nouveau comportement à pour but de faire déplacer la cellule en fonction de sa vitesse, et ce, qu'elle que soit son type.<br>
 						</p>
 
 						<h3 id="conclusion">Conclusion</h3>
