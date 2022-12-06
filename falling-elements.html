@@ -626,16 +626,147 @@ const bool SandMovement::cellHasVelocity() const
 						</pre>
 
 						<p>
-							INTRO PARTICULES
-							FOCALISE SUR LA VITESSE
-							EXTRAIRE LA CELLULE DE LA GRILLE
-							LA REINTEGRER UNE FOIS LA VITESSE DEPENSEE
-							DOIT FONCTIONNER AVEC N'IMPORTE QUELLE CELLULE
-						</p>
-						<p>
 							Pour libérer la vitesse accumulée, la cellule va temporairement adopter un nouveau comportement.<br>
 							Ce nouveau comportement à pour but de faire déplacer la cellule en fonction de sa vitesse, et ce, qu'elle que soit son type.<br>
+							Il faut donc que ce nouveau comportement garde en mémoire toutes les informations de la cellule, est les restituent, une fois que la vitesse accumulée est dépensée.
 						</p>
+						<p>
+							Ce principe permet de ne plus considérer le comportement initial de la cellule, le temps que celle-ci se déplace.
+							Cela évite que la cellule cherche à aller vers le bas (pour le sable) quand on souhaite qu'elle se déplace vers le haut à cause d'un rebond.
+						</p>
+						<p>
+							Voici comment créer une particule, ainsi qu'une partie du code de déplacements des particules.
+						</p>
+
+						<pre>
+							<code>
+void SandMovement::update()
+{
+	// ... (previous code did not change)
+
+	if (targetFound() == false && cellHasVelocity() == true)
+		_cell->setMovementBehavior(new ParticleMovement(_cell, *this));
+}
+void ParticleMovement::update()
+{
+	if (_cell->getVelocity().y > 0.0f)
+		moveUpward();
+	else
+		moveDownward();
+
+	if (_cell->getVelocity().x > 0.0f)
+		moveLeft();
+	else
+		moveRight();
+
+	if (cellHasVelocity() == false)
+		setOriginalBehavior();
+}
+
+void ParticleMovement::setOriginalBehavior()
+{
+	_cell->setMovementBehavior(&_originBehavior);
+	_cell->getMovementBehavior()->setCell(_cell);
+	delete this;
+}
+							</code>
+						</pre>
+
+						<p>
+							Les méthodes de déplacements, appelées dans<code>update</code>permettent à la cellule d'échanger sa position avec ses cellules voisines tout en diminuant sa vitesse.
+							Celles-ci ne sont ni compliquées ni intéressantes, et ne sont donc pas présentées sur cette page.<br>
+							Il est néanmoins possible d'utiliser d'autre méthodes, comme l'algorithme de tracé de segment de Bresenham
+							ou une fonction d'interpolation linéaire sphérique pour avoir un meilleur effet de déplacement des particules.
+						</p>
+						<p>
+							La dernière méthode utilisée,<code>setOriginalBehavior</code>permet de restituer le comportement d'origine à la cellule.
+							Comme celle-ci s'est déplacée sur la carte, il est important de donner au comportement la nouvelle position de la cellule (ligne 2 de la méthode).
+						</p>
+
+						<p>
+							Voici une vidéo des cellules rebondissant sur le sol.
+						</p>
+						<p>
+							Pour mieux visualiser les cellules possédant de la vélocité, il est possible de créer un filtre mettant en évidence ces cellules.<br>
+							Jusqu'à présent, les couleurs de la grille étaient dépendants de la couleur des cellules.
+							Cependant, il est possible d'afficher des couleurs en fonction de certaines propriétées des cellules.
+						</p>
+						<p>
+							Pour uniquement visualiser les cellules avec de la vitesse, il serait possible d'uniquement afficher en couleurs ces cellules et de peindre les autres en une couleur unie.
+							Cependant, comme la vidéo le montre, il est difficile de comprendre ce qui ce passe dans la simulation.
+						</p>
+
+						<pre>
+							<code>
+void GridRenderer::updateColorFromVelocity(Cell** cells)
+{
+	const glm::vec3 VELOCITY(1.0f, 1.0f, 1.0f) // White
+	const glm::vec3 NO_VELOCITY(0.0f, 0.0f, 0.0f) // Black
+
+	for (int y = 0; y < CELL_HEIGHT; y++)
+	{
+		for (int x = 0; x < CELL_WIDTH; x++)
+		{
+			glm::vec3 color;
+
+			// Set color to white if velocity not null
+			if (cells[y][x].getVelocity() == glm::vec2(0.0f, 0.0f)
+				color = NO_VELOCITY;
+			else
+				color = VELOCITY;
+
+			// Apply color to vertices
+			_vertices[vertexNb * 4].Color = color;
+			_vertices[vertexNb * 4 + 1].Color = color;
+			_vertices[vertexNb * 4 + 2].Color = color;
+			_vertices[vertexNb * 4 + 3].Color = color;
+		}
+	}
+}
+							</code>
+						</pre>
+
+						<b>VIDEO VELOCITY FITLER NO GRAYSCALE</b>
+
+						<p>
+							Pour rendre le rendu plus compréhensible, il est possible de convertir la couleur RGB des cellules en nuances de gris.
+							Il existe plusieurs formules, voici celle utilisée ici.
+						</p>
+
+						<pre>
+							<code>
+glm::vec3 rgbToGrayscale(glm::vec3 color)
+{
+	float value = 0.0f;
+	value += color.r * 0.3f;
+	value += color.g * 0.59f;
+	value += color.b * 0.11f;
+
+	return glm::vec3(value, value, value);
+}
+							</code>
+						</pre>
+
+						<b>VIDEO CELLULES GRAYSCALE</b>
+
+						<p>
+							Il est même possible de changer la couleur en fonction de la direction et/ou de la rapidité de la cellule.
+						</p>
+
+						<p>
+							Les comportements de mouvements sont désormais visualisables et fonctionnels.<br>
+							Les éléments tel que la roche, la fumée ou encore l'acier, présents dans l'application finale, ne seront pas présentés en détails comme il a été fait avec le sable ou l'eau.
+							La base est identique et leurs implémentation est consultable dans le code source.
+						</p>
+
+						<p>
+							INTRO TEMPERATURE<br>
+							La structure du projet et la manière dont les cellules ont été conçues permettent à celle-ci de posséder plusieurs types de comportement.<br>
+							Les précédents comportements permettaient aux cellules de se déplacer, mais il est possible de créer une nouvelle dimension au projet
+							en rajoutant de nouveaux comportements de type thermique.
+						</p>
+
+						<b>VIDEO SABLE REBONDISSANT<br></b>
 
 						<h3 id="conclusion">Conclusion</h3>
 						<h3 id="sources">Sources</h3>

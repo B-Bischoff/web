@@ -81,12 +81,12 @@ Cellules
 		rebond au sol
 			particles
 
-	Courant - eau (?)
-	Creation roche
 	Utilisation du filtre de velocite
 
 	Temperature introduction (boite fermee)
 	methode de propagation de la temperature (temp & nextTemp)
+		premiere methode avec moyenne (ne repond pas au critere boite fermee)
+		seconde methode
 	Creation cycle vapeur eau
 	Ajout lave
 
