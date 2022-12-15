@@ -84,9 +84,10 @@ Cellules
 	Utilisation du filtre de velocite
 
 	Temperature introduction (boite fermee)
-	methode de propagation de la temperature (temp & nextTemp)
+	methode de propagation de la temperature
 		premiere methode avec moyenne (ne repond pas au critere boite fermee)
 		seconde methode
+			temp & nextTemp
 	Creation cycle vapeur eau
 	Ajout lave
 
