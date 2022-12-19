@@ -802,7 +802,7 @@ glm::vec3 rgbToGrayscale(glm::vec3 color)
 						</p>
 						<pre>
 							<code>
-void IThermicBehavior(Cell& neighbor)
+void IThermicBehavior::update(Cell& neighbor)
 {
 	if (neighbor.getTemperature() >= _cell->getTemperature())
 		return;
@@ -828,6 +828,20 @@ void IThermicBehavior(Cell& neighbor)
 							elle pourrait donner plus de température qu'elle n'en possède si ce pourcentage est trop élevé.<br>
 							La température de chaque cellule deviendrait alors instable et ne cesserait d'alterner entre valeur positive et négative avant
 							de dépasser la capacité de stockage d'un nombre à virgule, causant le crash de l'application.
+						</p>
+						<b>VIDEO 2EME METHODE SANS NEXT TEMP</b>
+						<p>
+							En relancant la simulation avec cette nouvelle méthode, on constate que cette fois-ci, la température moyenne est stable et ne change qu'à l'ajout de nouvelles cellules.<br>
+							Un dernier problème subsiste cependant, une partie de la chaleur descend instantanément au plus bas de la grille, avant même que la cellule ne soit tombée.<br>
+							Ce soucis est similaire à celui du sable qui était mis à jour plusieurs fois par image.
+							Ici, la température des cellules est calculée puis appliquée, dès que la cellule éxécute sa méthode<code>update</code>.
+							Or, il est nécessaire que la température soit appliquée une fois que toutes les cellules ont été actualisées.<br>
+							La solution est de garder en mémoire cette "nouvelle température" pour chaque cellule, et de l'appliquer une fois toutes les cellules mises à jour.<br>
+							Ainsi, la méthode<code>update</code>de IThermicBehavior ne modifie plus directement la température des cellules, mais plutot une nouvelle variable "nextTemperature".
+						</p>
+						<b>VIDEO 2EME METHODE AVEC NEXT TEMP</b>
+						<p>
+							Pour augmenter le réalisme de la simulation, il serait possible de rajouter un coefficient à chaque cellule pour favoriser ou non, les échanges de température.
 						</p>
 
 						<h3 id="conclusion">Conclusion</h3>
