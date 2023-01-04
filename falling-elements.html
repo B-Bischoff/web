@@ -838,19 +838,70 @@ void IThermicBehavior::update(Cell& neighbor)
 							Or, il est nécessaire que la température soit appliquée une fois que toutes les cellules ont été actualisées.<br>
 							La solution est de garder en mémoire cette "nouvelle température" pour chaque cellule, et de l'appliquer une fois toutes les cellules mises à jour.<br>
 							Ainsi, la méthode<code>update</code>de IThermicBehavior ne modifie plus directement la température des cellules, mais plutot une nouvelle variable "nextTemperature".
+							Le changement de température se fera sur toutes les cellules entre leurs mises à jours.
 						</p>
 						<b>VIDEO 2EME METHODE AVEC NEXT TEMP</b>
 						<p>
-							Pour augmenter le réalisme de la simulation, il serait possible de rajouter un coefficient à chaque cellule pour favoriser ou non, les échanges de température.
+							Pour augmenter le réalisme de la simulation, il est possible de rajouter un coefficient à chaque cellule pour favoriser ou non, les échanges de température.
 						</p>
+						<p>
+							Il est maintenant possible de créer différents comportements thermiques qui feront changer les caractéristiques des cellules en fonction de leur température.<br>
+							Un bon exemple est celui de l'eau.
+							A plus de cent degrés, l'eau doit devenir de la vapeur et en dessous de zéro, elle doit devenir de la glace.<br>
+							Dans la méthode<code>update</code>de la classe du comportement thermique de l'eau (qui hérite de IThermicBehavior).
+							Il faut premièrement mettre à jour la température et ensuite vérifier ces conditions.<br>
+							Si la cellule doit change d'état, il faut modifier ses propriétés pour qu'elles correspondent au nouveau type de cellule voulu (glace, vapeur, ...).<br>
+							Pour faire ces modifications, un objet contenant les caractéristiques initiales de tout les types de cellules nommé<code>CellFactory</code> va modifier la cellule voulue, pour la faire correspondre avec son nouveau type.<br>
+							Dans le cas d'un passage de l'eau vers la glace, la cellule va changer de couleur ainsi que de comportement de déplacement.
+						</p>
+						<pre>
+							<code>
+void WaterThermic::update()
+{
+	updateTemperature();
 
-						<h3 id="conclusion">Conclusion</h3>
-						<h3 id="sources">Sources</h3>
+	if (_cell->_temperature >= 100.0f)
+		CellFactory::configureSmokeCell(*_cell);
+	else if (_cell->_temperature <= 0.0f)
+		CellFactory::configureIceCell(*_cell);
+}
+							</code>
+						</pre>
+						<p>
+							Voici le code permettant à l'eau de changer d'état en fonction de sa temperature.<br>
+							Pour que la glace et la vapeur redeviennent de l'eau, il faut leur écrire un comportement similaire à celui-ci.
+						</p>
+						<p>
+							Il est à partir de maintenant possible de créer toutes sortes d'éléments et de jouer avec leur température pour créer de multiples réactions.<br>
+							Voici un example de plusieurs éléments ajoutés en suivant les différents principes expliqués.
+						</p>
+						<b>VIDEO FINALE MONTRANT UNE MULTITUDE DE NOUVEAUX ELEMENTS</b>
 
 						<hr>
-						<h2>Conclusion</h2>
+						<h2 id="conclusion">Conclusion</h2>
+						<p>
+							Ce projet a été extrêmement fun et divertissant.
+							Il est bien sûr possible d'aller encore plus loin mais je suis satisfait de ce qui a été fait et compte m'arrêter là.
+						</p>
+						<p>
+							Il est très plaisant de partir d'une base simple et de petit à petit, compléxifier le tout sans aucune limite.<br>
+							Pour ajouter de nouvelles dimensions à ce projet il serait possible d'implémenter l'élément "vide", une notion de luminosité, ou même diverses formes de vies.
+						</p>
+						<p>
+							Quand à l'amélioration de ce qui existe déjà, il serait plus efficace d'utiliser une texture pour l'affichage de la grille au lieu d'afficher chaque cellule individuellement.<br>
+							Pour le comportement des cellules il doit être possible de les optimiser et de limiter le nombre d'allocations.<br>
+							Et enfin, l'utilisation des threads permettrait au programme de mettre plusieurs groupes de cellules à jours simultanément ce qui augmenterait considérablement les performances.
+						</p>
 
 						<h2 id="sources">Sources</h2>
+						<p>
+							Dan-Ball | Powder Game 2 : <a href="https://dan-ball.jp/en/javagame/dust2/">https://dan-ball.jp/en/javagame/dust2/</a><br>
+							Wikipedia | Falling-sand game : <a href="https://en.wikipedia.org/wiki/Falling-sand_game">https://en.wikipedia.org/wiki/Falling-sand_game</a><br>
+							Max Bittker | Making Sandspiel : <a href="https://maxbittker.com/making-sandspiel">https://maxbittker.com/making-sandspiel</a><br>
+							MARF | How to code a falling sand simulation : <a href="https://www.youtube.com/watch?v=5Ka3tbbT-9E">https://www.youtube.com/watch?v=5Ka3tbbT-9E</a><br>
+							John Jackson | Recreating Noita's sans simulation : <a href="https://www.youtube.com/watch?v=VLZjd_Y1gJ8">https://www.youtube.com/watch?v=VLZjd_Y1gJ8</a><br>
+							GDC | Exploring the Tech and Design of Noita : <a href="https://www.youtube.com/watch?v=prXuyMCgbTc">https://www.youtube.com/watch?v=prXuyMCgbTc</a>
+						</p>
 						<h2>Téléchargement</h2>
 						<ul class="actions">
 						<li><a href="https://github.com/B-Bischoff/cube3d" class="button icon brands fa-github">Code source + éxécutable</a></li>
