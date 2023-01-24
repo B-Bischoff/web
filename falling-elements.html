@@ -1,4 +1,4 @@
-<!DOCTYPE HTML>
+<DOCTYPE HTML>
 <!--
 Phantom by HTML5 UP
 html5up.net | @ajlkn
@@ -96,20 +96,25 @@ Free for personal and commercial use under the CCA 3.0 license (html5up.net/lice
 						<p>
 							Comme ici le seul objectif est de pouvoir afficher des couleurs sur une grille, il est acceptable de se passer d'un moteur de jeu existant.
 						</p>
-						<p>
-							OpenGL utilise des triangles pour afficher des couleurs sur notre écran.
-							Il faut donc lui fournir les trois points qui constituent chaque triangle, ainsi que leurs couleurs.<br>
-							On va alors parler de "vertex". Chaque vertex, va contenir une position ainsi qu'une couleur.
-						</p>
-						<p>
-							Une fois les vertex définies, il faut indiquer quels vertex relier entre eux en précisant leurs indices.<br>
-							Voici un schéma illustrant comment afficher un carré.
-							<br><b>SCHEMA VERTEX 1, 2, 3, 4 ET INDICES (1,2,3) (3,4,1)</b>
-						</p>
-						<p>
-							C'est en appliquant ce principe pour plusieurs carrés qu'il est possible de refaire à la main, une grille où chaque carré peut changer de couleur.<br>
-						</p>
-						<br><b>IMAGES/VIDEOS RESULTATS</b>
+						<div class="row">
+							<div class="col-7">
+								<p>
+									OpenGL utilise des triangles pour afficher des couleurs sur notre écran.
+									Il faut donc lui fournir les trois points qui constituent chaque triangle, ainsi que leurs couleurs.<br>
+									On va alors parler de "vertex". Chaque vertex, va contenir une position ainsi qu'une couleur.
+								</p>
+								<p>
+									Une fois les vertex définies, il faut indiquer quels vertex relier entre eux en précisant leurs indices.<br>
+									Voici un schéma illustrant comment afficher un carré.
+								</p>
+								<p>
+									C'est en appliquant ce principe pour plusieurs carrés qu'il est possible de refaire à la main, une grille où chaque carré peut changer de couleur.<br>
+								</p>
+							</div>
+							<div class="col-4">
+								<span class="image fit"><img src="images/falling-elements/schema-vertices.png" alt="" /><center><sup><i>schéma d'un carré avec OpenGL</i></sup></center></span>
+							</div>
+						</div>
 						<p>
 							Cependant, plus le nombre d'éléments dans la grille est grand, plus l'affichage mettra du temps à s'effectuer.
 							Pour pallier à ce soucis, il est possible d'utiliser la technique du "batch rendering".<br>
@@ -160,30 +165,31 @@ Free for personal and commercial use under the CCA 3.0 license (html5up.net/lice
 							Ces fonctionnalités seront uniquement définies par les classes dérivées.
 						</p>
 
-						<b>MONTRER HEADER IMOVEMENT BEHAVIOR (?)</b>
-
 						<p>
-							Toutes les cellules doivent posséder un membre <i>IThermicBehavior</i></p>.
+							Toutes les cellules doivent posséder un membre <i>IThermicBehavior</i>.<br>
 							La méthode<code>update</code>permet à chaque cellule d'utiliser sa fonction de mouvement implémentée par une classe héritant de <i>IMovementBehavior</i>.
 						</p>
+						<div class="row">
+							<div class="col-7">
+								<p>
+									Pour commencer à implémenter un premier comportement de déplacement, le sable est idéal car son fonctionnement est simple.<br>
+									En grande quantité, le sable doit former des dunes.
+									Pour cela il doit non seulement subir l'effet de la gravité mais également celui du glissement lorsqu'il est en pente.<br>
+									Ces conditions appliquées à notre grille en deux-dimensions se résument avec ce schéma ci-contre.<br>
+									Le mouvement directement sous lui (représenté par la flèche rouge) est testé avant ceux de côtés (représenté par les flèches vertes).
+								</p>
+							</div>
+							<div class="col-3">
+								<span class="image fit"><img src="images/falling-elements/schema-algo-sand.png" alt="" /><center><sup><i>schéma des mouvements du sable</i></sup></center></span>
+							</div>
+						</div>
+
 						<p>
-							Pour commencer à implémenter un premier comportement de déplacement, le sable est idéal car son fonctionnement est simple.<br>
-							En grande quantité, le sable doit former des dunes.
-							Pour cela il doit non seulement subir l'effet de la gravité mais également celui du glissement lorsqu'il est en pente.<br>
-							Ces conditions appliquées à notre grille en deux-dimensions se résument avec ce schéma.
+							Pour que le comportement d'une cellule puisse modifier les informations de celle-ci (par exemple sa position),
+							il est nécessaire de lui fournir une référence de la cellule à sa création.<br>
+							Il en est de même pour le tableau de cellules.
+							Pour que le comportement puisse analyser les cellules voisines, il faut qu'il ait un accès au tableau et à ses dimensions.
 						</p>
-
-						<b>SCHEMA ALGO SABLE</b>
-
-						<blockquote>
-							<p><b>Précisions techniques</b></p>
-							<p>
-								Pour que le comportement d'une cellule puisse modifier les informations de celle-ci (par exemple sa position),
-								il est nécessaire de lui fournir une référence de la cellule à sa création.<br>
-								Il en est de même pour le tableau de cellules.
-								Pour que le comportement puisse analyser les cellules voisines, il faut qu'il ait un accès au tableau et à ses dimensions.
-							</p>
-						</blockquote>
 
 						<p>
 							Voici le code correspondant au comportement du sable.
@@ -254,12 +260,22 @@ void SandMovement::checkAdjacentBelowCells()
 							Suivant le même principe, l'état "liquide"  est associée à un et l'état "solide" à deux.
 						</p>
 
-						<p>
-							Au lancement de l'application, toutes les cellules seront par défaut de type "gazeuse" et auront un mouvement les rendant statiques.<br>
-							Voici une démonstration vidéo du comportement de mouvement implémenté à l'instant.
-						</p>
-
-						<b>VIDEO SABLE AVEC MAUVAISE UPDATE<br></b>
+						<div class="row">
+							<div class="col-5">
+								<span class="image fit">
+									<video controls width="100%">
+										<source src="images/falling-elements/sand-wrong-update.mp4" type="video/webm">
+									</video>
+									<center><sup><i>démonstration de la première version du sable</i></sup></center>
+								</span>
+							</div>
+							<div class="col-5">
+								<p>
+									Au lancement de l'application, toutes les cellules seront par défaut de type "gazeuse" et auront un mouvement les rendant statiques.<br>
+									Voici une démonstration vidéo du comportement de mouvement implémenté à l'instant.
+								</p>
+							</div>
+						</div>
 
 						<p>
 							Le sable possède le comportement attendu mais il y a quelque chose de surprenant dans cette démonstration.<br>
@@ -268,14 +284,24 @@ void SandMovement::checkAdjacentBelowCells()
 
 						<h3 id="mise-a-jour">Actualiser les cellules</h3>
 
-						<p>
-							Ce problème vient de la manière dont les cellules sont actualisée.<br>
-							Actuellement, pour chaque actualisation le programme va parcourir toutes les cellules et déclencher leur méthode <code>update</code>.
-							Pour parcourir les cellules, le programme commence par la position (0, 0) qui est en haut à gauche et va se diriger vers la fin de la ligne avant de passer à la suivante.<br>
-							Cependant si une cellule se déplace, elle risque de se faire actualiser plus d'une fois par le programme.
-						</p>
-
-						<b>VIDEO (SCHEMA) CELLULE ACTU PLUSIEURS FOIS<br></b>
+						<div class="row">
+							<div class="col-5">
+								<p>
+									Ce problème vient de la manière dont les cellules sont actualisée.<br>
+									Actuellement, pour chaque actualisation le programme va parcourir toutes les cellules et déclencher leur méthode <code>update</code>.
+									Pour parcourir les cellules, le programme commence par la position (0, 0) qui est en haut à gauche et va se diriger vers la fin de la ligne avant de passer à la suivante.<br>
+									Cependant si une cellule se déplace, elle risque de se faire actualiser plus d'une fois par le programme.
+								</p>
+							</div>
+							<div class="col-5">
+								<span class="image fit">
+									<video controls width="100%">
+										<source src="images/falling-elements/multi-updates-white-bg.mp4" type="video/webm">
+									</video>
+									<center><sup><i>représentation du processus d'actualisation des cellules</i></sup></center>
+								</span>
+							</div>
+						</div>
 
 						<p>
 							Il y a plusieurs solutions pour pallier à ce soucis<br>
@@ -286,7 +312,7 @@ void SandMovement::checkAdjacentBelowCells()
 						<p>
 							Une deuxième solution serait de ne pas effectuer de changement sur le tableau en cours avant d'avoir mis à jour toutes les cellules.
 							Cette technique requiert un second tableau, (doublant la taille de notre programme à son éxécution).
-							De plus, il y a des risques de conflits dans le cas où deux cellules devraient se déplacer au meme endroit.<b>PHOTO CONFLIT</b>
+							De plus, il y a des risques de conflits dans le cas où deux cellules devraient se déplacer au meme endroit.
 						</p>
 						<p>
 							La dernière possibilité consiste à vérifier si la cellule à déjà été actualisée et de continuer à itérer sur le tableau,
@@ -296,14 +322,25 @@ void SandMovement::checkAdjacentBelowCells()
 							Une fois toutes les cellules actualisées, leur booléen est remis à zéro.
 						</p>
 
-						<b>VIDEO CELLULE NICE ACTU SAUF HORIZONTAL (SABLE TOMBE DU MEME COTE)<br></b>
+						<div class="row">
+							<div class="col-5">
+								<p>
+									Le résultat est bien mieux que précédemment.
+									Il y a cependant un comportement étrange lorsque le sable est remplacé par du vide.<br>
+									Le sable plus en hauteur s'affaisse toujours du même côté.
+									A savoir le côté gauche.
+								</p>
+							</div>
+							<div class="col-5">
+								<span class="image fit">
+									<video controls width="100%">
+										<source src="images/falling-elements/sand-wrong-remove.mp4" type="video/webm">
+									</video>
+									<center><sup><i>vidéo montrant le défaut d'actualisation horizontal des cellules</i></sup></center>
+								</span>
+							</div>
+						</div>
 
-						<p>
-							Le résultat est bien mieux que précédemment.
-							Il y a cependant un comportement étrange lorsque le sable est remplacé par du vide.<br>
-							Le sable plus en hauteur s'affaisse toujours du même côté.
-							A savoir le côté gauche.
-						</p>
 						<p>
 							Le problème vient encore une fois de la manière dont sont mises à jour les cellules.
 							Malgré le fait qu'il n'y ait plus de multiples actualisation pour une même cellule, le programme actualise toujours les cellules de gauche à droite et ligne par ligne.<br>
@@ -374,11 +411,22 @@ while (cellsUpdated < CELL_HEIGHT * CELL_WIDTH)
 							on récupère la valeur stockée à l'indice<code>x</code> dans la séquence de nombres aléatoires.<br>
 						</p>
 
-						<b>VIDEO SABLE BON ERASE</b>
+						<div class="row">
+							<div class="col-5">
+								<span class="image fit">
+									<video controls width="100%">
+										<source src="images/falling-elements/sand-wrong-remove.mp4" type="video/webm">
+									</video>
+									<center><sup><i>démonstration de l'état final du processus d'actualisation des cellules</i></sup></center>
+								</span>
+							</div>
+							<div class="col-5">
+								<p>
+									Comme voulu, le résultat est plus chaotique, rendant le comportement du sable un peu plus intéressant.
+								</p>
+							</div>
+						</div>
 
-						<p>
-							Comme voulu, le résultat est plus chaotique, rendant le comportement du sable un peu plus intéressant.
-						</p>
 						<p>
 							Jusqu'à présent il y a eu beaucoup de mise en place du "moteur".<br>
 							Le résultat actuel n'est certes, pas le plus optimisé, néanmoins il est pleinement fonctionnel et ne subira plus de modifications majeures .<br>
@@ -392,14 +440,20 @@ while (cellsUpdated < CELL_HEIGHT * CELL_WIDTH)
 							Il est important de rappeler ici que le but n'est pas de reproduire le plus fidèlement possible des comportements mais de les simuler de manière simple et amusante.
 							Autrement, à lui seul, le domaine de la dynamique des fluides aurait pu être un projet.
 						</p>
-						<p>
-							Les mouvements de l'eau reprennent ceux du sable.
-							On souhaite qu'elle puisse subir la gravité et couler en pente.
-							Cependant, elle doit en plus former une surface plane lorsqu'elle à fini de s'écouler.<br>
-							Ansi, en plus de pouvoir de se déplacer vers les trois cellules sous elle, elle doit être capable de bouger sur les cellules à sa gauche et à sa droite.
-						</p>
 
-						<b>SCHEMA MOUVEMEMT EAU (BAS + GAUCHE & DROITE)<br></b>
+						<div class="row">
+							<div class="col-7">
+								<p>
+									Les mouvements de l'eau reprennent ceux du sable.
+									On souhaite qu'elle puisse subir la gravité et couler en pente.
+									Cependant, elle doit en plus former une surface plane lorsqu'elle à fini de s'écouler.<br>
+									Ansi, en plus de pouvoir de se déplacer vers les trois cellules sous elle, elle doit être capable de bouger sur les cellules à sa gauche et à sa droite.
+								</p>
+							</div>
+							<div class="col-3">
+								<span class="image fit"><img src="images/falling-elements/schema-algo-water.png" alt="" /><center><sup><i>schéma des mouvements de l'eau</i></sup></center></span>
+							</div>
+						</div>
 
 						<pre>
 							<code>
@@ -445,15 +499,26 @@ void WaterMovement::checkAdjacentCells()
 }
 							</code>
 						</pre>
-						<p>
-							Afin d'éviter de dupliquer du code, il est possible de créer plusieurs fonctions appartenants à l'interface<code>IMovementBehavior</code>.
-							Ces fonctions pourront ainsi être réutilisée par toutes les classes qui vont hériter de l'interface.
-						</p>
-						<p>
-							Voici une vidéo du résultat avec l'eau conçue telle que décrite ci-dessus.
-						</p>
 
-						<b>VIDEO EAU SIMPLE<br></b>
+						<div class="row">
+							<div class="col-5">
+								<span class="image fit">
+									<video controls width="100%">
+										<source src="images/falling-elements/water.mp4" type="video/webm">
+									</video>
+									<center><sup><i>démonstration de l'état final du processus d'actualisation des cellules</i></sup></center>
+								</span>
+							</div>
+							<div class="col-5">
+								<p>
+									Afin d'éviter de dupliquer du code, il est possible de créer plusieurs fonctions appartenants à l'interface<code>IMovementBehavior</code>.
+									Ces fonctions pourront ainsi être réutilisée par toutes les classes qui vont hériter de l'interface.
+								</p>
+								<p>
+									Voici une vidéo du résultat avec l'eau conçue telle que décrite ci-dessus.
+								</p>
+							</div>
+						</div>
 
 						<p>
 							L'eau tend bien vers un niveau plat, cependant elle met beaucoup de temps à s'étaler.<br>
@@ -496,17 +561,27 @@ void WaterMovement::checkAdjacentCells()
 }
 							</code>
 						</pre>
-
 						<p>
 							Pour ne pas traverser de cellules, il est important de sortir de la boucle (instruction<code>break</code>dans le programme)
 							dès qu'une cellule ne remplie pas les conditions pour être une cible.
 						</p>
-						<p>
-							On constate sur la vidéo ci-dessous qu'une différence est notable, d'une part à cause le vitesse d'écoulement,
-							mais également à l'aide de ces petites "éclaboussures" qui apparaissent quand l'eau s'équilibre.
-						</p>
 
-						<b>VIDEO EAU AVEC HORIZONTAL LOOP CHECK<br></b>
+						<div class="row">
+							<div class="col-5">
+								<p>
+									On constate sur la vidéo ci-dessous qu'une différence est notable, d'une part à cause le vitesse d'écoulement,
+									mais également à l'aide de ces petites "éclaboussures" qui apparaissent quand l'eau est en train de s'équilibrer.
+								</p>
+							</div>
+							<div class="col-5">
+								<span class="image fit">
+									<video controls width="100%">
+										<source src="images/falling-elements/water-loop.mp4" type="video/webm">
+									</video>
+									<center><sup><i>video de l'amélioration des mouvements de l'eau</i></sup></center>
+								</span>
+							</div>
+						</div>
 
 						<p>
 							Le comportement de l'eau commence à devenir complet et intéressant, en revanche, celui du sable paraît un peu plus léger.<br>
@@ -578,15 +653,27 @@ void SandMovement::updateVelocity()
 							La prochaine vidéo présente les effets du code montré.
 						</p>
 
-						<b>VIDEO SABLE FREE FALLING + SLOW DOWN WATER</b>
+						<div class="row">
+							<div class="col-5">
+								<span class="image fit">
+									<video controls width="100%">
+										<source src="images/falling-elements/sand-acceleration.mp4" type="video/webm">
+									</video>
+									<center><sup><i>démonstration de l'implémentation de la vitesse sur les éléments</i></sup></center>
+								</span>
+							</div>
+							<div class="col-5">
+								<p>
+									Le sable prend bien de la vitesse en chute libre et se fait bel et bien ralentir par l'eau lorsqu'il entre en collision avec.<br>
+									La question qui se pose alors, est, que faire de la vitesse accumulée, une fois que la cellule est au sol ?
+									La réponse va alors dépendre de jusqu'où veut-on pousser la simulation.
+								</p>
+							</div>
+						</div>
 
 						<p>
-							Le sable prend bien de la vitesse en chute libre et se fait bel et bien ralentir par l'eau lorsqu'il entre en collision avec.<br>
-							La question qui se pose alors, est, que faire de la vitesse accumulée, une fois que la cellule est au sol ?
-							La réponse va alors dépendre de jusqu'où veut-on pousser la simulation.<br>
 							Il est possible de transmettre sa vitesse aux cellules voisines à l'impacte.
 							C'est d'ailleurs ce qui a été brièvement fait (sans franc succès) dans l'application finale, cependant ce sujet ne sera pas couvert sur cette page.<br>
-							<b>INTRO RELACHEMENT ENERGIE ACCUMULEE --> PARTICULES</b>
 						</p>
 						<p>
 							La vitesse accumulée pendant la chute, va permettre à la cellule de rebondir plus ou moins haut une fois en collision avec le sol.<br>
@@ -678,12 +765,23 @@ void ParticleMovement::setOriginalBehavior()
 							Il est néanmoins possible d'utiliser d'autre méthodes, comme l'algorithme de tracé de segment de Bresenham
 							ou une fonction d'interpolation linéaire sphérique pour avoir un meilleur effet de déplacement des particules.
 						</p>
-						<p>
-							La dernière méthode utilisée,<code>setOriginalBehavior</code>permet de restituer le comportement d'origine à la cellule.
-							Comme celle-ci s'est déplacée sur la carte, il est important de donner au comportement la nouvelle position de la cellule (ligne 2 de la méthode).
-						</p>
 
-						<b>VIDEO SABLE REBONDISSANT<br></b>
+						<div class="row">
+							<div class="col-5">
+								<p>
+									La dernière méthode utilisée,<code>setOriginalBehavior</code>permet de restituer le comportement d'origine à la cellule.
+									Comme celle-ci s'est déplacée sur la carte, il est important de donner au comportement la nouvelle position de la cellule (ligne 2 de la méthode).
+								</p>
+							</div>
+							<div class="col-5">
+								<span class="image fit">
+									<video controls width="100%">
+										<source src="images/falling-elements/sand-bouncing.mp4" type="video/webm">
+									</video>
+									<center><sup><i>démonstration du relâchement d'énergie des cellules</i></sup></center>
+								</span>
+							</div>
+						</div>
 
 						<p>
 							Pour mieux visualiser les cellules possédant de la vélocité, il est possible de créer un filtre mettant en évidence ces cellules.<br>
@@ -725,12 +823,22 @@ void GridRenderer::updateColorFromVelocity(Cell** cells)
 							</code>
 						</pre>
 
-						<b>VIDEO VELOCITY FITLER NO GRAYSCALE</b>
-
-						<p>
-							Pour rendre le rendu plus compréhensible, il est possible de convertir la couleur RGB des cellules en nuances de gris.
-							Il existe plusieurs formules, voici celle utilisée ici.
-						</p>
+						<div class="row">
+							<div class="col-5">
+								<span class="image fit">
+									<video controls width="100%">
+										<source src="images/falling-elements/first-velocity-filter.mp4" type="video/webm">
+									</video>
+									<center><sup><i>première version du filtre de vitesse</i></sup></center>
+								</span>
+							</div>
+							<div class="col-5">
+								<p>
+									Pour rendre ce qui se passe à l'écran plus compréhensible, il est possible de convertir la couleur RGB des cellules en nuances de gris.
+									Il existe plusieurs formules, voici celle utilisée ici.
+								</p>
+							</div>
+						</div>
 
 						<pre>
 							<code>
@@ -746,11 +854,21 @@ glm::vec3 rgbToGrayscale(glm::vec3 color)
 							</code>
 						</pre>
 
-						<b>VIDEO CELLULES GRAYSCALE</b>
-
-						<p>
-							Il est même possible de changer la couleur en fonction de la direction et/ou de la rapidité de la cellule.
-						</p>
+						<div class="row">
+							<div class="col-5">
+								<p>
+									Il est même possible de changer la couleur en fonction de la direction et/ou de la rapidité de la cellule.
+								</p>
+							</div>
+							<div class="col-5">
+								<span class="image fit">
+									<video controls width="100%">
+										<source src="images/falling-elements/grayscale-velocity-filter.mp4" type="video/webm">
+									</video>
+									<center><sup><i>filtre de vitesse utilisant des nuances de gris</i></sup></center>
+								</span>
+							</div>
+						</div>
 
 						<p>
 							Les comportements de mouvements sont désormais visualisables et fonctionnels.<br>
@@ -789,14 +907,26 @@ glm::vec3 rgbToGrayscale(glm::vec3 color)
 							Initialement dans la simulation toutes les cellules sont à une température de vingt degrés Celsius et le sable est à cinquante degrés quand il est créé.<br>
 							Pour mieux visualiser les échanges de température, un filtre a été mis en place pour afficher en couleur les cellules en fonction de leur température.
 						</p>
-						<b>VIDEO TEMPERATURE PREMIERE METHODE AVEC MOYENNE TEMPERATURE + FILTRE TEMP</b>
-						<p>
-							Il est notable que la chaleur du sable créé se propage, en revanche la température moyenne affichée ne cesse de changer, même lorsqu'aucune cellule n'est ajoutée.<br>
-							Le problème vient en majeure partie de la méthode utilisée pour les échanges de température.<br>
-							Une approche plus "réaliste", serait de considérer la chaleur comme une ressource, et que celle-ci cherche à s'équilibrer.
-							Ainsi, si deux cellules sont voisines et qu'elles n'ont pas la même température, la cellule avec le plus de chaleur va transmettre une partie de sa température à l'autre.<br>
-							Ce comportement ne créé ou ne supprime donc pas de chaleur, étant donné que les échanges dépendent de la température des cellules.
-						</p>
+						<div class="row">
+							<div class="col-5">
+								<span class="image fit">
+									<video controls width="100%">
+										<source src="images/falling-elements/first-temp-method.mp4" type="video/webm">
+									</video>
+									<center><sup><i>première algorithme de diffusion thermique</i></sup></center>
+								</span>
+							</div>
+							<div class="col-5">
+								<p>
+									Il est notable que la chaleur du sable créé se propage, en revanche la température moyenne affichée ne cesse de changer, même lorsqu'aucune cellule n'est ajoutée.<br>
+									Le problème vient en majeure partie de la méthode utilisée pour les échanges de température.
+									Une approche plus "réaliste", serait de considérer la chaleur comme une ressource, et que celle-ci cherche à s'équilibrer.
+									Ainsi, si deux cellules sont voisines et qu'elles n'ont pas la même température, la cellule avec le plus de chaleur va transmettre une partie de sa température à l'autre.<br>
+									Ce comportement ne créé ou ne supprime donc pas de chaleur, étant donné que les échanges dépendent de la température des cellules.
+								</p>
+							</div>
+						</div>
+
 						<p>
 							La fonction<code>updateTarget</code>est appliquée à chaque voisin de chaque cellule.
 						</p>
@@ -829,18 +959,43 @@ void IThermicBehavior::update(Cell& neighbor)
 							La température de chaque cellule deviendrait alors instable et ne cesserait d'alterner entre valeur positive et négative avant
 							de dépasser la capacité de stockage d'un nombre à virgule, causant le crash de l'application.
 						</p>
-						<b>VIDEO 2EME METHODE SANS NEXT TEMP</b>
-						<p>
-							En relancant la simulation avec cette nouvelle méthode, on constate que cette fois-ci, la température moyenne est stable et ne change qu'à l'ajout de nouvelles cellules.<br>
-							Un dernier problème subsiste cependant, une partie de la chaleur descend instantanément au plus bas de la grille, avant même que la cellule ne soit tombée.<br>
-							Ce soucis est similaire à celui du sable qui était mis à jour plusieurs fois par image.
-							Ici, la température des cellules est calculée puis appliquée, dès que la cellule éxécute sa méthode<code>update</code>.
-							Or, il est nécessaire que la température soit appliquée une fois que toutes les cellules ont été actualisées.<br>
-							La solution est de garder en mémoire cette "nouvelle température" pour chaque cellule, et de l'appliquer une fois toutes les cellules mises à jour.<br>
-							Ainsi, la méthode<code>update</code>de IThermicBehavior ne modifie plus directement la température des cellules, mais plutot une nouvelle variable "nextTemperature".
-							Le changement de température se fera sur toutes les cellules entre leurs mises à jours.
-						</p>
-						<b>VIDEO 2EME METHODE AVEC NEXT TEMP</b>
+
+						<div class="row">
+							<div class="col-5">
+								<span class="image fit">
+									<video controls width="100%">
+										<source src="images/falling-elements/second-temp-method-no-next-temp.mp4" type="video/webm">
+									</video>
+									<center><sup><i>second algorithme de diffusion thermique</i></sup></center>
+								</span>
+							</div>
+							<div class="col-5">
+								<p>
+									En relancant la simulation avec cette nouvelle méthode, on constate que cette fois-ci, la température moyenne est stable et ne change qu'à l'ajout de nouvelles cellules.<br>
+									Un dernier problème subsiste cependant, une partie de la chaleur descend instantanément au plus bas de la grille, avant même que la cellule ne soit tombée.<br>
+									Ce soucis est similaire à celui du sable qui était mis à jour plusieurs fois par image.
+									Ici, la température des cellules est calculée puis appliquée, dès que la cellule éxécute sa méthode<code>update</code>.
+									Or, il est nécessaire que la température soit appliquée une fois que toutes les cellules ont été actualisées.<br>
+								</p>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-5">
+								<p>
+									La solution est de garder en mémoire cette "nouvelle température" pour chaque cellule, et de l'appliquer une fois toutes les cellules mises à jour.<br>
+									Ainsi, la méthode<code>update</code>de IThermicBehavior ne modifie plus directement la température des cellules, mais plutot une nouvelle variable "nextTemperature".
+									Le changement de température se fera sur toutes les cellules entre leurs mises à jours.
+								</p>
+							</div>
+							<div class="col-5">
+								<span class="image fit">
+									<video controls width="100%">
+										<source src="images/falling-elements/second-temp-method.mp4" type="video/webm">
+									</video>
+									<center><sup><i>second algorithme de diffusion thermique avec "nextTemperature"</i></sup></center>
+								</span>
+							</div>
+						</div>
 						<p>
 							Pour augmenter le réalisme de la simulation, il est possible de rajouter un coefficient à chaque cellule pour favoriser ou non, les échanges de température.
 						</p>
@@ -875,7 +1030,12 @@ void WaterThermic::update()
 							Il est à partir de maintenant possible de créer toutes sortes d'éléments et de jouer avec leur température pour créer de multiples réactions.<br>
 							Voici un example de plusieurs éléments ajoutés en suivant les différents principes expliqués.
 						</p>
-						<b>VIDEO FINALE MONTRANT UNE MULTITUDE DE NOUVEAUX ELEMENTS</b>
+						<span class="image fit">
+							<video controls width="100%">
+								<source src="images/falling-elements/final-demo.mp4" type="video/webm">
+							</video>
+							<center><sup><i>démonstration finale du projet</i></sup></center>
+						</span>
 
 						<hr>
 						<h2 id="conclusion">Conclusion</h2>
