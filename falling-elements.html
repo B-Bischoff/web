@@ -64,13 +64,13 @@ Free for personal and commercial use under the CCA 3.0 license (html5up.net/lice
 						<h2>Contexte</h2>
 						<p>
 							Le but de ce projet personnel est de refaire un des jeux de type "Falling-sand" que l'on peut retrouver en ligne.<br>
-							Ces jeux laissent l'utilisateur interagir avec différents éléments, qui peuvent produire de nombreuses réactions entre eux.
+							Ces jeux laissent l'utilisateur interagir avec différents éléments, pouvant produire de nombreuses réactions entre eux.
 							Comme le jeu ne possède pas de but à proprement parler, on appelle ce genre "bac à sable", car il permet au joueur de faire tout ce qu'il souhaite, sans aucune contrainte.
 						</p>
 						<p>
-							Ce type de jeu se base généralement sur un moteur utilisant des particules dans un tableau en deux dimensions.<br>
-							Le plus connu de ce genre étant le Jeu de la vie de John Horton Conway.<br>
-							On retrouve cependant des versions bien plus récentes et poussées comme avec le jeu Noita, sorti en 2019.
+							Ce type de jeu se base généralement sur un moteur utilisant des "particules" ou "cellules" dans un tableau en deux dimensions.<br>
+							Le plus connu de ce genre étant <a href="https://fr.wikipedia.org/wiki/Jeu_de_la_vie"><i>le Jeu de la vie de John Horton Conway</i></a>.<br>
+							On retrouve cependant des versions bien plus récentes et poussées comme avec le jeu <a href="https://fr.wikipedia.org/wiki/Noita_(jeu_vidéo)"><i>Noita</i></a>, sorti en 2019.
 						</p>
 						<p>
 							Pour réaliser ce projet j'utiliserai le langage C++ couplé à OpenGL pour la partie graphique.
@@ -90,8 +90,8 @@ Free for personal and commercial use under the CCA 3.0 license (html5up.net/lice
 						<h3 id="grille">Afficher une grille avec OpenGL</h3>
 						<p>
 							L'avantage de ne pas utiliser un moteur de jeu préfait comme dans de précédents projets avec Unity, est de pouvoir faire une application sur mesure.
-							Seul les éléments nécessaires au projet seront présents, ce qui permet d'améliorer la taille du projet et ses performances.<br>
-							En revanche, toutes les fonctionnalités pouvant se trouver dans un moteur préfait sont à reprogrammer, augmentant le travail à fournir.
+							Seul les éléments nécessaires au projet seront présents, ce qui permet d'améliorer la taille du projet ansi que ses <b>performances</b>.<br>
+							En revanche, toutes les fonctionnalités préfaites pouvant se trouver dans un moteur sont à reprogrammer ce qui augmente le travail à fournir.
 						</p>
 						<p>
 							Comme ici le seul objectif est de pouvoir afficher des couleurs sur une grille, il est acceptable de se passer d'un moteur de jeu existant.
@@ -101,14 +101,14 @@ Free for personal and commercial use under the CCA 3.0 license (html5up.net/lice
 								<p>
 									OpenGL utilise des triangles pour afficher des couleurs sur notre écran.
 									Il faut donc lui fournir les trois points qui constituent chaque triangle, ainsi que leurs couleurs.<br>
-									On va alors parler de "vertex". Chaque vertex, va contenir une position ainsi qu'une couleur.
+									On va alors parler de "vertex". Chaque vertex, va contenir une <b>position</b> ainsi qu'une <b>couleur</b>.
 								</p>
 								<p>
-									Une fois les vertex définies, il faut indiquer quels vertex relier entre eux en précisant leurs indices.<br>
+									Une fois les vertex définies, il faut indiquer quels vertex relier entre eux en précisant leurs indices afin de former un carré.<br>
 									Voici un schéma illustrant comment afficher un carré.
 								</p>
 								<p>
-									C'est en appliquant ce principe pour plusieurs carrés qu'il est possible de refaire à la main, une grille où chaque carré peut changer de couleur.<br>
+									C'est en appliquant ce principe pour plusieurs carrés qu'il est possible de refaire une grille où chaque carré peut changer de couleur.<br>
 								</p>
 							</div>
 							<div class="col-4">
@@ -117,10 +117,10 @@ Free for personal and commercial use under the CCA 3.0 license (html5up.net/lice
 						</div>
 						<p>
 							Cependant, plus le nombre d'éléments dans la grille est grand, plus l'affichage mettra du temps à s'effectuer.
-							Pour pallier à ce soucis, il est possible d'utiliser la technique du "batch rendering".<br>
-							Au lieu d'afficher chaque triangle un par un, le batch rendering va regrouper un grand nombre de surface à afficher et toutes les traiter en même temps.<br>
-							Bien sûr, cette technique n'est pas magique est ne fonctionne pas pour une infinité de surfaces.
-							Elle permet cependant de rendre fluide l'affiche d'une centaine de millier de carrés, ce qui est difficilement réalisable sans cette technique.
+							Pour pallier à ce soucis, il est possible d'utiliser la technique du "<b>batch rendering</b>".<br>
+							Au lieu d'afficher chaque triangle un par un, le batch rendering va regrouper un grand nombre de ces triangles pour les afficher tous en même temps.<br>
+							Bien sûr, cette technique n'est pas magique est ne fonctionne pas pour une infinité de triangles.
+							Elle permet cependant de rendre fluide l'affichage d'une centaine de millier de carrés, ce qui est difficilement réalisable sans cette technique.
 						</p>
 						<p>
 							Actuellement les couleurs affichées par la grille sont définies à la main.
@@ -134,23 +134,23 @@ Free for personal and commercial use under the CCA 3.0 license (html5up.net/lice
 						</p>
 						<p>
 							Commençons par définir de quoi seront composées ces cellules.<br>
-							Etant donné que la grille vient d'être réalisée, il parait essentiel que chaque cellule possède une couleur.<br>
-							Il est également primordial d'avoir une position. Cette position sera utile pour savoir où se situe la cellule dans la grille en deux dimensions.<br>
-							Pour différencier les différents états de matières, les cellules possèderont un type correspondant à "solide", "liquid" ou "gazeux".
+							Etant donné que la grille vient d'être réalisée, il parait essentiel que chaque cellule possède une <b>couleur</b>.<br>
+							Il est également primordial d'avoir une <b>position</b>. Cette position sera utile pour savoir où se situe la cellule dans la grille en deux dimensions.<br>
+							Pour différencier les différents états de matières, les cellules possèderont un <b>type</b> correspondant à "solide", "liquid" ou "gazeux".
 						</p>
 						<p>
 							Viens, ensuite la question de comment définir ces fameux comportements ?<br>
 							Une solution serait d'utiliser le système d'héritage du langage C++, afin de créer différents types de cellules (solides, liquides, gazeuses).
-							Et à partir de ces grands groupes, il serait ensuite possible de sous-diviser ces grands types pour créer des éléments de manière plus précise.
+							Et à partir de ces grands groupes, il serait ensuite possible de sous-diviser ces types pour créer des éléments de manière plus précise.
 							Par exemple dans les solides, d'avoir des cellules, roches, sable, terre, etc...<br>
 							La deuxième solution se sert du principe de composition.
-							En programmation orientée objet, la composition est le fait d'avoir une instance d'une classe dans une autre.
+							En programmation orientée objet, la <b>composition</b> est le fait d'avoir une instance d'une classe dans une autre.
 							Chaque cellules possèderaient alors un objet, correspondant à un des différents comportements programmé.
 						</p>
 						<p>
 							Dans l'optique de généraliser au maximum les cellules, il est préférable d'opter pour la composition.<br>
 							Celles-ci devraient être définies par ce qui les composent, et non pas par une hiérarchisation entre différentes classes.<br>
-							Cela permet d'avoir de nouveaux types de cellules, tirants leurs propriétés de différents types existant, favorisant ainsi la création de comportements émergeant.
+							Cela permet d'avoir de nouveaux types de cellules, favorisant ainsi la création de comportements émergeant.
 						</p>
 						<p>
 							Il est à noter que les cellules ne possèdent pour l'instant que peu de caractéristiques, mais de nouvelles en seront rajoutées au fur et à mesure que le projet avance.
@@ -160,23 +160,23 @@ Free for personal and commercial use under the CCA 3.0 license (html5up.net/lice
 							Autrement dit, le nom de la méthode doit rester le même malgré ses différentes implémentations possibles.
 						</p>
 						<p>
-							Utiliser le système d'interface du langage C++ est donc très pratique pour créer différents types de comportements.<br>
+							Utiliser le système d'<b>interface</b> du langage C++ est donc très pratique pour créer différents types de comportements.<br>
 							Une interface permet de désigner un ensemble de fonctionnalités sans implémentation.
 							Ces fonctionnalités seront uniquement définies par les classes dérivées.
 						</p>
 
 						<p>
-							Toutes les cellules doivent posséder un membre <i>IThermicBehavior</i>.<br>
+							Toutes les cellules doivent posséder un membre nommé <i>IMovementBehavior</i>.<br>
 							La méthode<code>update</code>permet à chaque cellule d'utiliser sa fonction de mouvement implémentée par une classe héritant de <i>IMovementBehavior</i>.
 						</p>
 						<div class="row">
 							<div class="col-7">
 								<p>
-									Pour commencer à implémenter un premier comportement de déplacement, le sable est idéal car son fonctionnement est simple.<br>
+									Pour commencer à implémenter un premier comportement de déplacement, le <b>sable</b> est idéal car son fonctionnement est simple.<br>
 									En grande quantité, le sable doit former des dunes.
 									Pour cela il doit non seulement subir l'effet de la gravité mais également celui du glissement lorsqu'il est en pente.<br>
-									Ces conditions appliquées à notre grille en deux-dimensions se résument avec ce schéma ci-contre.<br>
-									Le mouvement directement sous lui (représenté par la flèche rouge) est testé avant ceux de côtés (représenté par les flèches vertes).
+									Ces conditions appliquées à notre grille en deux-dimensions se résument avec le schéma ci-contre.<br>
+									Le mouvement directement sous lui (représenté par la flèche rouge) est testé avant ceux de côtés (représentées par les flèches vertes).
 								</p>
 							</div>
 							<div class="col-3">
@@ -222,8 +222,8 @@ void SandMovement::update()
 
 						<p>
 							La première étape sert à récupérer la position de la cellule actuelle mais également à initialiser la cellule "cible" comme non-trouvée.<br>
-							Après avoir fait attention à ce que la cellule ne soit pas déjà tout en bas de la grille, le comportement vérifie si la cellule juste en dessous peut servir de cible.
-							Si ce n'est pas le cas, il vérifie ensuite les cellules en bas à droite et gauche (dans un autre aléatoire).<br>
+							Après avoir vérifié que la cellule ne soit pas déjà tout en bas de la grille, le comportement vérifie si la cellule juste <b>en dessous</b> peut servir de cible.
+							Si ce n'est pas le cas, il vérifie ensuite les cellules <b>en bas à droite et gauche</b> (dans un ordre aléatoire).<br>
 							Enfin, si une des cellules scrutée remplie toutes les conditions, celle-ci sera intervertie avec la cellule actuelle.
 						</p>
 						<p>
@@ -246,7 +246,9 @@ void SandMovement::checkAdjacentBelowCells()
 		_target = &(_cells[_y + 1][x1]);
 	else if (x2 >= 0 && x2 < _cell->getWidth() && _cells[_y + 1][x2].getType() < CellType::Solid)
 		_target = &(_cells[_y + 1][x2]);
-} const bool SandMovement::targetFound()
+}
+
+const bool SandMovement::targetFound()
 {
 	return _target != nullptr;
 }
@@ -255,8 +257,8 @@ void SandMovement::checkAdjacentBelowCells()
 
 						<p>
 							Pour qu'une cellule soit une cible valide, il faut que son type soit "inférieur" à celui de la cellule actuelle, autrement dit, inférieur au type "solide".<br>
-							C'est l'utilisation des énumérations de C++ qui rend l'opération inférieur possible.
-							La première valeur a avoir été déclarée dans l'énumération est l'état "gazeux", cette valeur est donc associée à la valeur numérique 0.
+							C'est l'utilisation des <b>énumérations</b> de C++ qui rend l'opération inférieur possible.
+							La première valeur a avoir été déclarée dans l'énumération est l'état "gazeux", cette valeur est donc associée à la valeur numérique zéro.
 							Suivant le même principe, l'état "liquide"  est associée à un et l'état "solide" à deux.
 						</p>
 
@@ -271,15 +273,15 @@ void SandMovement::checkAdjacentBelowCells()
 							</div>
 							<div class="col-5">
 								<p>
-									Au lancement de l'application, toutes les cellules seront par défaut de type "gazeuse" et auront un mouvement les rendant statiques.<br>
-									Voici une démonstration vidéo du comportement de mouvement implémenté à l'instant.
+									Au lancement de l'application, toutes les cellules seront par défaut de type "gazeuse" et auront un mouvement les rendant <b>statiques</b>.<br>
+									Voici une démonstration du comportement de mouvement implémenté.
 								</p>
 							</div>
 						</div>
 
 						<p>
-							Le sable possède le comportement attendu mais il y a quelque chose de surprenant dans cette démonstration.<br>
-							Impossible de le voir tomber, dès que celui-ci est placé, il tombe instantanément au sol.
+							Le sable possède le comportement attendu mais il y a quelque chose de surprenant dans cette vidéo.<br>
+							Impossible de le voir tomber, dès que celui-ci est placé, il tombe <b>instantanément</b> au sol.
 						</p>
 
 						<h3 id="mise-a-jour">Actualiser les cellules</h3>
@@ -287,7 +289,7 @@ void SandMovement::checkAdjacentBelowCells()
 						<div class="row">
 							<div class="col-5">
 								<p>
-									Ce problème vient de la manière dont les cellules sont actualisée.<br>
+								Ce problème vient de la manière dont les cellules sont <b>actualisée</b>.<br>
 									Actuellement, pour chaque actualisation le programme va parcourir toutes les cellules et déclencher leur méthode <code>update</code>.
 									Pour parcourir les cellules, le programme commence par la position (0, 0) qui est en haut à gauche et va se diriger vers la fin de la ligne avant de passer à la suivante.<br>
 									Cependant si une cellule se déplace, elle risque de se faire actualiser plus d'une fois par le programme.
@@ -307,7 +309,7 @@ void SandMovement::checkAdjacentBelowCells()
 							Il y a plusieurs solutions pour pallier à ce soucis<br>
 							La première consiste à mettre à jour les cellules en commençant par le bas.
 							Impossible pour les cellules qui tombent de se faire mettre à jour plusieurs fois.
-							En revanche le problème sera le même pour des mouvements faisant aller les cellules vers le haut.
+							En revanche le problème sera le même pour des types de mouvements faisant aller les cellules vers le haut.
 						</p>
 						<p>
 							Une deuxième solution serait de ne pas effectuer de changement sur le tableau en cours avant d'avoir mis à jour toutes les cellules.
@@ -315,11 +317,11 @@ void SandMovement::checkAdjacentBelowCells()
 							De plus, il y a des risques de conflits dans le cas où deux cellules devraient se déplacer au meme endroit.
 						</p>
 						<p>
-							La dernière possibilité consiste à vérifier si la cellule à déjà été actualisée et de continuer à itérer sur le tableau,
+							La dernière possibilité consiste à vérifier si la cellule à <b>déjà été actualisée</b> et de continuer à itérer sur le tableau,
 							tant que toutes les cellules n'ont pas été mises à jour.<br>
 							Loin d'être la plus optimisée l'avantage de cette technique est sa simplicité de mise en place.
-							Il suffit de rajouter un booléen aux cellules qui est vérifiée avant de mettre à jour la cellule.
-							Une fois toutes les cellules actualisées, leur booléen est remis à zéro.
+							Il suffit de rajouter un <b>indicateur</b> (une valeur booléenne) aux cellules qui est vérifiée avant de mettre à jour la cellule.
+							Une fois toutes les cellules actualisées, leur indicateur est remis à zéro.
 						</p>
 
 						<div class="row">
@@ -343,11 +345,11 @@ void SandMovement::checkAdjacentBelowCells()
 
 						<p>
 							Le problème vient encore une fois de la manière dont sont mises à jour les cellules.
-							Malgré le fait qu'il n'y ait plus de multiples actualisation pour une même cellule, le programme actualise toujours les cellules de gauche à droite et ligne par ligne.<br>
-							Ainsi, pour obtenir un résultat un peu plus chaotique, il faut actualiser toutes les cellules de la même ligne dans un ordre aléatoire.<br>
+							Malgré le fait qu'il n'y ait plus de multiples actualisation pour une même cellule, le programme actualise toujours les cellules de gauche à droite.<br>
+							Ainsi, pour obtenir un résultat un peu plus chaotique, il faut actualiser toutes les cellules de la même ligne dans un <b>ordre aléatoire</b>.<br>
 						</p>
 						<p>
-							Plutôt que de générer une séquence aléatoire à chaque mise à jour de l'application (ce qui serait très couteuk), il est possible d'en créer une multitude au lancement du programme,
+							Plutôt que de générer une séquence aléatoire à chaque mise à jour de l'application (ce qui serait très couteux), il est possible d'en créer une multitude au lancement du programme,
 							et d'alterner entre ces différentes séquences à chaque mise à jour.
 						</p>
 
@@ -376,8 +378,8 @@ void Application::generateRandomSets(const int& N)
 
 						<p>
 							Cette méthode va d'abord remplir tous les vecteurs avec les nombres dans l'ordre.
-							Puis avec l'usage de la librairie standard, elle va ensuite mélanger le contenu afin d'avoir une multitude de séquences aléatoires.<br>
-							Ainsi au lieu de parcourir les cellules de gauche à droite, il faut maintenant utiliser les nombres de la séquence actuelle en tant qu'indice.
+							Puis avec l'usage de la librairie standard, elle va ensuite mélanger le contenu de chaque tableau dynamique afin d'avoir une multitude de séquences aléatoires.<br>
+							Ainsi au lieu de parcourir les cellules de gauche à droite, il faut utiliser les nombres de la séquence actuelle en tant qu'indice.
 						</p>
 						<p>
 							Voici maintenant le morceau de code permettant de mettre à jour toutes les cellules.
@@ -415,14 +417,14 @@ while (cellsUpdated < CELL_HEIGHT * CELL_WIDTH)
 							<div class="col-5">
 								<span class="image fit">
 									<video controls width="100%">
-										<source src="images/falling-elements/sand-wrong-remove.mp4" type="video/webm">
+										<source src="images/falling-elements/sand-nice-actu.mp4" type="video/webm">
 									</video>
 									<center><sup><i>démonstration de l'état final du processus d'actualisation des cellules</i></sup></center>
 								</span>
 							</div>
 							<div class="col-5">
 								<p>
-									Comme voulu, le résultat est plus chaotique, rendant le comportement du sable un peu plus intéressant.
+									Comme voulu, le résultat est plus chaotique, rendant le comportement du sable plus intéressant.
 								</p>
 							</div>
 						</div>
@@ -430,7 +432,7 @@ while (cellsUpdated < CELL_HEIGHT * CELL_WIDTH)
 						<p>
 							Jusqu'à présent il y a eu beaucoup de mise en place du "moteur".<br>
 							Le résultat actuel n'est certes, pas le plus optimisé, néanmoins il est pleinement fonctionnel et ne subira plus de modifications majeures .<br>
-							Le champ est maintenant libre pour se concentrer profondeur sur les différents matériaux ainsi que leurs comportement.
+							Le champ est maintenant libre pour se concentrer en profondeur sur les différents matériaux ainsi que leurs comportements.
 						</p>
 
 						<h3 id="comportements">Créer différents comportements</h3>
@@ -446,8 +448,9 @@ while (cellsUpdated < CELL_HEIGHT * CELL_WIDTH)
 								<p>
 									Les mouvements de l'eau reprennent ceux du sable.
 									On souhaite qu'elle puisse subir la gravité et couler en pente.
-									Cependant, elle doit en plus former une surface plane lorsqu'elle à fini de s'écouler.<br>
-									Ansi, en plus de pouvoir de se déplacer vers les trois cellules sous elle, elle doit être capable de bouger sur les cellules à sa gauche et à sa droite.
+									Cependant, elle doit en plus former une <b>surface plane</b> lorsqu'elle à fini de s'écouler.<br>
+									Ansi, en plus de pouvoir de se déplacer vers les trois cellules sous elle, elle doit être capable de bouger sur les cellules à sa gauche et à sa droite.<br>
+									L'ordre dans lequel sont testés ses déplacements reprend celui du sable avec à la fin le nouveau test des déplacements horizontaux.
 								</p>
 							</div>
 							<div class="col-3">
@@ -506,7 +509,7 @@ void WaterMovement::checkAdjacentCells()
 									<video controls width="100%">
 										<source src="images/falling-elements/water.mp4" type="video/webm">
 									</video>
-									<center><sup><i>démonstration de l'état final du processus d'actualisation des cellules</i></sup></center>
+									<center><sup><i>démonstration des mouvements de l'eau</i></sup></center>
 								</span>
 							</div>
 							<div class="col-5">
@@ -522,7 +525,7 @@ void WaterMovement::checkAdjacentCells()
 
 						<p>
 							L'eau tend bien vers un niveau plat, cependant elle met beaucoup de temps à s'étaler.<br>
-							Une solution assez simple pour accélérer ce phénomène consiste à vérifier ses possibilités de déplacements horizontaux sur plusieurs cellules.
+							Une solution assez simple pour accélérer ce phénomène consiste à vérifier ses possibilités de déplacements horizontaux sur <b>plusieurs cellules</b>.<brl
 							Si il y a plusieurs espaces vides (autrement dit, des cellules de types gazeuses),
 							elle échangerait sa position avec une cellule plus loin, permettant ainsi de se déplacer plus vite pour le même nombre d'actualisation.
 						</p>
@@ -585,16 +588,16 @@ void WaterMovement::checkAdjacentCells()
 
 						<p>
 							Le comportement de l'eau commence à devenir complet et intéressant, en revanche, celui du sable paraît un peu plus léger.<br>
-							Pourquoi ne pas essayer de le compléter en ajoutant un semblant de vitesse ?
+							Pourquoi ne pas essayer de le compléter en ajoutant un semblant de <b>vitesse</b> ?
 						</p>
 						<p>
 							Une première application de vélocité serait pendant la chute d'une cellule.
-							En chute libre, une cellule accumulerait une certaine viteses puis la dépenserait à l'impacte.<br>
+							En chute libre, une cellule <b>accumulerait</b> une certaine vitesse et la <b>dépenserait</b> à l'impacte.<br>
 							Pour symboliser une vitesse, il est nécessaire de rajouter une caractéristique aux cellules.
 							Le choix a été de fait prendre un vecteur en deux dimensions (provenant de la <i><a href="https://github.com/g-truc/glm">librairie mathématiques GLM</a></i>).<br>
-							L'utilisation d'un vecteur en deux dimensions permet de représenter la vitesse et la direction en même temps.<br>
+							L'utilisation d'un <b>vecteur</b> en deux dimensions permet de représenter la vitesse et la direction en même temps.<br>
 							La composante x du vecteur sera utilisée pour la vitesse sur l'axe horizontal et y, pour l'axe vertical.
-							Un vecteur de valeur x: 1 et y: -1 signifie que la cellule se dirigera vers la droite et également vers le haut (car la coordonnée 0, 0 du tableau se trouve en haut à gauche de l'écran)
+							Un vecteur de valeur x: 1 et y: -1 signifie que la cellule se dirigera vers la droite et également vers le haut (car la coordonnée 0, 0 du tableau se trouve en haut à gauche de l'écran).<br>
 							L'usage de vitesse négative signifie donc que la cellule se déplace dans le sens contraire de l'axe.
 						</p>
 						<p>
@@ -643,7 +646,7 @@ void SandMovement::updateVelocity()
 {
 	if (_target->getType() == CellType::Gazeous) // Accelerate in free falling
 		_cell->setVelocity(_cell->getVelocity() + glm::vec2(0.0f, 0.20f));
-	else if (_target->getType() == CellType::Liquid && _cell->getVelocity().y >= 0.80f) // Get slow done by liquid
+	else if (_target->getType() == CellType::Liquid && _cell->getVelocity().y >= 0.80f) // Get slow down by liquid
 		_cell->setVelocity(_cell->getVelocity() + glm::vec2(0.0f, -0.80f));
 }
 							</code>
@@ -672,7 +675,7 @@ void SandMovement::updateVelocity()
 						</div>
 
 						<p>
-							Il est possible de transmettre sa vitesse aux cellules voisines à l'impacte.
+							Il est possible de <b>transmettre</b> sa vitesse aux cellules voisines à l'impacte.
 							C'est d'ailleurs ce qui a été brièvement fait (sans franc succès) dans l'application finale, cependant ce sujet ne sera pas couvert sur cette page.<br>
 						</p>
 						<p>
@@ -713,12 +716,12 @@ const bool SandMovement::cellHasVelocity() const
 						</pre>
 
 						<p>
-							Pour libérer la vitesse accumulée, la cellule va temporairement adopter un nouveau comportement.<br>
+							Pour <b>libérer la vitesse accumulée</b>, la cellule va temporairement adopter un nouveau comportement.<br>
 							Ce nouveau comportement à pour but de faire déplacer la cellule en fonction de sa vitesse, et ce, qu'elle que soit son type.<br>
 							Il faut donc que ce nouveau comportement garde en mémoire toutes les informations de la cellule, est les restituent, une fois que la vitesse accumulée est dépensée.
 						</p>
 						<p>
-							Ce principe permet de ne plus considérer le comportement initial de la cellule, le temps que celle-ci se déplace.
+							Ce principe permet de ne plus considérer le comportement initial de la cellule, le temps que celle-ci dépense son énergie.
 							Cela évite que la cellule cherche à aller vers le bas (pour le sable) quand on souhaite qu'elle se déplace vers le haut à cause d'un rebond.
 						</p>
 						<p>
@@ -760,7 +763,7 @@ void ParticleMovement::setOriginalBehavior()
 						</pre>
 
 						<p>
-							Les méthodes de déplacements, appelées dans<code>update</code>permettent à la cellule d'échanger sa position avec ses cellules voisines tout en diminuant sa vitesse.
+							Les méthodes de déplacements, appelées dans<code>ParticleMovement::update</code>permettent à la cellule d'échanger sa position avec ses cellules voisines tout en diminuant sa vitesse.
 							Celles-ci ne sont ni compliquées ni intéressantes, et ne sont donc pas présentées sur cette page.<br>
 							Il est néanmoins possible d'utiliser d'autre méthodes, comme l'algorithme de tracé de segment de Bresenham
 							ou une fonction d'interpolation linéaire sphérique pour avoir un meilleur effet de déplacement des particules.
@@ -784,7 +787,7 @@ void ParticleMovement::setOriginalBehavior()
 						</div>
 
 						<p>
-							Pour mieux visualiser les cellules possédant de la vélocité, il est possible de créer un filtre mettant en évidence ces cellules.<br>
+							Pour mieux <b>visualiser</b> les cellules possédant de la vélocité, il est possible de créer un <b>filtre</b> mettant en évidence ces cellules.<br>
 							Jusqu'à présent, les couleurs de la grille étaient dépendants de la couleur des cellules.
 							Cependant, il est possible d'afficher des couleurs en fonction de certaines propriétées des cellules.
 						</p>
@@ -834,7 +837,7 @@ void GridRenderer::updateColorFromVelocity(Cell** cells)
 							</div>
 							<div class="col-5">
 								<p>
-									Pour rendre ce qui se passe à l'écran plus compréhensible, il est possible de convertir la couleur RGB des cellules en nuances de gris.
+								Pour rendre ce qui se passe à l'écran plus compréhensible, il est possible de convertir la couleur RGB des cellules en <b>nuances de gris</b>.
 									Il existe plusieurs formules, voici celle utilisée ici.
 								</p>
 							</div>
@@ -857,7 +860,7 @@ glm::vec3 rgbToGrayscale(glm::vec3 color)
 						<div class="row">
 							<div class="col-5">
 								<p>
-									Il est même possible de changer la couleur en fonction de la direction et/ou de la rapidité de la cellule.
+									Il serait même possible de changer la couleur en fonction de la direction et/ou de la rapidité de la cellule.
 								</p>
 							</div>
 							<div class="col-5">
@@ -879,15 +882,15 @@ glm::vec3 rgbToGrayscale(glm::vec3 color)
 						<p>
 							La structure du projet et la manière dont les cellules ont été conçues permettent à celle-ci de posséder plusieurs types de comportement.<br>
 							Les précédents comportements permettaient aux cellules de se déplacer, mais il est possible de créer une nouvelle dimension au projet
-							en rajoutant de nouveaux comportements de type thermique.
+							en rajoutant de nouveaux comportements de type <b>thermique</b>.
 						</p>
 						<p>
 							Ces nouveaux comportements permettent de simuler la température des cellules et donc le changement d'état de certains matériaux.<br>
-							L'eau deviendra par exemple solide sous une basse température, et à l'inverse, sera dans état gazeux à température élevée.
+							L'eau deviendra par exemple <b>solide</b> sous une basse température, et à l'inverse, sera dans état <b>gazeux</b> à température élevée.
 						</p>
 						<p>
 							La seule condition technique (personnellement imposée) à respecter, est de ne pas "générer" ou "supprimer" de chaleur.<br>
-							Autrement dit, la simulation doit être similaire à une boite fermée et parfaitement isolée.
+							Autrement dit, la simulation doit être similaire à une boite fermée et <b>parfaitement isolée</b>.
 							Tant qu'aucun changement n'est fait pendant l'exécution du programme, la température moyenne doit rester la même.<br>
 							La seule raison pour laquelle la température moyenne doit pouvoir changer est car l'utilisateur est en train d'ajouter ou supprimer des éléments
 						</p>
@@ -900,7 +903,7 @@ glm::vec3 rgbToGrayscale(glm::vec3 color)
 						</p>
 						<p>
 							Dans le but de faire une fonction permettant de propager la température des cellules.
-							L'idée la plus simple consiste à faire pour chaque cellule une moyenne de sa température et de celle de ses voisines.<br>
+							L'idée la plus simple consiste à faire pour chaque cellule une <b>moyenne</b> de sa température et de celle de ses voisines.<br>
 							Le code ne sera pas détaillé car il est relativement simple et peu intéressant.
 						</p>
 						<p>
@@ -918,15 +921,17 @@ glm::vec3 rgbToGrayscale(glm::vec3 color)
 							</div>
 							<div class="col-5">
 								<p>
-									Il est notable que la chaleur du sable créé se propage, en revanche la température moyenne affichée ne cesse de changer, même lorsqu'aucune cellule n'est ajoutée.<br>
+									Il est notable que la chaleur du sable créé se propage, en revanche la température moyenne affichée <b>ne cesse de changer</b>, même lorsqu'aucune cellule n'est ajoutée.<br>
 									Le problème vient en majeure partie de la méthode utilisée pour les échanges de température.
-									Une approche plus "réaliste", serait de considérer la chaleur comme une ressource, et que celle-ci cherche à s'équilibrer.
-									Ainsi, si deux cellules sont voisines et qu'elles n'ont pas la même température, la cellule avec le plus de chaleur va transmettre une partie de sa température à l'autre.<br>
-									Ce comportement ne créé ou ne supprime donc pas de chaleur, étant donné que les échanges dépendent de la température des cellules.
 								</p>
 							</div>
 						</div>
 
+						<p>
+							Une approche plus "réaliste", serait de considérer la chaleur comme une ressource, et que celle-ci cherche à <b>s'équilibrer</b>.
+							Ainsi, si deux cellules sont voisines et qu'elles n'ont pas la même température, la cellule avec le plus de chaleur va transmettre une partie de sa température à l'autre.<br>
+							Ce comportement ne créé ou ne supprime donc pas de chaleur, étant donné que les échanges dépendent de la température des cellules.
+						</p>
 						<p>
 							La fonction<code>updateTarget</code>est appliquée à chaque voisin de chaque cellule.
 						</p>
@@ -940,7 +945,7 @@ void IThermicBehavior::update(Cell& neighbor)
 	const float TEMPERATURE_EXCHANGE_COEFF = 0.05f; // Transfer 5% of cell temperature
 
 	double temperatureExchanged = (_cell->getTemperature() - neighbor.getTemperature()) * TEMPERATURE_EXCHANGE_COEFF;
-	temperatureExchanged  = fabs(temperatureExchanged);
+	temperatureExchanged = fabs(temperatureExchanged);
 
 	float newNeighborTemperature = neighbor.getTemperature() + temperatureExchanged;
 	neighbor.setTemperature(newNeighborTemperature);
@@ -953,10 +958,10 @@ void IThermicBehavior::update(Cell& neighbor)
 
 						<p>
 							Dans la simulation, la cellule échange cinq pourcent de sa température avec son voisin.<br>
-							Il est important de garder ce pourcentage inférieur à douze virgule cinq (résultat provenant de cent divisé par huit).
+							Il est important de garder ce pourcentage <b>inférieur à douze virgule cinq</b> (résultat provenant de cent divisé par huit).
 							Car dans le cas où une cellule doit échanger sa température avec tous ses voisins,
 							elle pourrait donner plus de température qu'elle n'en possède si ce pourcentage est trop élevé.<br>
-							La température de chaque cellule deviendrait alors instable et ne cesserait d'alterner entre valeur positive et négative avant
+							La température de chaque cellule deviendrait alors <b>instable</b> et ne cesserait d'alterner entre valeur positive et négative avant
 							de dépasser la capacité de stockage d'un nombre à virgule, causant le crash de l'application.
 						</p>
 
@@ -972,7 +977,7 @@ void IThermicBehavior::update(Cell& neighbor)
 							<div class="col-5">
 								<p>
 									En relancant la simulation avec cette nouvelle méthode, on constate que cette fois-ci, la température moyenne est stable et ne change qu'à l'ajout de nouvelles cellules.<br>
-									Un dernier problème subsiste cependant, une partie de la chaleur descend instantanément au plus bas de la grille, avant même que la cellule ne soit tombée.<br>
+									Un dernier problème subsiste cependant. Une partie de la chaleur descend <b>instantanément</b> au plus bas de la grille, avant même que la cellule ne soit tombée.<br>
 									Ce soucis est similaire à celui du sable qui était mis à jour plusieurs fois par image.
 									Ici, la température des cellules est calculée puis appliquée, dès que la cellule éxécute sa méthode<code>update</code>.
 									Or, il est nécessaire que la température soit appliquée une fois que toutes les cellules ont été actualisées.<br>
@@ -983,7 +988,7 @@ void IThermicBehavior::update(Cell& neighbor)
 							<div class="col-5">
 								<p>
 									La solution est de garder en mémoire cette "nouvelle température" pour chaque cellule, et de l'appliquer une fois toutes les cellules mises à jour.<br>
-									Ainsi, la méthode<code>update</code>de IThermicBehavior ne modifie plus directement la température des cellules, mais plutot une nouvelle variable "nextTemperature".
+									Ainsi, la méthode<code>update</code>de IThermicBehavior ne modifie plus directement la température des cellules, mais plutot une nouvelle variable nommée "nextTemperature".
 									Le changement de température se fera sur toutes les cellules entre leurs mises à jours.
 								</p>
 							</div>
@@ -997,7 +1002,7 @@ void IThermicBehavior::update(Cell& neighbor)
 							</div>
 						</div>
 						<p>
-							Pour augmenter le réalisme de la simulation, il est possible de rajouter un coefficient à chaque cellule pour favoriser ou non, les échanges de température.
+							Pour augmenter le réalisme de la simulation, il est possible de rajouter un <b>coefficient</b> à chaque cellule pour favoriser ou non, les échanges de température.
 						</p>
 						<p>
 							Il est maintenant possible de créer différents comportements thermiques qui feront changer les caractéristiques des cellules en fonction de leur température.<br>
@@ -1007,7 +1012,7 @@ void IThermicBehavior::update(Cell& neighbor)
 							Il faut premièrement mettre à jour la température et ensuite vérifier ces conditions.<br>
 							Si la cellule doit change d'état, il faut modifier ses propriétés pour qu'elles correspondent au nouveau type de cellule voulu (glace, vapeur, ...).<br>
 							Pour faire ces modifications, un objet contenant les caractéristiques initiales de tout les types de cellules nommé<code>CellFactory</code> va modifier la cellule voulue, pour la faire correspondre avec son nouveau type.<br>
-							Dans le cas d'un passage de l'eau vers la glace, la cellule va changer de couleur ainsi que de comportement de déplacement.
+							Dans le cas d'un passage de l'eau vers la glace, la cellule va changer de <b>couleur</b> ainsi que de <b>comportement de déplacement</b>.
 						</p>
 						<pre>
 							<code>
@@ -1049,7 +1054,7 @@ void WaterThermic::update()
 						</p>
 						<p>
 							Quand à l'amélioration de ce qui existe déjà, il serait plus efficace d'utiliser une texture pour l'affichage de la grille au lieu d'afficher chaque cellule individuellement.<br>
-							Pour le comportement des cellules il doit être possible de les optimiser et de limiter le nombre d'allocations.<br>
+							Pour le comportement des cellules il doit être possible de les optimiser et de limiter le nombre d'allocations mémoires.<br>
 							Et enfin, l'utilisation des threads permettrait au programme de mettre plusieurs groupes de cellules à jours simultanément ce qui augmenterait considérablement les performances.
 						</p>
 
